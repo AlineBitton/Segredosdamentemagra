@@ -296,21 +296,61 @@ Assumindo **(b)** até você confirmar.
 
 ## 11. Pendências — o que eu preciso de você
 
-### Bloqueia entrega
-1. **Depoimentos da `/cde-v2/`** — o domínio está bloqueado pela política de rede
-   deste ambiente. Cole o texto (nome, kg, tempo, depoimento) ou mande as imagens.
-2. **Anexo "as ofertas"** (o riscado é só do VIP) — preciso da lista exata
-   de entregáveis Comum × VIP.
-3. **Horários dos 3 dias** (25, 26 e 27/09) e **onde acontece** (Zoom? YouTube? plataforma?).
-4. **Link de checkout do Comum por lote** — ver §5.
+*Atualizado em 04/09 após o Canva e o Drive.*
 
-### Bloqueia otimização, não a entrega
-5. Meta **Pixel ID**.
-6. Número do **WhatsApp** de suporte.
-7. Fotos: **Aline** (hero + dobra "sua guia") e fotos das mulheres dos depoimentos.
-8. Logo, cores da marca, fontes (se houver manual).
-9. O domínio já tem site? (§10)
+### ✅ Resolvido
 
-### Referências citadas que não chegaram
-10. Layout de referência · modelo da Nathy · vídeo de referência dos "2 caminhos".
-    Sigo com direção própria e você corrige depois.
+| | Como |
+|---|---|
+| **Depoimentos** | Recuperados do Canva (design `DAG7xjC6Sus`). 14 antes e depois reais, de 40 a 74 anos, de 13 a 47 kg. Já no ar na dobra 10. |
+| **Medição de velocidade** | Lighthouse 100/100/100/100 em mobile e desktop. Ver doc 04. |
+
+### 🔴 Bloqueia publicar
+
+1. **Os 4 links de checkout do Comum, um por lote.** Você confirmou que o link
+   não muda de preço sozinho, mas a mensagem cortou antes dos links.
+   O config já está pronto para recebê-los em `CHECKOUT.comumPorLote`:
+   ```js
+   comumPorLote: {
+     especial: 'https://…',   // R$27  · até 09/09
+     lote2:    'https://…',   // R$47  · 10 a 15/09
+     lote3:    'https://…',   // R$67  · 16 a 22/09
+     lote4:    'https://…',   // R$97  · 23 a 25/09
+   }
+   ```
+   Enquanto não chegarem, os quatro lotes apontam para o mesmo link e a
+   compradora do 2º lote em diante veria um preço na página e outro no checkout.
+2. **Horário de início dos 3 dias e onde acontece** (Zoom? YouTube? plataforma própria).
+3. **Número do WhatsApp do suporte** — hoje o botão aponta para um placeholder.
+4. **Qual é o 5º corpo** (ou a decisão do doc 02, §3).
+
+### 🟡 Deixa a página melhor, não impede publicar
+
+5. **Valor da consulta avulsa de 50 min.** É a linha de maior alavanca do VIP:
+   *"O Diagnóstico, avulso, custa R$X. Aqui ele entra por R$170 a mais."*
+   Já está ligada no build e na borda — basta preencher
+   `VIP.ancoraAvulsaCentavos` e ela aparece sozinha, com a diferença calculada
+   contra o lote vigente.
+6. **Sua foto** — hero e dobra "quem é sua guia". Hoje há um placeholder.
+7. **Sua bio e sua história** (dobra 06). A estrutura está pronta com as 4
+   partes que preciso; falta o conteúdo.
+8. **Meta Pixel ID.**
+9. **As 15 páginas do Canva exportadas em 1080px.** As que usei vieram dos
+   thumbnails (400px) porque o host de export está bloqueado neste ambiente.
+   Ficam levemente suaves em tela retina. Exporte por Compartilhar → Download →
+   JPG, jogue em `src/img-originais/provas/` e rode `npm run imagens`.
+10. **CNPJ** para o rodapé.
+11. **As vendas fecham 25/09 à meia-noite ou quando o evento começa?**
+    Hoje está programado para meia-noite.
+
+### Observação sobre o Drive
+
+A pasta que você mandou tem vídeos de CPL de 2023/2024 (100 a 450 MB cada),
+organizados por objeção, com uma planilha que mapeia objeção → depoimento.
+São **material de lançamento antigo, não depoimentos prontos para a página**.
+
+E vale registrar: aquele mapa de objeções não tem **nenhuma linha** sobre
+*"usei caneta e voltei a engordar"* — a biblioteca de provas foi construída
+para outra persona. Os três recortes mais próximos da narrativa atual são
+"já emagreci e voltei a engordar várias vezes", "estou na menopausa" e
+"usar as roupas que não servem mais".
