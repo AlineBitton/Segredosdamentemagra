@@ -44,13 +44,23 @@ for (const a of alvos) {
   pg.on('pageerror', (e) => erros.push(String(e)));
 
   await pg.goto('http://127.0.0.1:4321/', { waitUntil: 'networkidle' });
-  // revela tudo para a captura de página inteira
-  await pg.evaluate(() => document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visivel')));
-  await pg.waitForTimeout(400);
+  // revela tudo e força o carregamento das imagens lazy antes de capturar
+  await pg.evaluate(async () => {
+    document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visivel'));
+    const alt = document.documentElement.scrollHeight;
+    for (let y = 0; y < alt; y += window.innerHeight) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 90));
+    }
+    window.scrollTo(0, 0);
+    await Promise.all([...document.images].filter((i) => !i.complete)
+      .map((i) => new Promise((r) => { i.onload = i.onerror = r; })));
+  });
+  await pg.waitForTimeout(600);
 
   await pg.screenshot({ path: `docs/capturas/${a.nome}-completa.png`, fullPage: true });
   await pg.screenshot({ path: `docs/capturas/${a.nome}-dobra1.png` });
-  for (const [nome, sel] of [['oferta', '#oferta'], ['mecanismo', '.mecanismo'], ['caminhos', '.caminhos']]) {
+  for (const [nome, sel] of [['oferta','#oferta'],['mecanismo','.mecanismo'],['caminhos','.caminhos'],['provas','.provas'],['agregado','.agregado']]) {
     const el = await pg.$(sel);
     if (el) await el.screenshot({ path: `docs/capturas/${a.nome}-${nome}.png` });
   }

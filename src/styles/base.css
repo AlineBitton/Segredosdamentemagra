@@ -12,7 +12,9 @@
   font-family: 'Fraunces';
   src: url('/fonts/fraunces-var.woff2') format('woff2-variations');
   font-weight: 300 900;
-  font-display: swap;
+  /* preload + optional: ou ela chega antes da primeira pintura, ou nao entra
+     naquele carregamento. Nunca troca depois -> CLS zero. */
+  font-display: optional;
   font-style: normal;
 }
 @font-face {
@@ -25,7 +27,9 @@
 /* fallback métrico do corpo de texto — evita salto na troca */
 @font-face {
   font-family: 'Inter fallback';
-  src: local('Arial');
+  /* metricas calibradas para Arial; Helvetica e Liberation Sans sao
+     metricamente compativeis e cobrem macOS e Linux */
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
   ascent-override: 90.2%;
   descent-override: 22.48%;
   line-gap-override: 0%;
@@ -45,7 +49,7 @@ html {
 }
 
 body {
-  font-family: var(--font-text), 'Inter fallback';
+  font-family: var(--font-text);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   font-synthesis-weight: none;
@@ -89,7 +93,7 @@ h1, h2, h3, .display {
 
 h1, .h1 { font-size: var(--fs-h1); line-height: var(--lh-tight); }
 h2, .h2 { font-size: var(--fs-h2); }
-h3, .h3 { font-size: var(--fs-h3); font-family: var(--font-text), 'Inter fallback'; font-weight: 700; letter-spacing: 0; }
+h3, .h3 { font-size: var(--fs-h3); font-family: var(--font-text); font-weight: 700; letter-spacing: 0; }
 
 .display { font-size: var(--fs-display); line-height: var(--lh-tight); }
 
@@ -107,7 +111,7 @@ p { max-width: var(--measure); text-wrap: pretty; }
 }
 
 .eyebrow {
-  font-family: var(--font-text), 'Inter fallback';
+  font-family: var(--font-text);
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: .14em;
@@ -145,7 +149,7 @@ p { max-width: var(--measure); text-wrap: pretty; }
   padding: 0 var(--s-6);
   background: var(--cta);
   color: var(--cta-text);
-  font-family: var(--font-text), 'Inter fallback';
+  font-family: var(--font-text);
   font-size: 1.0625rem;
   font-weight: 700;
   letter-spacing: .02em;
@@ -182,13 +186,18 @@ p { max-width: var(--measure); text-wrap: pretty; }
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1;
 }
-.contador b {
+/* mira o proprio [data-cd], nao ".contador b": um dos tres contadores tem a
+   classe no proprio elemento e ficava sem largura reservada, empurrando o
+   texto quando o timer substituia o travessao. Era a origem do CLS. */
+[data-cd] {
   display: inline-block;
   min-width: 14ch;
   font-weight: 700;
-  color: var(--warm-claro, var(--accent));
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  color: var(--accent);
 }
-.sup-clara .contador b { color: var(--warm); }
+.sup-clara [data-cd] { color: var(--warm); }
 
 /* ---- entrada suave -------------------------------------------
    Apenas opacity e transform. Nunca no herói: o LCP não pode
@@ -198,7 +207,6 @@ p { max-width: var(--measure); text-wrap: pretty; }
   opacity: 0;
   transform: translateY(14px);
   transition: opacity .42s var(--ease), transform .42s var(--ease);
-  will-change: opacity, transform;
 }
 .reveal.visivel { opacity: 1; transform: none; }
 

@@ -207,11 +207,16 @@
   max-width: 26ch;
   margin-inline: auto;
 }
+.proporcao { margin-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: 0; }
 .proporcao__fecho {
-  grid-column: 1 / -1;
-  margin: 0;
-  padding-top: var(--s-5);
+  max-width: none;
+  margin: 0 0 var(--s-8);
+  padding: var(--s-5) var(--s-6) var(--s-6);
+  text-align: center;
+  background: var(--ink-800);
+  border: 1px solid var(--line-dk);
   border-top: 1px solid var(--line-dk);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
   font-size: var(--fs-lead);
   color: var(--on-dark-hi);
   max-width: none;
@@ -236,7 +241,7 @@
   border-radius: var(--r-md);
 }
 .triade h3 {
-  font-family: var(--font-text), 'Inter fallback';
+  font-family: var(--font-text);
   font-size: var(--fs-sm);
   font-weight: 700;
   letter-spacing: .16em;
@@ -266,8 +271,9 @@
   gap: var(--s-4);
   height: var(--barra-h);
   padding-inline: var(--s-4);
-  background: color-mix(in srgb, var(--ink-900) 92%, transparent);
-  backdrop-filter: blur(10px);
+  /* fundo solido de proposito: backdrop-filter forca composicao a cada
+     scroll e apareceu no Total Blocking Time da medicao mobile. */
+  background: var(--ink-900);
   border-top: 1px solid var(--line-dk);
   transform: translateY(101%);
   transition: transform .3s var(--ease);
@@ -336,42 +342,53 @@
   opacity: .65;
 }
 
-/* ─── 10 · PROVAS ────────────────────────────────────────────── */
-.depoimentos {
+/* ─── 10 · PROVAS ────────────────────────────────────────────
+   Os numeros ja vem gravados nas fotos, entao o card nao repete
+   texto: a informacao nova mora na linha agregada acima do grid.
+   ------------------------------------------------------------ */
+.agregado {
   display: grid;
-  gap: var(--s-5);
-  margin-top: var(--s-7);
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-4);
+  margin: var(--s-6) 0 0;
+  padding: var(--s-5) 0;
+  border-block: 1px solid var(--linha);
+  text-align: center;
+}
+.agregado dt {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--warm);
+  font-variant-numeric: tabular-nums;
+}
+.agregado dd {
+  margin: var(--s-2) 0 0;
+  font-size: var(--fs-xs);
+  line-height: 1.3;
+  color: var(--txt-2);
+}
+
+.provas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-3);
+  margin-top: var(--s-6);
   padding: 0;
   list-style: none;
 }
-@media (min-width: 720px)  { .depoimentos { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .depoimentos { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 700px)  { .provas { grid-template-columns: repeat(3, 1fr); gap: var(--s-4); } }
+@media (min-width: 1000px) { .provas { grid-template-columns: repeat(4, 1fr); } }
 
-.depo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-4);
-  padding: var(--s-5);
-  background: var(--bg-2);
-  border: 1px solid var(--linha);
+.prova {
+  overflow: hidden;
   border-radius: var(--r-md);
+  background: var(--bg-2);
+  /* proporcao reservada: as fotos entram sem deslocar nada (CLS 0) */
+  aspect-ratio: 4 / 5;
 }
-.depo__topo { display: flex; align-items: center; gap: var(--s-4); }
-.depo__foto {
-  flex: none;
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--linha);
-}
-.depo__nome { font-weight: 700; line-height: 1.2; }
-.depo__resultado {
-  font-size: var(--fs-sm);
-  font-weight: 700;
-  color: var(--warm);
-}
-.sup-escura .depo__resultado { color: var(--accent); }
-.depo blockquote { margin: 0; font-size: var(--fs-sm); line-height: 1.55; }
+.prova img { width: 100%; height: 100%; object-fit: cover; }
 
 .aviso-pendente {
   margin-top: var(--s-6);
@@ -489,7 +506,7 @@
   letter-spacing: -.02em;
 }
 .plano__preco small {
-  font-family: var(--font-text), 'Inter fallback';
+  font-family: var(--font-text);
   font-size: var(--fs-sm);
   font-weight: 400;
   letter-spacing: 0;

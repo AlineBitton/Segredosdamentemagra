@@ -8,3 +8,6 @@ dist/
 
 # fontes subsetadas SAO versionadas (build nao depende de Python)
 !public/fonts/*.woff2
+# originais das provas: pesados e substituiveis pelos exports do Canva
+# (mantidos fora do repo; public/img/provas/ carrega as versoes otimizadas)
+src/img-originais/
