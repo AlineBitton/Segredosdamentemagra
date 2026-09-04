@@ -8,6 +8,10 @@
 > 4. **Zero medo como alavanca.** "Quando você parar, volta tudo" destrói a tese.
 > 5. **Zero jargão da profissional.** "Ressignificar", "causa raiz", "reprogramar o inconsciente" ela lê como enrolação.
 > 6. **Zero moralização do esforço.** Ela já ouviu isso a vida inteira, inclusive de si mesma.
+> 7. **A ferramenta nunca falhou.** Existe um *segundo trabalho*, e ele está sem dono.
+>    Organograma, nunca ataque. (Doc 02, §5.)
+> 8. **93% / 7% é alívio, nunca sentença.** "Não é falta de disciplina, é proporção" —
+>    jamais "você não tem controle".
 >
 > Marcações:
 > `[[PRECISO: …]]` = dado factual que não posso inventar. Preencher antes de publicar.
@@ -28,6 +32,11 @@
 | sustentar | manter para sempre |
 | entender o jogo | ressignificar |
 | onde o impulso nasce | reprogramar o inconsciente |
+| o padrão que vira comportamento | condicionamento operante |
+| o recurso agiu na superfície | a medicação é paliativa |
+| pensar, sentir, agir | tríade psicossomática |
+| um segundo trabalho, sem dono | a caneta não resolve |
+| descer você já sabe | você fracassou antes |
 
 ---
 
@@ -37,16 +46,17 @@
 > IMERSÃO ONLINE E AO VIVO · 25, 26 E 27 DE SETEMBRO
 
 **H1:**
-> ## Emagrecer você já sabe.
-> ## **Sustentar** é o que ninguém te ensinou.
+> ## O que fez a balança descer
+> ## **não é** o que faz ela ficar.
 
 **Subheadline:**
-> Em 3 dias, você aprende a ativar a inteligência dos 5 corpos — e entende
-> por que a balança desce e volta quando só uma parte de você está sendo cuidada.
+> Em 3 dias, você vai entender por que o corpo volta ao ponto de partida mesmo
+> quando o método funcionou — e o que precisa acontecer para a mudança passar
+> a ser sua.
 
 **Três selos horizontais (sem ícone verde):**
 - 3 dias ao vivo com Aline Bitton
-- Aplicação prática em todos os dias
+- Para quem já usou caneta, bariátrica ou dieta restritiva
 - Garantia incondicional já no 1º dia
 
 **CTA (verde):** `GARANTIR MINHA VAGA`
@@ -54,27 +64,48 @@
 **Microcopy sob o botão:**
 > Lote Especial · **R$27** · o valor sobe em `[contador]`
 
+### Por que essa headline
+
+Ela faz cinco coisas ao mesmo tempo:
+
+1. **Não nomeia a ferramenta** — logo, cobre caneta, bariátrica e dieta restritiva
+   de uma vez, exatamente os três caminhos da narrativa.
+2. **Não ataca nada.** Não diz que o recurso falhou. Diz que *descer* e *ficar*
+   são dois trabalhos diferentes. Organograma, não acusação.
+3. **Responde ao desejo declarado nº 2 do mapa** — *"Emagrecer eu já sei.
+   O que eu quero é manter."* — quase palavra por palavra.
+4. **Abre um loop.** Se não é isso, então é o quê? A única saída do loop é rolar.
+5. **Promete capacidade, não desfecho.** "Entender por que" e "o que precisa
+   acontecer" — nunca "você nunca mais vai engordar".
+
+### Headlines alternativas (para teste A/B)
+
+- **"Você já emagreceu. O problema nunca foi esse."**
+- **"A caneta mudou o seu corpo. Ela não mudou os padrões que te trouxeram até aqui."**
+  *(mais direta e de maior identificação — mas nomeia a medicação no H1, o que exige
+  que a dobra 02 venha imediatamente abaixo para blindar. Ver §5 do doc 02.)*
+- **"Descer você sabe. Ficar é outra conversa."**
+
 ### Notas de direção — imagem hero
 
 A imagem atual foi reprovada. Direção nova:
 
-- Aline em **plano médio**, olhar direto na câmera (contato ocular ativa
-  processamento facial e sobe confiança percebida), corpo levemente voltado
-  para o lado do CTA — **gaze cueing** conduz o olho até o botão.
-- Fundo **escuro e limpo** (não fundo branco estourado, não fundo de consultório).
+- Aline em **plano médio**, olhar direto na câmera (contato ocular sobe confiança
+  percebida), corpo levemente voltado para o lado do CTA — **gaze cueing** conduz
+  o olho até o botão.
+- Fundo **escuro e limpo**. Não fundo branco estourado, não cenário de consultório.
   O verde do CTA só salta contra luminância baixa.
-- **Respiro visual** à volta do rosto — princípio prospect-refuge: composição
-  aberta reduz percepção de ameaça em página de venda.
+- **Respiro visual** à volta do rosto — prospect-refuge: composição aberta reduz
+  percepção de ameaça em página de venda.
 - Sem texto embutido na imagem (mata responsividade e acessibilidade).
-- Entrega: AVIF + WebP, 2 crops (retrato para mobile, paisagem para desktop),
-  `fetchpriority="high"`, dimensões declaradas.
-- Peso alvo: **< 55 KB** no crop mobile.
+- **Nada de antes-e-depois de corpo.** Para esta persona, corpo em antes-e-depois
+  ativa vergonha, não desejo — e ela já tem o corpo. O que ela não tem é sossego.
+- Entrega: AVIF + WebP, 2 crops (retrato mobile, paisagem desktop),
+  `fetchpriority="high"`, dimensões declaradas. Peso alvo: **< 55 KB** no mobile.
 
-`[[PRECISO: foto da Aline em alta resolução, fundo removível ou já escuro]]`
-`[[PRECISO: horário de início dos 3 dias — entra no eyebrow]]`
+`[[PRECISO: foto da Aline em alta resolução]]`
+`[[PRECISO: horário de início dos 3 dias]]`
 `[[PRECISO: onde acontece — Zoom, YouTube, plataforma própria]]`
-
----
 
 # DOBRA 02 · BARRA DE NEUTRALIDADE ★
 
@@ -94,6 +125,60 @@ própria mãe. Reconhecimento antes de argumento. Custo: 2 linhas.
 
 # DOBRA 03 · ESTADO ATUAL DA PERSONA
 
+> ⚠️ **Esta dobra tem duas versões e você precisa escolher.**
+> A copy aprovada em consultoria descreve uma **tentante que não chega**.
+> A narrativa e o mapa de persona descrevem o oposto: uma mulher que **chegou** —
+> 19 kg em 8 meses — e não consegue ficar.
+> *"O projeto emagrecer se perde no caminho durante a rotina"* não é o problema dela.
+> O problema dela é que **funcionou**, e ela está apavorada de que pare de funcionar.
+> Isso não é ajuste de palavra: é a dobra inteira falando com outra mulher.
+
+---
+
+## ▶ VERSÃO B — alinhada à narrativa e à persona ⭐ recomendada
+
+**H2:**
+> ## Você não parou no meio do caminho.
+> ## Você chegou — e não consegue ficar.
+
+**Corpo:**
+> A balança desceu. Com a caneta, com a cirurgia, com a dieta que você seguiu à risca.
+> Descer, você já provou que sabe.
+>
+> E aí veio a parte que ninguém te contou: você passou a viver **em estado de vigília**.
+
+**Bloco de reconhecimento** (itálico, tipografia menor — deve parecer pensamento,
+não depoimento):
+
+> *Você sobe na balança todo dia pra confirmar que ainda tá lá.*
+> *Você tem três tamanhos de roupa no armário e não consegue doar nenhum.*
+> *Você está usando M e, na loja, vai logo no G.*
+> *Você recebe elogio e não consegue acreditar no elogio.*
+> *E carrega uma pergunta que você já levou para todo lugar — e voltou com ela inteira.*
+
+**Frase isolada, grande, centralizada:**
+> ## "E quando eu parar?"
+
+**Bloco de quebra (destacado):**
+> **Mas sabe o pior?**
+>
+> É que te venderam a ideia de que bastava "força de vontade".
+>
+> E enquanto você se cobra por não ter tido o suficiente, o que está acontecendo
+> é outra coisa — e não tem nada a ver com vontade.
+>
+> **Não é falta de disciplina. Você é a mulher que resolve tudo, menos isso.**
+>
+> É que ninguém nunca te mostrou onde o padrão nasce.
+
+**CTA (verde):** `QUERO ENTENDER O QUE ESTÁ ACONTECENDO`
+
+---
+
+## ▷ VERSÃO A — copy aprovada, com a correção de moralização aplicada
+
+Mantida caso você prefira não mexer na estrutura da consultoria.
+
 **H2:**
 > ## Você tenta começar muitas coisas, mas…
 
@@ -107,7 +192,7 @@ própria mãe. Reconhecimento antes de argumento. Custo: 2 linhas.
 >
 > E isso te deixa ainda mais refém das suas emoções.
 
-**Bloco de quebra (destacado):**
+**Bloco de quebra:**
 > **Mas sabe o pior?**
 >
 > É que te venderam a ideia de que bastava "força de vontade".
@@ -120,28 +205,13 @@ própria mãe. Reconhecimento antes de argumento. Custo: 2 linhas.
 >
 > E é isso que rouba o seu resultado da balança.
 
-> E é para mudar isso que eu vou te ensinar a ativar a inteligência dos 5 corpos,
-> unindo corpo e mente.
-
-**★ Bloco de reconhecimento** (citações em itálico, tipografia menor, sem aspas
-decorativas — devem parecer pensamento, não depoimento):
-
-> *"Eu sei o que fazer, eu só não faço."*
-> *"Essa semana eu saí da linha. Segunda eu volto pro certinho."*
-> *"Eu tô usando M, mas na loja eu vou logo no G."*
-> *"Eu subo na balança pra confirmar que ainda tá lá."*
->
-> Se você leu essas frases e reconheceu a sua própria voz — você está no lugar certo.
-
 **CTA (verde):** `QUERO ENTENDER O QUE ESTÁ ACONTECENDO`
 
-> ⚠️ **Correção aplicada (nº 2 do doc 00).** A copy original dizia "você ainda
-> acredita que basta força de vontade". O mapa da persona lista *moralização do
-> esforço* como termo que faz ela ir embora — ela já ouviu isso a vida inteira,
-> inclusive de si mesma. A reescrita mantém a ideia inteira e move a acusação
-> de **dela** para **quem vendeu isso a ela**. Mesma mensagem, recepção oposta.
-
----
+> ⚠️ **Correção aplicada nas duas versões.** A copy original dizia *"você ainda
+> acredita que basta força de vontade"*. O mapa lista **moralização do esforço**
+> entre os termos que fazem ela ir embora — ela já ouviu isso a vida inteira,
+> inclusive de si mesma. A reescrita mantém a ideia e move a acusação **dela**
+> para **quem vendeu isso a ela**. Mesma mensagem, recepção oposta.
 
 # DOBRA 04 · QUEBRA DE OBJEÇÕES
 
@@ -152,24 +222,32 @@ decorativas — devem parecer pensamento, não depoimento):
 > Você não precisa de mais uma dieta, de mais "dicas" emagrecedoras,
 > nem de se esforçar mais.
 >
-> Você precisa de um método que te ensine a **ativar** a inteligência natural
-> dos 5 corpos, para ter resultado de verdade.
+> **E você também não precisa parar nada do que está funcionando.**
 >
-> **E é essa a função da Imersão Segredos da Mente Magra.**
+> O que você precisa é que alguém trabalhe a parte que ficou sem dono:
+> o que dispara a sensação, o padrão que vira comportamento, e a resposta
+> automática que o seu sistema nervoso dá **antes** de você decidir qualquer coisa.
+>
+> **É essa a função da Imersão Segredos da Mente Magra.**
 
 **Lista — "Vou te mostrar ao vivo, como:"**
 - Aplicar os Segredos da Mente Magra na sua vida diária
-- ★ Enxergar qual dos 5 corpos está segurando o seu resultado agora
-- ★ Saber o que fazer quando o número sobe — em vez de refazer a semana inteira na cabeça
+- Enxergar qual das três pontas — **pensar, sentir, agir** — está segurando o seu
+  resultado agora
+- Saber o que fazer quando o número sobe, em vez de refazer a semana inteira na cabeça
 
 **CTA (verde):** `QUERO MINHA VAGA`
 
-> ★ A copy aprovada trazia **um** item nessa lista. Uma lista de um item enfraquece
-> a dobra. Acrescentei dois, ambos escritos na moeda da persona:
-> o segundo devolve **direção**, o terceiro devolve **previsibilidade** —
-> que é exatamente o que se paga por vigilância. Remova se preferir.
+> **A linha mais importante desta dobra** é *"você também não precisa parar nada
+> do que está funcionando"*. Ela desarma, em nove palavras, a objeção que faz
+> essa mulher fechar a página: o medo de estar entrando num lugar que vai
+> julgar a escolha dela. O mapa é categórico — ela não é o público que critica
+> quem usa, **ela é quem usa**.
 
----
+> ★ A copy aprovada trazia **um** item na lista. Uma lista de um item enfraquece
+> a dobra. Os outros dois estão na moeda da persona: o segundo devolve **direção**,
+> o terceiro devolve **previsibilidade** — que é exatamente o que se paga por
+> vigilância. Remova se preferir.
 
 # DOBRA 05 · O QUE VOCÊ FAZ EM 3 DIAS
 
@@ -239,56 +317,118 @@ decorativas — devem parecer pensamento, não depoimento):
 
 # DOBRA 07 · FAZER A BALANÇA DESCER DEPENDE DISSO
 
+> **Esta é a dobra do mecanismo — o coração argumentativo da página.**
+> É aqui que a narrativa entra inteira. Se a mulher lê só esta dobra e sai,
+> ela tem que sair sabendo por que o corpo volta.
+
 **H2:**
 > ## FAZER A BALANÇA DESCER DEPENDE DISSO
 
-**Corpo:**
-> Você já cuidou do prato. Já cuidou do treino. Talvez já tenha cuidado da cabeça,
-> em algum momento, com alguém.
+**Abertura:**
+> Você já fez a balança descer. Com a caneta, com a cirurgia, com a dieta mais
+> rígida que você já seguiu.
 >
-> Cada um leu uma parte de você. **Ninguém leu o conjunto.**
+> **Descer você sabe.** O que ninguém te explicou é por que ela volta.
+
+**Bloco 1 — a divisão do trabalho:**
+> O recurso externo age **na superfície**.
 >
-> É por isso que desce e volta: o corpo não funciona em fatias.
+> Ele muda a fome. Muda o volume do estômago. Muda a quantidade no prato.
+> E faz isso bem — o número desce, e o número é real. Ninguém aqui vai tirar
+> esse mérito dele.
+>
+> **Só que ele não toca no que dispara a sensação.** Nem no padrão de pensamento
+> que vira comportamento.
+>
+> Esse é um segundo trabalho. E ele nunca foi da ferramenta.
 
-**Os 5 corpos — cards:**
+**Bloco 2 — por que o corpo volta:**
+> Esses padrões estão **registrados no seu sistema nervoso**.
+>
+> E o sistema nervoso não negocia: diante da mesma sensação, ele repete a solução
+> que sempre funcionou. Por instinto. Sem te pedir licença.
+>
+> Por isso o corpo volta — **mesmo quando o método funcionou.**
 
-| # | Corpo | Linha de apoio |
+**Bloco 3 — a proporção (destaque gráfico grande):**
+
+> # 93%
+> ### do processo acontece no inconsciente
+>
+> # 7%
+> ### é o que você decide "racionalmente"
+>
+> Você vem tentando resolver com 7% uma coisa que é decidida em 93%.
+>
+> **Não é falta de disciplina. É proporção.**
+
+**Bloco 4 — a tríade (três cards):**
+
+> **Emagrecer é uma tríade que dança entre pensar, sentir e agir.**
+> Mexer em uma ponta faz a balança descer. Mexer nas três é o que faz ela ficar.
+
+| | | |
 |---|---|---|
-| 1 | **Físico** | O que entra, o que sustenta, o que o corpo precisa para não entrar em modo de defesa. |
-| 2 | **Mental** | Os pensamentos que decidem antes de você decidir. |
-| 3 | **Emocional** | O que você resolve comendo — porque foi a solução que o corpo encontrou. |
-| 4 | **Espiritual** | O sentido que sustenta o processo quando a motivação acaba. |
-| 5 | `[[PRECISO: o 5º corpo]]` | `[[PRECISO: a linha dele]]` |
+| **PENSAR** | O que você acredita sobre o seu corpo antes de qualquer decisão. | *"Se eu parar, em seis meses eu sou a de antes."* |
+| **SENTIR** | O que acontece quando bate uma sensação que você não sabe atravessar. | *"Sentir é perigoso — tem que resolver agora."* |
+| **AGIR** | O que o seu corpo faz automaticamente, antes de você escolher. | *A mão que abre a geladeira sem você ter decidido.* |
 
-> ⚠️ **Não vou inventar o 5º corpo.** A copy aprovada da dobra 4 nomeia quatro
-> ("corpo físico, mental, emocional e espiritual"). O quinto nunca aparece escrito
-> em nenhum material que você me passou. Frameworks parecidos costumam usar
-> *Energético* ou *Vital* — mas o seu método é seu, e chutar isso na página
-> principal seria erro grave. **Me diga qual é.**
+**Fechamento:**
+> É por isso que desce e volta. Não porque você falhou.
+> Porque o trabalho foi feito em uma ponta só.
 
-**CTA (verde):** `QUERO ATIVAR OS 5 CORPOS`
+**CTA (verde):** `QUERO TRABALHAR AS TRÊS PONTAS`
 
 ---
+
+### Regras inegociáveis desta dobra
+
+1. **Nunca dizer que a ferramenta falhou.** Sempre: existe um segundo trabalho,
+   e ele está sem dono. O mapa é explícito — qualquer coisa que soe anti-medicação
+   e ela vai embora e não volta.
+2. **O 93/7 nunca vira "você não tem controle".** Ele é **alívio**, não sentença.
+   A frase que fecha é *"não é falta de disciplina, é proporção"* — e ela responde
+   diretamente a *"eu sei o que fazer, eu só não faço"*, que é a frase que essa
+   mulher mais repete sobre si mesma.
+3. **Zero previsão de recaída.** Nada de "quando você parar, volta tudo".
+   Isso converte no scroll e reforça a crença-mãe de que a solução está fora dela.
+   A dobra explica o **mecanismo**, nunca profetiza o **futuro dela**.
+
+### ⚠️ Bifurcação pendente — ver doc 02, §3
+
+Esta dobra está escrita no **Caminho A**: tríade *pensar/sentir/agir* como tese
+pública, 5 corpos preservados como estrutura interna da imersão (dobra 05).
+
+Se você escolher o **Caminho B** (5 corpos em tudo), esta dobra vira a grade dos
+cinco — e eu preciso do **5º corpo**, que nunca foi nomeado em nenhum material
+que recebi. A copy aprovada lista apenas quatro: físico, mental, emocional,
+espiritual.
 
 # DOBRA 08 · PARA QUEM É
 
 **H2:**
 > ## Essa imersão é para mulheres que já passaram dos 40 e…
 
-**Lista (cada item começa com o "e…" implícito):**
-- …já emagreceram antes, mais de uma vez, e viram voltar.
+**Lista:**
+- …**já usaram ou usam caneta** — e a pergunta *"e quando eu parar?"* nunca foi respondida.
+- …**fizeram bariátrica** e descobriram que o estômago diminuiu, mas o padrão não.
+- …**seguiram dietas restritivas à risca**, chegaram no número, e viram voltar.
 - …sabem exatamente o que fazer — e mesmo assim não sustentam.
 - …sobem na balança todo dia e não conseguem parar, mesmo odiando isso.
 - …têm três tamanhos de roupa no armário e não conseguem doar nenhum.
 - …recebem elogio e não conseguem acreditar no elogio.
-- …já investiram em bons profissionais e sentem que ninguém olhou o conjunto.
+- …já investiram em bons profissionais e sentem que **ninguém olhou o conjunto**.
 - …não querem mais uma dieta. Querem entender o que está acontecendo.
 
 > **Por que essa lista converte:** cada linha é um comportamento observável do
-> mapa, escrito sem diagnóstico e sem julgamento. Ela não lê "eu sou assim" —
-> lê "alguém me viu". Reconhecimento é o que abre conversa; argumento vem depois.
+> mapa ou um caminho de entrada da narrativa, escrito sem diagnóstico e sem
+> julgamento. Ela não lê "eu sou assim" — lê "alguém me viu". Reconhecimento
+> abre conversa; argumento vem depois.
 
----
+> **Nota de segmentação (não afeta a copy):** a narrativa define o universo em
+> 35–60 anos; o mapa concentra em 38–52, núcleo 42–48. A frase da página fica
+> como você pediu — é copy de identificação, não recorte demográfico.
+> No Meta, segmentar **38–55**.
 
 # DOBRA 09 · PARA QUEM NÃO É
 
@@ -431,8 +571,15 @@ Linha de apoio: `à vista ou parcelado`
 
 **Inclui — tudo do Comum, mais:**
 - ⭐ **Diagnóstico dos 5 Corpos** — 50 minutos ao vivo, só seu, com a Aline,
-  por Google Meet, depois da imersão
+  por Google Meet, depois da imersão. Os três — o que você pensa, o que você
+  sente e o que você faz — lidos juntos, no seu caso, com nome e sobrenome.
 - ⭐ **Passe de 1 ano** — reveja a imersão inteira quando quiser, por 12 meses
+
+> Nota: se o Caminho B for escolhido (doc 02, §3), o nome do bônus permanece
+> "Diagnóstico dos 5 Corpos". No Caminho A, avaliar **"Diagnóstico Pensar,
+> Sentir e Agir"** — menos jargão, mesma promessa. Minha preferência segue
+> sendo *Diagnóstico dos 5 Corpos*: "diagnóstico" é a palavra que ela respeita,
+> e "5 corpos" aqui já vem depois do mecanismo ter convencido.
 
 **Bloco de fechamento do card:**
 
@@ -599,12 +746,16 @@ Texto integral, conforme aprovado:
 **★ Sugestão de 6ª pergunta** — a mais importante que está faltando, e a única
 que decide a compra desta persona:
 
-**6. "Eu uso medicação para emagrecer. Essa imersão é para mim?"**
+**6. "Eu uso caneta / fiz bariátrica. Essa imersão é para mim?"**
 > É — e talvez mais do que para qualquer outra pessoa.
-> A medicação está fazendo uma parte do trabalho: ela silenciou a fome e te deu
-> algo que você nunca teve antes, que é espaço na cabeça.
-> Esse silêncio é a melhor condição que já existiu na sua vida para construir
-> o que a medicação não constrói.
+> O recurso que você usou está fazendo o trabalho dele, e fazendo bem.
+> A caneta silenciou a fome e te deu algo que você nunca teve antes: espaço na
+> cabeça. A cirurgia mudou o volume. Os dois mexeram na superfície, que é
+> exatamente onde eles atuam.
+> Só que existe um segundo trabalho — o que dispara a sensação e o padrão que
+> vira comportamento — e esse nunca foi trabalho deles.
+> Esse espaço na cabeça que você tem agora é a melhor condição que já existiu
+> na sua vida para fazer esse segundo trabalho.
 > Aqui ninguém vai te pedir para parar nada, e nada do que a gente faz disputa
 > com o seu médico. A gente cuida da parte que ficou sem dono.
 
@@ -644,46 +795,60 @@ Link: `https://wa.me/55DDDNUMERO?text=Oi!%20Quero%20tirar%20uma%20d%C3%BAvida%20
 
 # TROCA DE PROMESSA — variantes de headline por anúncio
 
-Servidas na borda via `?p=`. Só o H1 e a subheadline mudam; o resto da página é idêntico.
+Servidas na borda via `?p=`. Só o H1 e a subheadline mudam; o resto é idêntico.
 
 ### `p=` *(vazio — padrão)*
-> **Emagrecer você já sabe. Sustentar é o que ninguém te ensinou.**
-> Em 3 dias, você aprende a ativar a inteligência dos 5 corpos — e entende por que
-> a balança desce e volta quando só uma parte de você está sendo cuidada.
+> **O que fez a balança descer não é o que faz ela ficar.**
+> Em 3 dias, você vai entender por que o corpo volta ao ponto de partida mesmo
+> quando o método funcionou — e o que precisa acontecer para a mudança passar a ser sua.
+
+### `p=divisao` — ★ o ângulo nº 1 do mapa
+> **A caneta está mudando o seu corpo. Quem está trabalhando para o seu cérebro acompanhar?**
+> Ela faz o trabalho dela, e faz bem. Existe um segundo trabalho — e ele está sem dono.
+
+### `p=93`
+> **Você está tentando resolver com 7% o que é decidido em 93%.**
+> Não é falta de disciplina. É proporção. 3 dias para trabalhar onde a decisão
+> realmente acontece.
+
+### `p=bariatrica`
+> **A cirurgia diminuiu o seu estômago. Ela não mexeu no padrão.**
+> 3 dias para entender por que o corpo volta ao ponto de partida mesmo depois
+> de uma intervenção que funcionou.
 
 ### `p=sanfona`
 > **A balança desce. E seis meses depois, volta.**
-> Não é falta de disciplina. É que o processo foi feito com metade das peças.
-> 3 dias para entender a outra metade.
-
-### `p=40mais`
-> **Depois dos 40, o seu corpo mudou as regras. E ninguém te avisou.**
-> 3 dias para aprender a ativar a inteligência dos 5 corpos — e parar de aplicar
-> em 2026 um método que já não servia em 2015.
+> Não é falta de disciplina. É que o trabalho foi feito em uma ponta só.
+> 3 dias para trabalhar as três.
 
 ### `p=balanca`
 > **Você sobe na balança pra confirmar que ainda tá lá.**
 > Todo dia. Descalça. Antes de beber água.
-> 3 dias para trocar a vigilância por outra coisa: saber o que fazer quando o
-> número sobe.
+> 3 dias para trocar a vigilância por outra coisa: saber o que fazer quando o número sobe.
 
 ### `p=roupa`
 > **Você tem três tamanhos no armário e não consegue doar nenhum.**
 > O que você faz com a roupa que não serve mais diz mais sobre o seu processo
 > do que a balança. 3 dias para entender por quê.
 
-### `p=edepois`  ← **a variante que vende o VIP**
+### `p=40mais`
+> **Depois dos 40, o seu corpo mudou as regras. E ninguém te avisou.**
+> 3 dias para parar de aplicar hoje um método que já não servia há dez anos.
+
+### `p=edepois` — ★ a variante que vende o VIP
 > **"E quando eu parar?"**
 > Você já levou essa pergunta para o consultório e voltou com ela inteira.
 > A resposta não está na dose. Está no que você construiu por baixo do resultado.
 > 3 dias — e, no VIP, 50 minutos só seus para olhar isso de perto.
 
-> **Regra inegociável nas variantes:** nenhuma pode virar medo. "Aproveite antes
-> que volte tudo" converte no scroll e destrói a tese — reforça exatamente a
-> crença de que a solução está fora dela. `p=edepois` chega perto da borda:
-> ela abre a pergunta **dela**, sem nunca afirmar que algo vai dar errado.
-
 ---
+
+> **Regra inegociável nas variantes:** nenhuma pode virar medo. *"Aproveite antes
+> que volte tudo"* converte no scroll e destrói a tese — reforça exatamente a
+> crença de que a solução está fora dela.
+> `p=bariatrica` e `p=sanfona` chegam perto da borda: as duas descrevem
+> **mecanismo no passado** ("o trabalho foi feito em uma ponta só"), nunca
+> **profecia sobre o futuro dela**. Manter nesse tempo verbal.
 
 # MICROCOPY E METADADOS
 
@@ -721,3 +886,9 @@ Aparece após o usuário passar da dobra 03. Altura ≤ 64px, sem empurrar layou
 | Desejo respondido com capacidade | ✅ "Entender o jogo", "saber voltar", "saber o que fazer quando sobe" |
 | Devolvido na mesma moeda | ✅ Vigilância → previsibilidade (dobras 04, 13) |
 | Fala com a Protagonista, não com a Vítima | ✅ Toda a página pergunta "o que eu faço com isso", nunca consola |
+| **Narrativa:** a ferramenta nunca falhou | ✅ Dobras 01, 04, 07 e FAQ 6 usam divisão do trabalho, nunca acusação |
+| **Narrativa:** bariátrica incluída | ✅ Dobras 01, 07, 08 e FAQ 6 |
+| **Narrativa:** mecanismo explicado (superfície × padrão) | ✅ Dobra 07, blocos 1 e 2 |
+| **Narrativa:** 93/7 como alívio, não sentença | ✅ Dobra 07, bloco 3 |
+| **Narrativa:** tríade pensar-sentir-agir | ✅ Dobra 07, bloco 4 · Dobra 04, bullet 2 |
+| **Narrativa:** Ponto B como capacidade, não desfecho | ✅ "a mudança passar a ser sua" — nunca "você conseguiu" |
