@@ -16,3 +16,6 @@ src/img-originais/
 # npm run render | npm run medir
 docs/capturas/
 docs/medicao/
+
+# previa autocontida para revisao: 500 KB, regeneravel com npm run previa
+segredos-da-mente-magra-previa.html

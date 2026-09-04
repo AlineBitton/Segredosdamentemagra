@@ -57,7 +57,7 @@ export const VIP = {
  *   55 (Brasil) + DDD (2) + numero do assinante (9, comecando por 9) = 13
  */
 export const SUPORTE = {
-  whatsapp: '556198312127',
+  whatsapp: '5561998449585',
 };
 
 /** true se o numero tem cara de celular brasileiro valido. */
