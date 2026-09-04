@@ -1,222 +1,183 @@
-# Documento 03 — Sistema de design
+# Sistema visual
 
-> Todo valor deste documento foi **verificado por cálculo**, não estimado.
-> As razões de contraste estão medidas pela fórmula WCAG 2.1 e reproduzidas
-> em `scripts/contraste.mjs`.
-
----
-
-## 0. ⚠️ Correção do documento 00
-
-No bloco 1 eu propus `--cta: #17A44B` e afirmei **4,6:1 — passa AA**.
-**Está errado.** O valor real é **3,26:1** — passa apenas em texto grande,
-e reprovaria a auditoria de acessibilidade do Lighthouse em qualquer rótulo
-de botão abaixo de 18,66px em negrito.
-
-O verde oficial passa a ser **`#0F863B` — 4,67:1 com branco**, que passa AA
-para texto normal. Doc 00 corrigido.
+Este documento descreve o que está implementado em `src/styles/`. Ele segue o
+guia de identidade da Afinando Corpo e Mente, e a regra que manda em tudo é a
+de proporção — não a de gosto.
 
 ---
 
-## 1. Paleta
+## 1. Proporção dos campos
 
-### Ação — verde, e só verde
+> Papel cru domina. Linho aparece em alternância. Cacau ancora começo e fim.
+> Barro e ameixa somados nunca ultrapassam um quarto da peça.
 
-```css
---cta:        #0F863B;  /* preenchimento do botão   · 4,67:1 c/ branco ✅ AA */
---cta-hover:  #0C6E30;  /* hover / active           · 6,39:1 c/ branco ✅ AA */
---cta-ring:   #22C55E;  /* anel de foco — nunca texto · 8,45:1 vs escuro ✅ */
---cta-text:   #FFFFFF;
---cta-shadow: 0 6px 20px rgba(15,134,59,.32);
+Como isso vira código: cada seção recebe uma classe de campo, e a classe define
+o jogo inteiro de cor daquele trecho (`--bg`, `--txt`, `--realce`, `--rotulo`,
+`--forte`, `--anel`).
+
+| classe        | campo      | onde                                        |
+|---------------|------------|---------------------------------------------|
+| `.sup-clara`  | papel cru  | campo padrão da página                      |
+| `.sup-linho`  | linho      | alternância, para dar respiro                |
+| `.sup-escura` | cacau      | só a abertura e o fechamento                 |
+
+Distribuição atual das 18 dobras:
+
+```
+abertura ........ cacau      ← âncora
+faixa médica .... linho
+estado atual .... papel
+objeções ........ papel
+3 dias .......... papel
+emocional ....... linho
+mecanismo ....... papel
+para quem é ..... papel
+para quem não é.. linho
+provas .......... papel
+Aline ........... linho
+dois caminhos ... linho
+oferta .......... papel
+por que barato .. linho
+garantia ........ papel
+dúvidas ......... papel
+suporte ......... cacau      ← âncora
+rodapé .......... cacau      ← âncora
 ```
 
-**Regra de isolamento (efeito Von Restorff).** O verde captura atenção
-pré-atentiva **apenas** se for a única coisa verde da página. Portanto:
-nenhum ícone, borda, badge, selo, check, divisor ou destaque em verde.
-Verde = ação. Ponto.
+**9 campos de papel, 5 de linho, 3 de cacau** (dois deles contíguos, no fecho).
 
-Única exceção tolerada: o verde nativo do WhatsApp (`#25D366`) no rodapé —
-lido pelo cérebro como *logotipo*, não como botão. Ver dobra 17.
+Cacau aparece mais duas vezes, e só como *cartão* dentro de campo claro:
 
-### Superfícies
+- `.caminho--imersao` — o caminho que se propõe pesa mais que o outro;
+- `.plano--vip` — peso visual como valor percebido, sem escurecer a dobra.
 
-```css
-/* escuro — hero, dobras de mecanismo e de oferta */
---ink-900: #0C0F0E;   /* fundo base                                  */
---ink-800: #131817;   /* cards sobre escuro                          */
---ink-700: #1C2321;   /* elevação 2                                  */
---line-dk: #2C3532;
-
-/* claro — dobras de leitura longa (o que aprende, provas, FAQ)      */
---paper:   #FAF8F5;   /* off-white quente — nunca #FFF puro          */
---paper-2: #F1EDE7;
---line-lt: #E2DCD3;
-```
-
-**Por que alternar claro e escuro:** o escuro entrega peso e clima de evento;
-o claro entrega legibilidade em texto longo — e a página tem MUITO texto longo.
-Alternar também cria ritmo e marca a fronteira entre as dobras sem precisar de
-divisores decorativos (menos DOM, menos CSS, mais performance).
-
-### Texto
-
-```css
---on-dark-hi:   #F6F4F1;  /* 17,54:1 ✅ */
---on-dark-mid:  #B9C0BB;  /* 10,38:1 ✅ */
---on-light-hi:  #14100C;  /* 17,86:1 ✅ */
---on-light-mid: #4A4741;  /*  8,73:1 ✅ */
-```
-
-### Destaque — dourado (nunca verde)
-
-```css
---accent:      #C9A227;  /* badge RECOMENDADO · 7,96:1 sobre escuro ✅ */
---accent-ink:  #14100C;  /* texto sobre o badge · 7,83:1 ✅            */
---accent-soft: #F0E4BC;
-```
-
-### Urgência — terracota (nunca vermelho)
-
-```css
---warm: #A94D29;  /* contador e "o valor sobe em…" · 5,24:1 sobre claro ✅ */
-```
-
-Vermelho puro em página de venda para essa persona lê como *pressão*, e o mapa
-diz que ela detecta e pune inflação. Terracota carrega urgência sem agressão.
+Nenhuma cor nova entra. A única exceção é o verde do botão, pedida em
+consultoria e restrita ao botão — nunca a um campo, um traço ou um texto.
 
 ---
 
-## 2. Tipografia
+## 2. Cores
 
-### Escolha
-
-| Papel | Fonte | Peso | Arquivo |
-|---|---|---|---|
-| Display (H1, H2, números grandes) | **Fraunces** variável | 400–700, `opsz` | latin subset, woff2 |
-| Texto (tudo o mais) | **Inter** variável | 400–700 | latin subset, woff2 |
-
-Ambas **self-hosted** via `@fontsource-variable/*` (npm), copiadas no build.
-Zero requisição ao Google Fonts — elimina 1 DNS + 1 TLS + 1 hop e remove a
-dependência de terceiro no caminho crítico.
-
-**Por que serifa no display:** a categoria inteira usa sans bold gritado.
-Uma serifa editorial diferencia à primeira vista e sobe credibilidade percebida
-— que é a variável que decide a compra de uma gestora de 44 anos com detector
-calibrado por 20 anos de tentativas. Fraunces tem eixo óptico, então fica
-robusta em corpo grande e não vira enfeite.
-
-**Por que Inter no corpo:** x-height alta, formas abertas, excelente em 16–17px.
-Fluência de processamento — texto fácil de ler é julgado como mais verdadeiro.
-
-### Carregamento
-
-- Só a **Fraunces** recebe `<link rel="preload">` — ela desenha o H1, que é o
-  elemento de LCP.
-- Inter entra com `font-display: swap` e fallback métrico (`size-adjust`) para
-  **CLS zero** durante a troca.
-- **Subset próprio.** `npm run fontes` roda `pyftsubset` sobre os arquivos do
-  `@fontsource-variable` e corta os glifos que a página nunca vai usar,
-  preservando o eixo de peso. O conjunto cobre o **português inteiro** — não só
-  o texto atual — para que depoimentos e ajustes futuros nunca caiam em glifo
-  faltando.
-
-  | | original | subsetado | |
-  |---|---|---|---|
-  | Fraunces | 35,8 KB | **28,1 KB** | −22% |
-  | Inter | 47,1 KB | **29,3 KB** | −38% |
-  | **total** | 82,9 KB | **57,4 KB** | **dentro do orçamento de 75 KB** ✅ |
-
-  Os `.woff2` gerados ficam versionados em `public/fonts/`, então o build do dia
-  a dia não depende de Python nem de rede.
-
-### Escala fluida
-
-```css
---fs-display: clamp(2.5rem,  1.7rem  + 3.6vw, 4.75rem);
---fs-h1:      clamp(2.125rem,1.55rem + 2.6vw, 3.5rem);
---fs-h2:      clamp(1.625rem,1.35rem + 1.4vw, 2.5rem);
---fs-h3:      clamp(1.1875rem,1.1rem + 0.5vw, 1.4375rem);
---fs-lead:    clamp(1.0625rem,1rem   + 0.4vw, 1.3125rem);
---fs-body:    clamp(1rem,    0.975rem+ 0.15vw,1.0625rem);
---fs-sm:      0.9375rem;
---fs-xs:      0.8125rem;
+```
+--papel   #F2EDE5   respiro · campo dominante
+--linho   #E7DED0   respiro · alternância
+--cacau   #3A322C   âncora  · abertura e fechamento
+--ameixa  #5E3A46   título de força e leitura sobre papel
+--barro   #9E5C42   traço, fio, marca — nunca parágrafo
 ```
 
-### Medida de linha
+Regras de leitura, direto do guia:
 
-```css
---measure:      62ch;  /* dentro da faixa 45–75 de fluência de leitura */
---measure-tight:46ch;  /* blocos de impacto e citações                */
+- **Texto de leitura só em cacau ou ameixa sobre papel cru. Nunca em barro.**
+  Por isso `--rotulo` (a cor da etiqueta) é ameixa no claro, e não barro.
+  Barro sobre papel dá 4,43:1 e reprova como texto — passa só como fio.
+- Sobre cacau, barro precisa clarear: `--barro-claro #C09683` é a mesma cor
+  40% em direção ao papel, e dá 4,74:1.
+- **Sem degradê, em nenhuma circunstância.** Não existe `gradient` no CSS.
+
+`npm run contraste` lê os tokens do próprio `tokens.css` e calcula os 25 pares
+do sistema. Trocar uma cor quebra o teste em vez de passar despercebido.
+
+---
+
+## 3. Tipografia
+
+| papel      | família   | uso                                  |
+|------------|-----------|--------------------------------------|
+| título     | Fraunces  | `.titulo`, `h2`, nomes de cartão      |
+| subtítulo  | Jost      | `h3`, `.etiqueta`, botão, contador    |
+| corpo      | Inter     | todo texto de leitura                 |
+
+- **Nada de caixa alta em bloco.** Não existe `text-transform: uppercase` no
+  projeto. A distinção da etiqueta vem de tamanho, entressilábico (`.17em`) e
+  cor de rótulo.
+- **Nada de bold.** O teto de peso é 500 (`--p-medio`), e ele existe só onde a
+  função exige: botão, etiqueta, numeral. Todo o resto é 400 (`--p-regular`).
+  Não existe peso abaixo de 400.
+- **Entrelinha generosa:** `--lh-corpo: 1.6` no texto corrido, `--lh-titulo` e
+  `--lh-h2` em `1.3`.
+- **Medida:** `--medida: 45ch`. `p { max-width: var(--medida) }` vale para a
+  página inteira; listas e itens repetem a regra.
+- **Alinhamento à esquerda.** Centralizado só na capa (a barra fixa e o campo
+  de retrato) e no fechamento (`.suporte`).
+
+As três fontes são variáveis, subsetadas para o português inteiro
+(`npm run fontes`), servidas do próprio domínio, e somam 77,7 KB.
+
+Fraunces carrega com `font-display: optional` — se não chegar a tempo, a
+página usa a serifa do sistema e nada desloca. Jost e Inter carregam com
+`swap` e têm par métrico (`'Jost fallback'`, `'Inter fallback'`, derivados da
+Arial por `size-adjust`), então a troca não muda largura nem altura de linha.
+Sem esse par a CLS de desktop ia a 0,0418.
+
+---
+
+## 4. Armações de layout
+
+Duas, e só duas. Ambas mantêm a linha em 45 caracteres — a largura da tela é
+ocupada por estrutura, nunca por linha esticada.
+
+**`.trilho`** — título num corredor à esquerda (27rem), texto à direita.
+Usada em: objeções, mecanismo, para quem é, para quem não é, por que custa
+barato, garantia, dúvidas.
+
+```
+┌──────────────┬──────────────────────────────┐
+│ título       │ texto de leitura (45ch)      │
+└──────────────┴──────────────────────────────┘
 ```
 
----
+**`.dobra`** — texto de leitura à esquerda, coluna de margem à direita.
+Usada na dobra de estado atual: o argumento de um lado, a pergunta que ela
+carrega e as cinco cenas de reconhecimento do outro.
 
-## 3. Espaçamento, forma e movimento
-
-```css
---s-1:.25rem; --s-2:.5rem;  --s-3:.75rem; --s-4:1rem;   --s-5:1.5rem;
---s-6:2rem;   --s-7:2.5rem; --s-8:3.5rem; --s-9:5rem;   --s-10:7rem;
-
---section-y: clamp(3.5rem, 2rem + 6vw, 7rem);
---wrap:       min(100% - 2.5rem, 68rem);
---wrap-narrow:min(100% - 2.5rem, 44rem);
-
---r-sm:8px; --r-md:14px; --r-lg:22px; --r-pill:999px;
---ease: cubic-bezier(.22,.61,.36,1);
+```
+┌────────────────────────┬────────────────────┐
+│ h2 + parágrafos        │ “E quando eu       │
+│ destaque               │  parar?”           │
+│ CTA                    │  ── cinco cenas    │
+└────────────────────────┴────────────────────┘
 ```
 
-### Movimento
+Fora delas: `.cards` é uma pauta de fios no mesmo trilho de 27rem (grade de
+cartões deixaria a sexta célula vazia), e `.proporcao__grade` põe os dois
+números do 93/7 ao lado da leitura deles.
 
-- Só `opacity` e `transform`. Nada que dispare layout ou paint.
-- Entrada por `IntersectionObserver`, 320–420ms, uma vez por elemento.
-- `@media (prefers-reduced-motion: reduce)` desliga tudo — acessibilidade **e**
-  performance.
-- **Zero animação em loop.** Nada pulsando, nada piscando. Para esta persona,
-  urgência artificial lê como armadilha.
+Dois campos de papel em seguida ganham um fio de linho na divisa
+(`.sup-clara + .sup-clara`), senão a dobra some.
 
 ---
 
-## 4. Grid e responsividade
+## 5. Espaço e forma
 
-Mobile-first, **duas quebras apenas** — cada media query custa CSS.
+```
+--secao-y  clamp(4rem, 2.5rem + 5vw, 7.5rem)
+--wrap         min(100% - 2.5rem, 74rem)
+--wrap-narrow  min(100% - 2.5rem, 44rem)
+--r-pill   999px   (só o botão)
+--r-sm/md  2px/3px (nada mais tem canto arredondado)
+```
 
-| Faixa | Comportamento |
-|---|---|
-| < 720px | Coluna única. Cards empilhados. Barra fixa de compra ativa. |
-| ≥ 720px | Grades de 2 colunas (2 caminhos, oferta, tríade em 3). |
-| ≥ 1024px | `--wrap` cheio, tipografia no topo da escala. |
-
-**CLS zero por construção:** toda imagem com `width`/`height`, todo acordeão com
-altura reservada, o contador com `font-variant-numeric: tabular-nums` e largura
-mínima fixa (senão os dígitos empurram o layout a cada segundo).
+Sem sombra em lugar nenhum. A separação é por campo de cor e por fio de 1px.
 
 ---
 
-## 5. Acessibilidade — meta 100
+## 6. Movimento
 
-- Todo par de cores verificado por cálculo (tabela acima).
-- Anel de foco visível em **todos** os interativos: `outline: 3px solid var(--cta-ring); outline-offset: 3px`.
-- Alvos de toque ≥ 44×44px.
-- Hierarquia de headings sem saltos; um `<h1>` só.
-- Acordeão do FAQ em `<details>/<summary>` nativo — semântica e teclado de graça,
-  zero JavaScript.
-- `lang="pt-BR"`, `alt` descritivo em toda imagem de conteúdo, `alt=""` nas decorativas.
-- O contador anuncia mudanças em `aria-live="off"` (evita spam em leitor de tela)
-  e tem um resumo textual acessível.
+Um só: `.reveal` sobe 14px e aparece, uma vez, quando entra na tela. Nada de
+hover animado em cartão, nada de paralaxe. `prefers-reduced-motion` desliga
+tudo — inclusive a transição da barra fixa e o `+` do FAQ.
 
 ---
 
-## 6. Orçamento de performance
+## 7. Orçamento
 
-| Recurso | Teto |
-|---|---|
-| HTML (comprimido) | 22 KB |
-| CSS crítico inline | 14 KB |
-| CSS diferido | 8 KB |
-| JavaScript total | 5 KB |
-| Fontes | 75 KB |
-| Imagem do hero (mobile) | 55 KB |
-| **Primeira dobra, total** | **≤ 120 KB** |
-| Requisições até o LCP | ≤ 3 |
+| item                  | teto    | atual   |
+|-----------------------|---------|---------|
+| CSS minificado        | 25 KB   | 21,6 KB |
+| JS minificado         | 5 KB    | 2,8 KB  |
+| index.html brotli     | 14 KB   | 13,5 KB |
+| fontes woff2          | 80 KB   | 77,7 KB |
+| **transferência 1ª dobra** | **120 KB** | **91,3 KB** |
 
-Metas: **LCP < 1,5s · CLS 0 · INP < 100ms · Lighthouse mobile 100/100/100/100.**
+`npm run build` falha se qualquer linha estourar.

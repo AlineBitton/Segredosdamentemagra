@@ -39,7 +39,7 @@ const CSS = ['tokens.css', 'base.css', 'dobras.css'];
  * do HTML só interessa como sinal de que a marcação está inchando.
  */
 const ORCAMENTO = {
-  cssCru: 22 * 1024,
+  cssCru: 25 * 1024,     // subiu de 22 com as grades editoriais do redesign
   jsCru: 5 * 1024,
   htmlCru: 64 * 1024,
   htmlBr: 14 * 1024,      // o que a Cloudflare entrega de fato

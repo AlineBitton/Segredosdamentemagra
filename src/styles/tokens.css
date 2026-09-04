@@ -1,21 +1,32 @@
 /* ============================================================
    Imersão Segredos da Mente Magra — sistema visual
-   Paleta da marca Afinando Corpo e Mente. O verde é a única cor
-   fora dela, e existe só no botão.
+   ------------------------------------------------------------
+   Cinco cores, duas delas de respiro. A proporção é regra, não
+   preferência:
+
+     papel cru  domina a página inteira
+     linho      entra em alternância, para dar respiração
+     cacau      ancora só a abertura e o fechamento
+     barro      traço, etiqueta, numeral — nunca parágrafo
+     ameixa     título de força e texto de leitura sobre papel
+
+   Barro e ameixa somados não passam de um quarto da peça.
+   Nenhuma cor nova entra — o verde do botão é a única exceção,
+   pedida em consultoria, e existe apenas dentro do botão.
    ============================================================ */
 
 :root {
   /* ---- campos ------------------------------------------- */
-  --cacau:  #3A322C;   /* campo escuro: abertura e oferta            */
-  --cacau-2:#2E2823;   /* profundidade dentro do escuro              */
-  --papel:  #F2EDE5;   /* campo dominante                            */
-  --linho:  #E7DED0;   /* alternância                                */
+  --papel:  #F2EDE5;   /* respiro · campo dominante                  */
+  --linho:  #E7DED0;   /* respiro · alternância                      */
+  --cacau:  #3A322C;   /* âncora  · abertura e fechamento            */
+  --cacau-2:#2E2823;   /* profundidade dentro da âncora              */
 
   /* ---- ênfase ------------------------------------------- */
-  --ameixa: #5E3A46;   /* título de força · 8,31:1 sobre papel       */
-  --barro:  #9E5C42;   /* traço e etiqueta · nunca parágrafo         */
-  /* barro sobre cacau dá 2,43:1 e reprova. Esta é a mesma cor clareada
-     40% em direção ao papel — 4,74:1, o primeiro tom que passa AA. */
+  --ameixa: #5E3A46;   /* 8,31:1 sobre papel · lê como texto         */
+  --barro:  #9E5C42;   /* 4,52:1 sobre papel · traço e etiqueta      */
+  /* barro sobre cacau dá 2,43:1 e reprova. Esta é a mesma cor
+     clareada 40% em direção ao papel — 4,74:1 sobre cacau. */
   --barro-claro: #C09683;
 
   /* ---- ação --------------------------------------------- */
@@ -26,62 +37,90 @@
   /* ---- texto -------------------------------------------- */
   --sobre-escuro:   #F2EDE5;
   --sobre-escuro-2: #C9BFB2;
-  --sobre-claro:    #2A241F;
-  --sobre-claro-2:  #554C44;
+  --sobre-claro:    #3A322C;   /* cacau: texto de leitura sobre papel */
+  --sobre-claro-2:  #5E3A46;   /* ameixa: a única alternativa de leitura */
 
-  /* ---- tipografia --------------------------------------- */
-  --display: 'Bodoni Moda', Didot, 'Bodoni MT', Georgia, serif;
-  --texto:   'Inter', 'Inter fallback', -apple-system, BlinkMacSystemFont,
-             'Segoe UI', Roboto, Arial, sans-serif;
-  /* duas famílias, não três: a Jost saiu para o conjunto de fontes caber
-     no orçamento, e as etiquetas ficam na Inter com espaçamento aberto. */
-  --etiqueta: var(--texto);
+  /* ---- tipografia ---------------------------------------
+     Fraunces no título, Jost no subtítulo e na etiqueta, Inter no
+     corpo. Nada de caixa alta em bloco, nada de bold: a hierarquia
+     se faz por tamanho e por espaço.
+     ------------------------------------------------------- */
+  --display:  'Fraunces', 'Iowan Old Style', 'Palatino Linotype',
+              Palatino, Georgia, serif;
+  --etiqueta: 'Jost', 'Jost fallback', 'Avenir Next', 'Century Gothic',
+              'Segoe UI', sans-serif;
+  --texto:    'Inter', 'Inter fallback', -apple-system, BlinkMacSystemFont,
+              'Segoe UI', Roboto, Arial, sans-serif;
 
-  /* Didone tem contraste de traço muito alto: abaixo de ~28px ele
-     some. Por isso o display só existe em tamanho grande, e a escala
-     começa alto. */
-  --fs-titulo:  clamp(3.25rem, 2rem + 7.4vw, 8.5rem);
-  --fs-h2:      clamp(2.125rem, 1.5rem + 2.9vw, 3.75rem);
-  --fs-h3:      clamp(1.25rem, 1.12rem + .62vw, 1.5rem);
-  --fs-lead:    clamp(1.125rem, 1.04rem + .42vw, 1.375rem);
+  --fs-titulo:  clamp(2.875rem, 1.9rem + 4.6vw, 6rem);
+  --fs-h2:      clamp(1.875rem, 1.42rem + 2.1vw, 3rem);
+  --fs-h3:      clamp(1.1875rem, 1.11rem + .38vw, 1.4375rem);
+  --fs-lead:    clamp(1.125rem, 1.06rem + .34vw, 1.3125rem);
   --fs-corpo:   clamp(1.0625rem, 1.02rem + .22vw, 1.1875rem);
   --fs-peq:     .9375rem;
   --fs-mini:    .8125rem;
 
-  --lh-titulo: .92;
-  --lh-h2:     1.08;
-  --lh-corpo:  1.62;
+  /* entrelinha generosa: 1,3 nos títulos, 1,6 no texto corrido */
+  --lh-titulo: 1.3;
+  --lh-h2:     1.3;
+  --lh-corpo:  1.6;
 
-  --medida: 60ch;
-  --medida-curta: 44ch;
+  /* no máximo 45 caracteres por linha */
+  --medida: 45ch;
+  --medida-curta: 34ch;
+
+  /* ---- peso ---------------------------------------------
+     Nunca abaixo do regular, nunca no bold. 500 é o teto e existe
+     só onde a função exige distinção (botão, etiqueta, numeral).
+     ------------------------------------------------------- */
+  --p-regular: 400;
+  --p-medio:   500;
 
   /* ---- espaço e forma ----------------------------------- */
   --s-1:.25rem; --s-2:.5rem;  --s-3:.75rem; --s-4:1rem;   --s-5:1.5rem;
   --s-6:2rem;   --s-7:2.5rem; --s-8:3.5rem; --s-9:5rem;   --s-10:7.5rem;
 
-  --secao-y: clamp(4.5rem, 2.5rem + 7vw, 9rem);
-  --wrap:        min(100% - 2.5rem, 76rem);
-  --wrap-narrow: min(100% - 2.5rem, 46rem);
+  --secao-y: clamp(4rem, 2.5rem + 5vw, 7.5rem);
+  --wrap:        min(100% - 2.5rem, 74rem);
+  --wrap-narrow: min(100% - 2.5rem, 44rem);
+
+  /* anel de foco: precisa de 3:1 contra o campo em que aparece, então
+     ele muda de tom junto com o campo. */
+  --anel: var(--verde);
 
   --r-sm: 2px; --r-md: 3px; --r-pill: 999px;
   --ease: cubic-bezier(.22,.61,.36,1);
   --barra-h: 4.25rem;
 
-  color-scheme: dark;
+  --realce: var(--barro);
+  --forte:  var(--ameixa);
+  --rotulo: var(--ameixa);
+
+  color-scheme: light;
 }
 
-.sup-escura {
+/* Campos. A página inteira nasce clara; a escura é exceção. */
+.sup-clara {
+  --bg: var(--papel); --bg-2: var(--linho); --linha: #D9CEBE;
+  --txt: var(--sobre-claro); --txt-2: var(--sobre-claro-2);
+  --realce: var(--barro);   /* só traço e marca */
+  --forte: var(--ameixa);
+  --rotulo: var(--ameixa);
+}
+.sup-linho {
+  --bg: var(--linho); --bg-2: var(--papel); --linha: #CFC3B1;
+  --txt: var(--sobre-claro); --txt-2: var(--sobre-claro-2);
+  --realce: var(--barro);   /* só traço e marca */
+  --forte: var(--ameixa);
+  --rotulo: var(--ameixa);
+}
+/* A abertura, o rodapé e a barra fixa são campos de cacau sem a classe:
+   entram aqui para herdarem o mesmo jogo de realce, rótulo e anel. */
+.sup-escura, .hero, .rodape, .barra {
   --bg: var(--cacau); --bg-2: var(--cacau-2); --linha: #4A423A;
   --txt: var(--sobre-escuro); --txt-2: var(--sobre-escuro-2);
   --realce: var(--barro-claro);
-}
-.sup-clara {
-  --bg: var(--papel); --bg-2: var(--linho); --linha: #DBD1C2;
-  --txt: var(--sobre-claro); --txt-2: var(--sobre-claro-2);
-  --realce: var(--ameixa);
-}
-.sup-linho {
-  --bg: var(--linho); --bg-2: var(--papel); --linha: #D3C8B8;
-  --txt: var(--sobre-claro); --txt-2: var(--sobre-claro-2);
-  --realce: var(--ameixa);
+  --forte: var(--papel);
+  --rotulo: var(--barro-claro);
+  --anel: var(--verde-anel);
 }

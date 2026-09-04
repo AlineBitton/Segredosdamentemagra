@@ -1,10 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Espaço reservado para a fotografia">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1C2321"/>
-      <stop offset="1" stop-color="#0C0F0E"/>
-    </linearGradient>
-  </defs>
-  <rect width="800" height="1000" fill="url(#g)"/>
-  <text x="400" y="500" fill="#4a544f" font-family="Georgia,serif" font-size="30" text-anchor="middle">foto pendente</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Espaço reservado para a fotografia de Aline Bitton">
+  <rect width="800" height="1000" fill="#E7DED0"/>
+  <rect x="28" y="28" width="744" height="944" fill="none" stroke="#9E5C42" stroke-width="2"/>
+  <path d="M64 872 h180" stroke="#9E5C42" stroke-width="2"/>
+  <text x="64" y="924" fill="#5E3A46" font-family="Jost, 'Century Gothic', sans-serif" font-size="30" letter-spacing="5">retrato pendente</text>
 </svg>

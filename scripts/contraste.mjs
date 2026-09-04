@@ -10,21 +10,58 @@ const razao = (a, b) => {
   return (x + 0.05) / (y + 0.05);
 };
 
+// Lê a paleta de tokens.css: nenhum valor fica escrito duas vezes, então
+// trocar uma cor no sistema quebra este teste em vez de passar despercebido.
+import { readFileSync } from 'node:fs';
+const css = readFileSync(new URL('../src/styles/tokens.css', import.meta.url), 'utf8');
+const cor = (nome) => {
+  const m = css.match(new RegExp(`--${nome}\\s*:\\s*(#[0-9A-Fa-f]{6})`));
+  if (!m) throw new Error(`token --${nome} nao encontrado em tokens.css`);
+  return m[1].toUpperCase();
+};
+const PAPEL  = cor('papel'),  LINHO   = cor('linho');
+const CACAU  = cor('cacau'),  CACAU2  = cor('cacau-2');
+const AMEIXA = cor('ameixa'), BARRO   = cor('barro'), BARRO_CLARO = cor('barro-claro');
+const VERDE  = cor('verde'),  VERDE2  = cor('verde-2'), ANEL = cor('verde-anel');
+const CLARO  = cor('sobre-claro'),  CLARO2  = cor('sobre-claro-2');
+const ESCURO = cor('sobre-escuro'), ESCURO2 = cor('sobre-escuro-2');
+
 const pares = [
-  ['#0F863B', '#FFFFFF', 'texto', 'rótulo do CTA'],
-  ['#0C6E30', '#FFFFFF', 'texto', 'rótulo do CTA em hover'],
-  ['#0F863B', '#0C0F0E', 'objeto', 'botão sobre fundo escuro'],
-  ['#0F863B', '#FAF8F5', 'objeto', 'botão sobre fundo claro'],
-  ['#22C55E', '#0C0F0E', 'objeto', 'anel de foco'],
-  ['#F6F4F1', '#0C0F0E', 'texto', 'texto principal sobre escuro'],
-  ['#B9C0BB', '#0C0F0E', 'texto', 'texto secundário sobre escuro'],
-  ['#14100C', '#FAF8F5', 'texto', 'texto principal sobre claro'],
-  ['#4A4741', '#FAF8F5', 'texto', 'texto secundário sobre claro'],
-  ['#C9A227', '#0C0F0E', 'texto', 'dourado sobre escuro'],
-  ['#14100C', '#C9A227', 'texto', 'texto sobre o badge dourado'],
-  ['#A94D29', '#FAF8F5', 'texto', 'terracota do contador'],
-  ['#17853F', '#FFFFFF', 'texto', 'rótulo do botão de WhatsApp'],
-  ['#126B32', '#FFFFFF', 'texto', 'WhatsApp em hover'],
+  // ── ação: o verde só existe dentro do botão ──
+  [VERDE,  '#FFFFFF', 'texto',  'rótulo do CTA'],
+  [VERDE2, '#FFFFFF', 'texto',  'rótulo do CTA em hover'],
+  [ANEL,   CACAU,     'objeto', 'fio do botão sobre campo de cacau'],
+  [VERDE,  PAPEL,     'objeto', 'botão sobre campo de papel cru'],
+  [VERDE,  LINHO,     'objeto', 'botão sobre campo de linho'],
+  [ANEL,   CACAU,     'objeto', 'anel de foco sobre cacau'],
+  [VERDE,  PAPEL,     'objeto', 'anel de foco sobre papel cru'],
+  [VERDE,  LINHO,     'objeto', 'anel de foco sobre linho'],
+
+  // ── leitura sobre os dois campos de respiro ──
+  [CLARO,   PAPEL, 'texto', 'texto de leitura (cacau) sobre papel cru'],
+  [CLARO,   LINHO, 'texto', 'texto de leitura (cacau) sobre linho'],
+  [CLARO2,  PAPEL, 'texto', 'texto secundário (ameixa) sobre papel cru'],
+  [CLARO2,  LINHO, 'texto', 'texto secundário (ameixa) sobre linho'],
+  [AMEIXA,  PAPEL, 'texto', 'título de força em ameixa sobre papel cru'],
+  [AMEIXA,  LINHO, 'texto', 'título de força em ameixa sobre linho'],
+
+  // ── leitura sobre a âncora escura ──
+  [ESCURO,  CACAU,  'texto', 'texto principal sobre cacau'],
+  [ESCURO2, CACAU,  'texto', 'texto secundário sobre cacau'],
+  [ESCURO,  CACAU2, 'texto', 'texto principal sobre cacau profundo'],
+  [ESCURO2, CACAU2, 'texto', 'texto secundário sobre cacau profundo'],
+  [BARRO_CLARO, CACAU,  'texto', 'etiqueta em barro clareado sobre cacau'],
+  [BARRO_CLARO, CACAU2, 'texto', 'etiqueta em barro clareado sobre cacau profundo'],
+
+  // ── barro: traço e etiqueta, nunca parágrafo ──
+  [BARRO, PAPEL, 'objeto', 'fio de barro sobre papel cru'],
+  [BARRO, LINHO, 'objeto', 'fio de barro sobre linho'],
+
+  [AMEIXA, PAPEL, 'texto', 'etiqueta em ameixa sobre papel cru'],
+  [AMEIXA, LINHO, 'texto', 'etiqueta em ameixa sobre linho'],
+
+  // ── selo do VIP ──
+  [PAPEL, AMEIXA, 'texto', 'texto do selo sobre ameixa'],
 ];
 
 let falhas = 0;
