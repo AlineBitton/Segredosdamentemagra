@@ -34,8 +34,9 @@ tipografia = (
 TEXTO = ascii_basico + portugues + tipografia
 
 FONTES = [
-    ('fraunces', 'node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2', 'fraunces-var.woff2'),
-    ('inter',    'node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2',       'inter-var.woff2'),
+    ('bodoni',     'node_modules/@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-wght-normal.woff2', 'bodoni-var.woff2'),
+    ('bodoni-ital','node_modules/@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-wght-italic.woff2', 'bodoni-ital-var.woff2'),
+    ('inter',  'node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2',             'inter-var.woff2'),
 ]
 
 def kb(p): return f'{p.stat().st_size / 1024:.1f} KB'

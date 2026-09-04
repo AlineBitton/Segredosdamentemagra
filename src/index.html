@@ -25,60 +25,53 @@
 
 <main>
 
-  <!-- ══ 01 · HERO ══════════════════════════════════════════════
-       Sem .reveal em nada aqui: o LCP não pode depender de JS.  -->
-  <section class="sec hero sup-escura">
-    <div class="wrap hero__grade">
-      <div>
-        <p class="eyebrow">Imersão online e ao vivo · 25, 26 e 27 de setembro</p>
+  <!-- ══ 01 · ABERTURA ═══════════════════════════════════════
+       O logotipo do evento é o título desta página. Não existe
+       marca separada competindo com ele.                        -->
+  <section class="hero">
+    <div class="hero__grade">
 
-        <h1 data-slot="promessa-h1">{{promessa-h1}}</h1>
+      <div class="hero__texto">
+        <p class="etiqueta hero__data">Ao vivo · 25, 26 e 27 de setembro</p>
 
-        <p class="lead" data-slot="promessa-sub">{{promessa-sub}}</p>
+        <h1 class="logotipo">
+          <span class="logotipo__pre">Segredos da</span>
+          <span class="logotipo__nome">Mente<br>Magra</span>
+        </h1>
 
-        <ul class="selos">
-          <li>3 dias ao vivo com Aline Bitton</li>
-          <li>Para quem já usou caneta, bariátrica ou dieta restritiva</li>
-          <li>Garantia incondicional já no 1º dia</li>
-        </ul>
+        <p class="hero__promessa" data-slot="promessa-sub">{{promessa-sub}}</p>
 
-        <div class="cta">
+        <div class="hero__acao">
           <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
             Garantir minha vaga
           </a>
-          <p class="miudo contador">
+          <p class="hero__lote">
             <span data-slot="lote-nome">{{lote-nome}}</span> ·
             <strong data-slot="preco-comum">{{preco-comum}}</strong> ·
             o valor sobe em
             <time data-deadline="{{deadline}}"><b data-cd>{{contador}}</b></time>
             <span class="so-leitor" data-slot="prazo-extenso">{{prazo-extenso}}</span>
           </p>
-        </div>
 
-        <!-- Aparece só quando as vendas encerram. A regra de exibição está no
-             CSS, a partir do atributo data-encerrado que a borda põe no <html>. -->
-        <div class="encerrado">
-          <p class="encerrado__titulo">As inscrições para esta edição estão encerradas.</p>
-          <p class="mt-4">
-            A imersão aconteceu nos dias 25, 26 e 27 de setembro. Se você quiser
-            saber da próxima antes de todo mundo, fale com a nossa equipe.
-          </p>
-          <div class="cta encerrado__cta">
-            <a class="btn btn--zap" href="{{zap-proxima}}" rel="noopener" target="_blank">
-              Quero saber da próxima turma
-            </a>
+          <div class="encerrado">
+            <p class="encerrado__titulo">As inscrições para esta edição estão encerradas.</p>
+            <p class="mt-4">A imersão aconteceu nos dias 25, 26 e 27 de setembro. Se quiser saber da próxima antes de todo mundo, fale com a nossa equipe.</p>
+            <div class="cta encerrado__cta">
+              <a class="btn btn--zap" href="{{zap-proxima}}" rel="noopener" target="_blank">Quero saber da próxima turma</a>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- TROCAR pela foto da Aline: plano médio, olhar na câmera, corpo
-           voltado para o lado do CTA (gaze cueing), fundo escuro e limpo.
-           Entregar como AVIF + WebP, 2 crops, < 55 KB no mobile. -->
-      <figure class="hero__foto">
-        <img src="/img/placeholder-retrato.svg" width="800" height="1000"
-             alt="Aline Bitton, terapeuta e criadora do método Segredos da Mente Magra"
-             fetchpriority="high" decoding="async">
+      <!-- Retrato de quadro inteiro, sangrando na direita. Sem recorte e
+           sem texto por cima, como o guia da marca manda. -->
+      <figure class="hero__retrato">
+        <div class="pendente">
+          <span class="pendente__t">Retrato de abertura</span>
+          <span class="pendente__d">A foto da Aline sentada à mesa, com a estante ao fundo, ocupa este campo inteiro — sangrando no topo e na direita, recorte a 22% da altura para o olhar dela ficar na linha do título.</span>
+        </div>
       </figure>
+
     </div>
   </section>
 

@@ -1,93 +1,87 @@
 /* ============================================================
-   Segredos da Mente Magra — tokens do sistema de design
-   Todo valor de cor aqui foi verificado por `npm run contraste`.
+   Imersão Segredos da Mente Magra — sistema visual
+   Paleta da marca Afinando Corpo e Mente. O verde é a única cor
+   fora dela, e existe só no botão.
    ============================================================ */
 
 :root {
-  /* ---- ação: verde, e só verde -------------------------- */
-  --cta:        #0F863B;   /* 4,67:1 com branco — passa AA          */
-  --cta-hover:  #0C6E30;   /* 6,39:1                                */
-  --cta-ring:   #22C55E;   /* anel de foco — nunca texto            */
-  --cta-text:   #FFFFFF;
-  --cta-shadow: 0 6px 20px rgb(15 134 59 / .32);
+  /* ---- campos ------------------------------------------- */
+  --cacau:  #3A322C;   /* campo escuro: abertura e oferta            */
+  --cacau-2:#2E2823;   /* profundidade dentro do escuro              */
+  --papel:  #F2EDE5;   /* campo dominante                            */
+  --linho:  #E7DED0;   /* alternância                                */
 
-  /* ---- superfícies -------------------------------------- */
-  --ink-900: #0C0F0E;
-  --ink-800: #131817;
-  --ink-700: #1C2321;
-  --line-dk: #2C3532;
+  /* ---- ênfase ------------------------------------------- */
+  --ameixa: #5E3A46;   /* título de força · 8,31:1 sobre papel       */
+  --barro:  #9E5C42;   /* traço e etiqueta · nunca parágrafo         */
+  /* barro sobre cacau dá 2,43:1 e reprova. Esta é a mesma cor clareada
+     40% em direção ao papel — 4,74:1, o primeiro tom que passa AA. */
+  --barro-claro: #C09683;
 
-  --paper:   #FAF8F5;
-  --paper-2: #F1EDE7;
-  --line-lt: #E2DCD3;
+  /* ---- ação --------------------------------------------- */
+  --verde:  #2F6B44;   /* 6,35:1 com branco · só o botão             */
+  --verde-2:#255636;
+  --verde-anel:#4E9A6B;
 
   /* ---- texto -------------------------------------------- */
-  --on-dark-hi:   #F6F4F1;
-  --on-dark-mid:  #B9C0BB;
-  --on-light-hi:  #14100C;
-  --on-light-mid: #4A4741;
-
-  /* ---- destaque e urgência (nunca verde) ---------------- */
-  --accent:      #C9A227;
-  --accent-ink:  #14100C;
-  --accent-soft: #F0E4BC;
-  --warm:        #A94D29;
+  --sobre-escuro:   #F2EDE5;
+  --sobre-escuro-2: #C9BFB2;
+  --sobre-claro:    #2A241F;
+  --sobre-claro-2:  #554C44;
 
   /* ---- tipografia --------------------------------------- */
-  --font-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
-  /* 'Inter fallback' vem LOGO depois da Inter, nao no fim: e a face com
-     metricas ajustadas, e se ficar atras de Arial/sans-serif nunca e usada
-     — foi assim que a troca de fonte empurrava o hero inteiro. */
-  --font-text: 'Inter', 'Inter fallback', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --display: 'Bodoni Moda', Didot, 'Bodoni MT', Georgia, serif;
+  --texto:   'Inter', 'Inter fallback', -apple-system, BlinkMacSystemFont,
+             'Segoe UI', Roboto, Arial, sans-serif;
+  /* duas famílias, não três: a Jost saiu para o conjunto de fontes caber
+     no orçamento, e as etiquetas ficam na Inter com espaçamento aberto. */
+  --etiqueta: var(--texto);
 
-  --fs-display: clamp(2.5rem, 1.7rem + 3.6vw, 4.75rem);
-  --fs-h1:      clamp(2.125rem, 1.55rem + 2.6vw, 3.5rem);
-  --fs-h2:      clamp(1.625rem, 1.35rem + 1.4vw, 2.5rem);
-  --fs-h3:      clamp(1.1875rem, 1.1rem + .5vw, 1.4375rem);
-  --fs-lead:    clamp(1.0625rem, 1rem + .4vw, 1.3125rem);
-  --fs-body:    clamp(1rem, .975rem + .15vw, 1.0625rem);
-  --fs-sm:      .9375rem;
-  --fs-xs:      .8125rem;
+  /* Didone tem contraste de traço muito alto: abaixo de ~28px ele
+     some. Por isso o display só existe em tamanho grande, e a escala
+     começa alto. */
+  --fs-titulo:  clamp(3.25rem, 2rem + 7.4vw, 8.5rem);
+  --fs-h2:      clamp(2.125rem, 1.5rem + 2.9vw, 3.75rem);
+  --fs-h3:      clamp(1.25rem, 1.12rem + .62vw, 1.5rem);
+  --fs-lead:    clamp(1.125rem, 1.04rem + .42vw, 1.375rem);
+  --fs-corpo:   clamp(1.0625rem, 1.02rem + .22vw, 1.1875rem);
+  --fs-peq:     .9375rem;
+  --fs-mini:    .8125rem;
 
-  --lh-tight: 1.08;
-  --lh-head:  1.16;
-  --lh-body:  1.62;
+  --lh-titulo: .92;
+  --lh-h2:     1.08;
+  --lh-corpo:  1.62;
 
-  --measure:       62ch;
-  --measure-tight: 46ch;
+  --medida: 60ch;
+  --medida-curta: 44ch;
 
   /* ---- espaço e forma ----------------------------------- */
-  --s-1: .25rem;  --s-2: .5rem;   --s-3: .75rem;  --s-4: 1rem;
-  --s-5: 1.5rem;  --s-6: 2rem;    --s-7: 2.5rem;  --s-8: 3.5rem;
-  --s-9: 5rem;    --s-10: 7rem;
+  --s-1:.25rem; --s-2:.5rem;  --s-3:.75rem; --s-4:1rem;   --s-5:1.5rem;
+  --s-6:2rem;   --s-7:2.5rem; --s-8:3.5rem; --s-9:5rem;   --s-10:7.5rem;
 
-  --section-y:   clamp(3.5rem, 2rem + 6vw, 7rem);
-  --wrap:        min(100% - 2.5rem, 68rem);
-  --wrap-narrow: min(100% - 2.5rem, 44rem);
+  --secao-y: clamp(4.5rem, 2.5rem + 7vw, 9rem);
+  --wrap:        min(100% - 2.5rem, 76rem);
+  --wrap-narrow: min(100% - 2.5rem, 46rem);
 
-  --r-sm: 8px; --r-md: 14px; --r-lg: 22px; --r-pill: 999px;
-  --ease: cubic-bezier(.22, .61, .36, 1);
-
-  /* altura da barra fixa de compra — usada no padding do <body> */
-  --barra-h: 4rem;
+  --r-sm: 2px; --r-md: 3px; --r-pill: 999px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --barra-h: 4.25rem;
 
   color-scheme: dark;
 }
 
-/* Superfícies como classes utilitárias: cada dobra declara em qual vive.
-   Alternar claro/escuro dá ritmo sem divisores decorativos — menos DOM. */
 .sup-escura {
-  --bg: var(--ink-900);
-  --bg-2: var(--ink-800);
-  --linha: var(--line-dk);
-  --txt: var(--on-dark-hi);
-  --txt-2: var(--on-dark-mid);
+  --bg: var(--cacau); --bg-2: var(--cacau-2); --linha: #4A423A;
+  --txt: var(--sobre-escuro); --txt-2: var(--sobre-escuro-2);
+  --realce: var(--barro-claro);
 }
 .sup-clara {
-  --bg: var(--paper);
-  --bg-2: var(--paper-2);
-  --linha: var(--line-lt);
-  --txt: var(--on-light-hi);
-  --txt-2: var(--on-light-mid);
+  --bg: var(--papel); --bg-2: var(--linho); --linha: #DBD1C2;
+  --txt: var(--sobre-claro); --txt-2: var(--sobre-claro-2);
+  --realce: var(--ameixa);
+}
+.sup-linho {
+  --bg: var(--linho); --bg-2: var(--papel); --linha: #D3C8B8;
+  --txt: var(--sobre-claro); --txt-2: var(--sobre-claro-2);
+  --realce: var(--ameixa);
 }

@@ -104,7 +104,7 @@ export const ENCERRADO = {
 export const PROMESSAS = {
   padrao: {
     h1: 'O que fez a balança descer <em>não é</em> o que faz ela ficar.',
-    sub: 'Em 3 dias, você vai entender por que o corpo volta ao ponto de partida mesmo quando o método funcionou — e o que precisa acontecer para a mudança passar a ser sua.',
+    sub: 'Emagrecer, muita gente já conseguiu. Ficar é outra conversa — e é sobre ela que a gente vai passar três noites juntas.',
   },
   divisao: {
     h1: 'A caneta está mudando o seu corpo. <em>Quem está trabalhando</em> para o seu cérebro acompanhar?',
