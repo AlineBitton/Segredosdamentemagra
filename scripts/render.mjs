@@ -55,7 +55,7 @@ for (const a of alvos) {
   await pg.waitForTimeout(500);
 
   await pg.screenshot({ path: `docs/capturas/${a.nome}-dobra1.png` });
-  for (const [nome, sel] of [['oferta','#oferta'],['mecanismo','.mecanismo'],['caminhos','.caminhos'],['provas','.provas'],['agregado','.agregado']]) {
+  for (const [nome, sel] of [['oferta','#oferta'],['mecanismo','.mecanismo'],['caminhos','.caminhos'],['provas','.provas'],['agregado','.agregado'],['faq','.faq'],['garantia','.garantia__caixa'],['publico','.publico'],['rodape','.rodape']]) {
     const el = await pg.$(sel);
     if (el) await el.screenshot({ path: `docs/capturas/${a.nome}-${nome}.png` });
   }

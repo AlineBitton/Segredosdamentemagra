@@ -1,0 +1,27 @@
+name: verificar
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: motor de lotes
+        run: npm run test
+      - name: contraste da paleta
+        run: npm run contraste
+      - name: build e orçamento de peso
+        run: npm run build
+      - name: checagem de pré-voo
+        # não bloqueia a branch enquanto os dados finais não chegam;
+        # o relatório fica visível no log
+        run: npm run pronto || true

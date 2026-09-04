@@ -1,0 +1,2 @@
+# www -> apex (301, permanente). O "!" força a regra mesmo com o arquivo existindo.
+https://www.afinandocorpoemente.com.br/* https://afinandocorpoemente.com.br/:splat 301!
