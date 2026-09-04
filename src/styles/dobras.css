@@ -1,0 +1,286 @@
+/* ============================================================
+   Dobras — estilos por seção
+   ============================================================ */
+
+/* ─── 01 · HERO ───────────────────────────────────────────────
+   Sem .reveal aqui: o LCP não pode depender de JavaScript.
+   ------------------------------------------------------------ */
+.hero {
+  padding-block: clamp(2.5rem, 1.5rem + 5vw, 5.5rem) var(--section-y);
+  background:
+    radial-gradient(120% 80% at 78% 18%, #16201c 0%, transparent 62%),
+    var(--ink-900);
+}
+.hero__grade {
+  display: grid;
+  gap: var(--s-7);
+}
+@media (min-width: 900px) {
+  .hero__grade {
+    grid-template-columns: 1.05fr .95fr;
+    align-items: center;
+    gap: var(--s-8);
+  }
+}
+
+.hero h1 { margin-top: var(--s-4); max-width: 15ch; }
+.hero .lead { margin-top: var(--s-5); max-width: 48ch; }
+
+.selos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  margin-top: var(--s-6);
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-sm);
+  color: var(--on-dark-mid);
+}
+.selos li { display: flex; align-items: center; gap: var(--s-2); }
+/* marcador neutro — jamais verde (regra de isolamento do CTA) */
+.selos li::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+.hero__foto {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--ink-800);
+  aspect-ratio: 4 / 5;
+}
+.hero__foto img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ─── 02 · FAIXA DE NEUTRALIDADE ─────────────────────────────── */
+.faixa {
+  background: var(--ink-800);
+  border-block: 1px solid var(--line-dk);
+  padding-block: var(--s-6);
+}
+.faixa p {
+  max-width: 68ch;
+  margin-inline: auto;
+  text-align: center;
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--on-dark-mid);
+}
+.faixa strong { color: var(--on-dark-hi); font-weight: 600; }
+
+/* ─── 03 · ESTADO ATUAL ──────────────────────────────────────── */
+.citacoes {
+  margin: var(--s-7) 0;
+  padding: 0 0 0 var(--s-5);
+  border-left: 2px solid var(--linha);
+  list-style: none;
+  display: grid;
+  gap: var(--s-4);
+}
+.citacoes li {
+  font-style: italic;
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--txt-2);
+  max-width: var(--measure-tight);
+}
+
+/* a pergunta que ela leva para todo lugar */
+.frase-gigante {
+  margin: var(--s-8) 0;
+  text-align: center;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: var(--fs-display);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  color: var(--accent);
+}
+
+.destaque {
+  margin-top: var(--s-7);
+  padding: var(--s-6);
+  background: var(--bg-2);
+  border-radius: var(--r-md);
+  border-left: 3px solid var(--accent);
+}
+.destaque > * + * { margin-top: var(--s-4); }
+.destaque strong { font-weight: 700; }
+
+/* ─── 04 · QUEBRA DE OBJEÇÕES ────────────────────────────────── */
+.lista-marcada {
+  margin-top: var(--s-6);
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--s-4);
+}
+.lista-marcada li {
+  position: relative;
+  padding-left: var(--s-6);
+  max-width: var(--measure);
+}
+.lista-marcada li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: .62em;
+  width: 10px; height: 2px;
+  background: var(--accent);
+}
+
+/* ─── 05 · O QUE VOCÊ FAZ EM 3 DIAS ──────────────────────────── */
+.cards {
+  display: grid;
+  gap: var(--s-4);
+  margin-top: var(--s-7);
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 720px) {
+  .cards { grid-template-columns: repeat(2, 1fr); gap: var(--s-5); }
+  .cards > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+.card {
+  padding: var(--s-5);
+  background: var(--bg-2);
+  border: 1px solid var(--linha);
+  border-radius: var(--r-md);
+}
+.card__num {
+  display: block;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: var(--s-3);
+}
+.card p { max-width: none; }
+
+/* ─── 06 · DOBRA EMOCIONAL ───────────────────────────────────── */
+.emocional { background: var(--ink-800); }
+.emocional .h2 { max-width: 20ch; }
+.emocional__grade { display: grid; gap: var(--s-7); }
+@media (min-width: 900px) {
+  .emocional__grade { grid-template-columns: .9fr 1.1fr; align-items: center; }
+}
+.emocional__foto {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--ink-700);
+  aspect-ratio: 1 / 1;
+}
+.emocional__foto img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ─── 07 · MECANISMO ─────────────────────────────────────────── */
+.mecanismo .bloco + .bloco { margin-top: var(--s-8); }
+
+/* 93% / 7% — a proporção */
+.proporcao {
+  display: grid;
+  gap: var(--s-5);
+  margin: var(--s-8) 0;
+  padding: var(--s-7) var(--s-6);
+  background: var(--ink-800);
+  border: 1px solid var(--line-dk);
+  border-radius: var(--r-lg);
+  text-align: center;
+}
+@media (min-width: 620px) {
+  .proporcao { grid-template-columns: 1fr 1fr; }
+}
+.proporcao__item dt {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3.25rem, 2rem + 6vw, 6rem);
+  font-weight: 600;
+  line-height: .92;
+  letter-spacing: -.03em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.proporcao__item dd {
+  margin: var(--s-3) 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  color: var(--on-dark-mid);
+  max-width: 26ch;
+  margin-inline: auto;
+}
+.proporcao__fecho {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line-dk);
+  font-size: var(--fs-lead);
+  color: var(--on-dark-hi);
+  max-width: none;
+}
+.proporcao__fecho strong { color: var(--accent); }
+
+/* pensar · sentir · agir */
+.triade {
+  display: grid;
+  gap: var(--s-4);
+  margin-top: var(--s-6);
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 780px) {
+  .triade { grid-template-columns: repeat(3, 1fr); gap: var(--s-5); }
+}
+.triade li {
+  padding: var(--s-5);
+  background: var(--ink-800);
+  border: 1px solid var(--line-dk);
+  border-radius: var(--r-md);
+}
+.triade h3 {
+  font-family: var(--font-text), 'Inter fallback';
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.triade p { margin-top: var(--s-3); max-width: none; }
+.triade .eco {
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line-dk);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  color: var(--on-dark-mid);
+}
+
+/* ─── BARRA FIXA DE COMPRA (mobile) ──────────────────────────
+   Aparece depois que a leitora passa da dobra 03. Altura fixa e
+   reservada no padding do body: não empurra nada, CLS zero.
+   ------------------------------------------------------------ */
+.barra {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  height: var(--barra-h);
+  padding-inline: var(--s-4);
+  background: color-mix(in srgb, var(--ink-900) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line-dk);
+  transform: translateY(101%);
+  transition: transform .3s var(--ease);
+}
+.barra[data-visivel] { transform: none; }
+.barra__info { flex: 1; min-width: 0; line-height: 1.25; }
+.barra__lote { font-size: var(--fs-xs); color: var(--on-dark-mid); }
+.barra__preco { font-size: 1.125rem; font-weight: 700; color: var(--on-dark-hi); }
+.barra .btn { --alt: 2.75rem; padding-inline: var(--s-5); font-size: .9375rem; flex: none; }
+
+@media (min-width: 720px) {
+  .barra { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .barra { transition: none; }
+}

@@ -1,0 +1,217 @@
+/* ============================================================
+   Base — reset, fontes, tipografia, botões e layout
+   ============================================================ */
+
+/* ---- fontes -------------------------------------------------
+   Subsetadas para o português inteiro por `npm run fontes`.
+   Só a Fraunces recebe preload: ela desenha o H1, que é o LCP.
+   Os fallbacks têm métricas ajustadas para que a troca não
+   empurre o layout (CLS 0).
+   ------------------------------------------------------------ */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-var.woff2') format('woff2-variations');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-var.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+/* fallback métrico do corpo de texto — evita salto na troca */
+@font-face {
+  font-family: 'Inter fallback';
+  src: local('Arial');
+  ascent-override: 90.2%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+  size-adjust: 107.4%;
+}
+
+/* ---- reset --------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  font-family: var(--font-text), 'Inter fallback';
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  background: var(--ink-900);
+  color: var(--on-dark-hi);
+  overflow-x: hidden;
+  /* espaço para a barra fixa de compra não cobrir o rodapé */
+  padding-bottom: var(--barra-h);
+}
+@media (min-width: 720px) {
+  body { padding-bottom: 0; }
+}
+
+img, picture, svg, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a { color: inherit; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* ---- foco visível em tudo que é interativo -------------------- */
+:where(a, button, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--cta-ring);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* ---- tipografia ---------------------------------------------- */
+h1, h2, h3, .display {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  line-height: var(--lh-head);
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+
+h1, .h1 { font-size: var(--fs-h1); line-height: var(--lh-tight); }
+h2, .h2 { font-size: var(--fs-h2); }
+h3, .h3 { font-size: var(--fs-h3); font-family: var(--font-text), 'Inter fallback'; font-weight: 700; letter-spacing: 0; }
+
+.display { font-size: var(--fs-display); line-height: var(--lh-tight); }
+
+h1 em, h2 em, .display em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+p { max-width: var(--measure); text-wrap: pretty; }
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--txt-2, var(--on-dark-mid));
+}
+
+.eyebrow {
+  font-family: var(--font-text), 'Inter fallback';
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--txt-2, var(--on-dark-mid));
+}
+
+.miudo { font-size: var(--fs-sm); color: var(--txt-2, var(--on-dark-mid)); }
+
+/* ---- layout --------------------------------------------------- */
+.wrap        { width: var(--wrap);        margin-inline: auto; }
+.wrap-estreito { width: var(--wrap-narrow); margin-inline: auto; }
+
+.sec {
+  background: var(--bg);
+  color: var(--txt);
+  padding-block: var(--section-y);
+}
+.sec > * { position: relative; }
+
+.pilha > * + * { margin-top: var(--s-5); }
+.pilha-lg > * + * { margin-top: var(--s-6); }
+
+/* ---- botão: verde, e só verde --------------------------------
+   Von Restorff — o verde só captura atenção pré-atentiva se for a
+   única coisa verde da página. Nenhum ícone, borda ou selo verde.
+   -------------------------------------------------------------- */
+.btn {
+  --alt: 3.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: var(--alt);
+  padding: 0 var(--s-6);
+  background: var(--cta);
+  color: var(--cta-text);
+  font-family: var(--font-text), 'Inter fallback';
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-decoration: none;
+  text-align: center;
+  border: 0;
+  border-radius: var(--r-pill);
+  box-shadow: var(--cta-shadow);
+  cursor: pointer;
+  transition: background-color .18s var(--ease), transform .18s var(--ease);
+}
+.btn:hover { background: var(--cta-hover); }
+.btn:active { transform: translateY(1px); }
+
+.btn--bloco { display: flex; width: 100%; }
+@media (min-width: 560px) {
+  .btn--bloco { display: inline-flex; width: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+  .btn:active { transform: none; }
+}
+
+/* grupo de CTA + microcopy logo abaixo */
+.cta { margin-top: var(--s-6); }
+.cta .miudo { margin-top: var(--s-3); }
+
+/* ---- contador ------------------------------------------------
+   tabular-nums + largura mínima: sem isso os dígitos mudam de
+   largura a cada segundo e empurram o layout (CLS).
+   -------------------------------------------------------------- */
+.contador {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+.contador b {
+  display: inline-block;
+  min-width: 14ch;
+  font-weight: 700;
+  color: var(--warm-claro, var(--accent));
+}
+.sup-clara .contador b { color: var(--warm); }
+
+/* ---- entrada suave -------------------------------------------
+   Apenas opacity e transform. Nunca no herói: o LCP não pode
+   depender de JavaScript.
+   -------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .42s var(--ease), transform .42s var(--ease);
+  will-change: opacity, transform;
+}
+.reveal.visivel { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* acessível para leitor de tela, invisível na tela */
+.so-leitor {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
