@@ -1,51 +1,24 @@
 {
   "artboards": [
-    {
-      "file": "Main.dc.html",
-      "x": 0,
-      "y": 0,
-      "w": 880,
-      "h": 640
-    },
-    {
-      "file": "Afinacao.dc.html",
-      "x": 980,
-      "y": 0,
-      "w": 880,
-      "h": 640
-    },
-    {
-      "file": "Ponto.dc.html",
-      "x": 1960,
-      "y": 0,
-      "w": 880,
-      "h": 640
-    },
-    {
-      "file": "Rota.dc.html",
-      "x": 490,
-      "y": 780,
-      "w": 880,
-      "h": 640
-    },
-    {
-      "file": "Tipografica.dc.html",
-      "x": 1470,
-      "y": 780,
-      "w": 880,
-      "h": 640
-    }
+    { "file": "Main.dc.html",      "x": 0,    "y": 0, "w": 900, "h": 1200 },
+    { "file": "Silencio.dc.html",  "x": 1000, "y": 0, "w": 900, "h": 1200 },
+    { "file": "Editorial.dc.html", "x": 2000, "y": 0, "w": 900, "h": 1200 },
+    { "file": "Limiar.dc.html",    "x": 3000, "y": 0, "w": 900, "h": 1200 },
+    { "file": "Selo.dc.html",      "x": 4000, "y": 0, "w": 900, "h": 1200 }
   ],
   "annotations": [
-    {
-      "id": "restricoes",
-      "x": 0,
-      "y": -230,
-      "w": 700,
-      "text": "Cinco direções para a marca do evento.\n\nTodas dentro do guia: só as cinco cores da marca, traço fino sem preenchimento, formas abertas, sem caixa alta, sem negrito, sem degradê.\n\nFora, por decisão do guia: cérebro, balança, borboleta, lótus, círculo concêntrico e qualquer coisa que meça o corpo dela.\n\nO traço nunca é ameixa — ameixa é destaque, não é ícone."
-    }
+    { "id": "a-monograma", "x": 0, "y": -300, "w": 900,
+      "text": "A · MONOGRAMA\n\nO M que serve às duas palavras. O vértice do meio não encosta na base — a abertura é o que faz a marca respirar e é o que ela lembra depois.\n\nPor que conecta: monograma é o registro de casa, de ateliê, de instituição. É o oposto do registro que a categoria usa com ela. Uma mulher que decide onde põe dinheiro reconhece esse código.\n\nCusto: é o mais neutro dos cinco. Não diz nada sobre o assunto — depende inteiramente do nome ao lado." },
+    { "id": "b-silencio", "x": 1000, "y": -300, "w": 900,
+      "text": "B · SILÊNCIO\n\nA composição é quase toda vazio. O título desce em três degraus e ocupa só o rodapé.\n\nPor que conecta: “o silêncio na cabeça” é a palavra dela para a melhor coisa que aconteceu no tratamento. Aqui o vazio vem antes de qualquer palavra — ela sente a página descansar antes de ler.\n\nCusto: é o mais frágil em tamanho pequeno e o que mais depende de o layout ao redor manter o vazio. Espremido, perde tudo." },
+    { "id": "c-editorial", "x": 2000, "y": -300, "w": 900,
+      "text": "C · EDITORIAL\n\nDidone em caixa alta ocupando a largura inteira, como capa de revista. O tipo é a identidade — não há símbolo.\n\nPor que conecta: é o registro de autoridade e precisão, e é o mais distante do rosa, da borboleta e do “você merece”. Ela já leu bula; responde a algo que parece sério.\n\nCusto: caixa alta em bloco contraria o guia da marca-mãe. É uma escolha deliberada para o evento — precisa da sua aprovação explícita." },
+    { "id": "d-limiar", "x": 3000, "y": -300, "w": 900,
+      "text": "D · LIMIAR\n\nDois portais encaixados: um dentro do outro, dando profundidade. Vem de “As Cinco Portas”, que já é do seu método.\n\nPor que conecta: forma de passagem é lida como convite — o olho entra. E diz “atravessar” sem desenhar jornada, seta ou caminho.\n\nCusto: portal é forma comum. O que salva é a proporção e o segundo portal interno; desenhado sem cuidado, vira ícone genérico." },
+    { "id": "e-selo", "x": 4000, "y": -300, "w": 900,
+      "text": "E · SELO\n\nCartucho com a edição datada. Diz: esta é uma edição específica, com começo e fim.\n\nPor que conecta: selo é atalho de credibilidade, e ela compra credibilidade. A data cria escassez honesta — não é contador, é edição.\n\nCusto: é o mais fechado dos cinco. Envelhece a cada edição e obriga a atualizar a arte todo ano." },
+    { "id": "nota-linha", "x": 0, "y": -430, "w": 1900,
+      "text": "Cinco registros diferentes, não cinco versões da mesma ideia. A linha de amplitude saiu — ela é da marca-mãe, não do evento. Cada direção usa uma tipografia própria de propósito: são propostas completas, não variações." }
   ],
-  "launch": {
-    "view": "canvas"
-  }
+  "launch": { "view": "canvas" }
 }
