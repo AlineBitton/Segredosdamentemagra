@@ -25,7 +25,7 @@ import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
   CHECKOUT, EVENTO, META, PROMESSAS, VIP,
-  brl, checkoutComum, contadorTexto, loteAtivo, prazoTexto, proximoLote,
+  brl, checkoutComum, contadorTexto, linkWhatsApp, loteAtivo, prazoTexto, proximoLote,
 } from '../config/oferta.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -132,6 +132,8 @@ async function main() {
     'encerrado-attr': lote.id === 'encerrado' ? ' data-encerrado' : '',
     'checkout-comum': checkoutComum(lote),
     'checkout-vip': CHECKOUT.vip,
+    'zap-duvida': linkWhatsApp('Oi! Quero tirar uma dúvida sobre a Imersão Segredos da Mente Magra.'),
+    'zap-proxima': linkWhatsApp('Oi! Quero saber da próxima turma da Imersão Segredos da Mente Magra.'),
     'ancora-vip': VIP.ancoraAvulsaCentavos && lote.centavos != null
       ? `<p class="plano__ancora" data-slot="ancora-vip">O Diagnóstico dos 5 Corpos, avulso, custa ${brl(VIP.ancoraAvulsaCentavos)}. Aqui ele entra por ${brl(VIP.centavos - lote.centavos)} a mais.</p>`
       : '',

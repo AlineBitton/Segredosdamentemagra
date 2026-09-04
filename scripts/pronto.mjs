@@ -8,7 +8,7 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { CHECKOUT, EVENTO, LOTES, META, VIP } from '../config/oferta.mjs';
+import { CHECKOUT, EVENTO, LOTES, META, SUPORTE, VIP, whatsappValido } from '../config/oferta.mjs';
 
 const RAIZ = path.resolve(import.meta.dirname, '..');
 const DIST = path.join(RAIZ, 'dist');
@@ -35,7 +35,7 @@ for (const f of arquivos) {
 
   if (html.includes('55DDDNUMERO')) {
     erro(`${f}: botao do WhatsApp aponta para um numero de exemplo`,
-         'troque 55DDDNUMERO pelo numero real em src/index.html');
+         'defina SUPORTE.whatsapp em config/oferta.mjs');
   }
   if (html.includes('placeholder-retrato')) {
     aviso(`${f}: ainda usa a imagem provisoria no lugar das fotos`,
@@ -68,6 +68,13 @@ if (semLink.length === LOTES.length) {
 } else if (semLink.length) {
   erro(`sem link proprio: ${semLink.map((l) => l.id).join(', ')}`,
        'complete CHECKOUT.comumPorLote em config/oferta.mjs');
+}
+
+if (!whatsappValido()) {
+  const n = String(SUPORTE.whatsapp || '');
+  erro(`numero de WhatsApp com formato invalido: +${n} (${n.length} digitos)`,
+       'celular brasileiro tem 13 digitos: 55 + DDD (2) + assinante (9, comecando por 9). ' +
+       `Este tem ${Math.max(0, n.length - 4)} no assinante`);
 }
 
 if (!META.pixelId) aviso('Meta Pixel desligado', 'sem ele nao da para otimizar campanha nem medir conversao');

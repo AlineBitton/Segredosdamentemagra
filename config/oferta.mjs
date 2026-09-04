@@ -46,6 +46,30 @@ export const VIP = {
   ancoraAvulsaCentavos: null,
 };
 
+/**
+ * Suporte por WhatsApp.
+ *
+ * O numero fica AQUI, nao espalhado pelo HTML: ele aparece em tres botoes
+ * (suporte, e os dois do estado encerrado) e errar um deles manda a
+ * compradora para o vazio.
+ *
+ * Formato: so digitos, em padrao internacional.
+ *   55 (Brasil) + DDD (2) + numero do assinante (9, comecando por 9) = 13
+ */
+export const SUPORTE = {
+  whatsapp: '556198312127',
+};
+
+/** true se o numero tem cara de celular brasileiro valido. */
+export function whatsappValido(n = SUPORTE.whatsapp) {
+  return /^55[1-9]\d9\d{8}$/.test(String(n || ''));
+}
+
+/** Monta o link do WhatsApp com a mensagem ja escrita. */
+export function linkWhatsApp(texto) {
+  return `https://wa.me/${SUPORTE.whatsapp}?text=${encodeURIComponent(texto)}`;
+}
+
 export const CHECKOUT = {
   // A hub.la NÃO muda o preço sozinha: cada lote tem o seu próprio checkout.
   // O motor troca o link junto com o preço, então página e cobrança nunca
