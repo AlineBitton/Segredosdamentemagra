@@ -93,6 +93,25 @@ console.log('\n── propagacao de UTM nos links de checkout ──────
   ok(v.searchParams.get('sck') === 'meta|cpc|smm25|frio|edepois', 'sck tambem no VIP');
 }
 
+console.log('\n── seguranca: parametro arbitrario nao chega no checkout ───');
+{
+  const q = '?utm_source=meta&cupom=GRATIS&email=vitima%40exemplo.com&valor=0&price=1&admin=1';
+  const { html } = await pegar(q);
+  for (const qual of ['comum', 'vip']) {
+    const u = new URL(checkouts(html, qual)[0]);
+    const vazados = ['cupom', 'email', 'valor', 'price', 'admin'].filter((k) => u.searchParams.has(k));
+    ok(vazados.length === 0,
+       `${qual}: nenhum parametro arbitrario repassado`,
+       `vazaram: ${vazados.join(', ')} -> ${u.toString()}`);
+    ok(u.searchParams.get('utm_source') === 'meta', `${qual}: utm_source continua passando`);
+  }
+  // identificadores de clique das redes precisam continuar passando
+  const { html: h2 } = await pegar('?fbclid=abc123&gclid=xyz&utm_source=meta');
+  const u2 = new URL(checkouts(h2, 'comum')[0]);
+  ok(u2.searchParams.get('fbclid') === 'abc123', 'fbclid continua passando');
+  ok(u2.searchParams.get('gclid') === 'xyz', 'gclid continua passando');
+}
+
 console.log('\n── sem UTM nenhum ──────────────────────────────────────────');
 {
   const { html } = await pegar();

@@ -17,6 +17,7 @@
  */
 import { readFile, writeFile, mkdir, rm, cp, readdir, stat } from 'node:fs/promises';
 import { gzipSync, brotliCompressSync, constants as zlib } from 'node:zlib';
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -158,9 +159,41 @@ async function main() {
 
   /* ---------- estáticos ---------- */
   if (existsSync(p('public'))) await cp(p('public'), p('dist'), { recursive: true });
-  for (const f of ['_headers', '_redirects']) {
-    if (existsSync(p('src', f))) await cp(p('src', f), p('dist', f));
+  if (existsSync(p('src/_redirects'))) await cp(p('src/_redirects'), p('dist/_redirects'));
+
+  /* ---------- cabeçalhos, com CSP por hash ----------
+     A página embute CSS e JS. A saída fácil seria 'unsafe-inline', que
+     desliga justamente a proteção contra XSS que a CSP existe para dar.
+     Como o build conhece o conteúdo exato de cada bloco, ele calcula o
+     hash SHA-256 de cada um — assim só o nosso código roda, e qualquer
+     script injetado é bloqueado pelo navegador. */
+  const sha = (txt) => `'sha256-${createHash('sha256').update(txt, 'utf8').digest('base64')}'`;
+  const hashesScript = [sha(js)];
+  if (META.pixelId) {
+    const snippet = pixelCabecalho().match(/<script>([\s\S]*?)<\/script>/);
+    if (snippet) hashesScript.push(sha(snippet[1]));
   }
+  const csp = [
+    "default-src 'self'",
+    `script-src 'self' ${hashesScript.join(' ')}${META.pixelId ? ' https://connect.facebook.net' : ''}`,
+    `style-src 'self' ${sha(css)}`,
+    `img-src 'self'${META.pixelId ? ' https://www.facebook.com' : ''}`,
+    "font-src 'self'",
+    `connect-src 'self'${META.pixelId ? ' https://www.facebook.com' : ''}`,
+    "form-action 'none'",      // a página não tem formulário; bloqueia formulário injetado
+    "frame-ancestors 'none'",  // ninguém embute esta página num iframe
+    "base-uri 'none'",
+    "object-src 'none'",
+    'upgrade-insecure-requests',
+  ].join('; ');
+
+  const cabecalhosBase = existsSync(p('src/_headers'))
+    ? await readFile(p('src/_headers'), 'utf8')
+    : '';
+  await writeFile(p('dist/_headers'),
+    cabecalhosBase.trimEnd() + `\n  Content-Security-Policy: ${csp}\n` +
+    '  Strict-Transport-Security: max-age=31536000; includeSubDomains\n' +
+    '  Cross-Origin-Opener-Policy: same-origin\n');
 
   /* ---------- relatório ---------- */
   console.log('\n  orcamento de peso');

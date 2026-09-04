@@ -244,3 +244,18 @@ a.so-leitor:focus-visible {
   border-radius: var(--r-pill);
   box-shadow: var(--cta-shadow);
 }
+
+/* ---- utilitários de espaço ------------------------------------
+   Existem para que a página não precise de atributos style="" no HTML.
+   Atributo de estilo inline é bloqueado pela CSP (hash não vale para ele,
+   só 'unsafe-hashes' ou 'unsafe-inline'), e as duas saídas enfraquecem
+   justamente a proteção que a CSP existe para dar.
+   -------------------------------------------------------------- */
+.mt-3 { margin-top: var(--s-3); }
+.mt-4 { margin-top: var(--s-4); }
+.mt-5 { margin-top: var(--s-5); }
+.mt-6 { margin-top: var(--s-6); }
+.mt-7 { margin-top: var(--s-7); }
+.centro { text-align: center; }
+.centrado { margin-inline: auto; }
+.sem-topo { padding-top: 0; }

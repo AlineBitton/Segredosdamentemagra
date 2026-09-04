@@ -110,6 +110,32 @@ export const META = {
 
 export const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
+/**
+ * Parâmetros que podem ser repassados para o checkout.
+ *
+ * ATENÇÃO — isto é uma medida de segurança, não uma otimização.
+ * O script original repassava TODOS os parâmetros da URL. Como o destino é uma
+ * página de pagamento, isso permitia que qualquer pessoa montasse e
+ * compartilhasse um link como
+ *
+ *     /?cupom=GRATIS&email=vitima@exemplo.com
+ *
+ * e esses valores chegariam intactos ao checkout. Se a plataforma honrar
+ * qualquer um deles, vira desconto indevido ou compra no nome de outra pessoa.
+ *
+ * Passam apenas: qualquer utm_*, os identificadores de clique das redes, e os
+ * parâmetros de afiliado que a hub.la usa. Tudo o mais é descartado.
+ */
+const PARAMS_EXATOS = new Set([
+  'sck', 'src', 'ref', 'xcod', 'aff', 'affiliate',
+  'fbclid', 'gclid', 'ttclid', 'msclkid', 'twclid', 'li_fat_id', 'epik', 'igshid',
+]);
+
+export function paramPermitido(chave) {
+  const k = String(chave).toLowerCase();
+  return k.startsWith('utm_') || PARAMS_EXATOS.has(k);
+}
+
 /* ───────────────────────── motor ───────────────────────── */
 
 /** Lote ativo no instante `agora` (ms epoch). Nunca retorna null. */

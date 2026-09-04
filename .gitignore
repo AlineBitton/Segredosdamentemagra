@@ -11,3 +11,8 @@ dist/
 # originais das provas: pesados e substituiveis pelos exports do Canva
 # (mantidos fora do repo; public/img/provas/ carrega as versoes otimizadas)
 src/img-originais/
+
+# Artefatos de verificacao: 16 MB, regeneraveis em segundos.
+# npm run render | npm run medir
+docs/capturas/
+docs/medicao/

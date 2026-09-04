@@ -16,6 +16,7 @@ npm run dev          # servidor local com a função de borda ativa (porta 8788)
 npm run borda        # testes de integração da borda (precisa do dev rodando)
 npm run pronto       # checagem de pré-voo: reprova se algo ainda estiver pendente
 npm run medir        # Lighthouse mobile + desktop
+npm run csp          # abre a página com a CSP valendo de verdade
 npm run a11y         # navegação por teclado, reflow, semântica
 npm run urls         # URLs prontas de cada variante, com UTM
 npm run cls          # diagnóstico: quais elementos deslocam o layout
@@ -64,6 +65,7 @@ docs/                    Estratégia, copy, narrativa e sistema de design.
 | `docs/05-publicacao.md` | GoDaddy → Cloudflare → Pages, com verificação a cada passo |
 | `docs/06-acessibilidade.md` | O que a auditoria manual encontrou além do Lighthouse |
 | `docs/07-anuncios.md` | Uma peça de anúncio por variante, e as regras do Meta que reprovam |
+| `docs/08-seguranca.md` | A vulnerabilidade corrigida, a CSP por hash e a superfície de ataque |
 
 ---
 

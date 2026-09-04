@@ -23,8 +23,9 @@ import {
   checkoutComum,
   contadorTexto,
   escolherPromessa,
-  prazoTexto,
   loteAtivo,
+  paramPermitido,
+  prazoTexto,
   proximoLote,
   segundosAteVirada,
 } from '../config/oferta.mjs';
@@ -144,7 +145,10 @@ function comQueryDaCampanha(destino, urlDaPagina) {
 
   const entrada = urlDaPagina.searchParams;
   for (const [chave, valor] of entrada) {
-    if (chave === 'p') continue; // 'p' é nosso, não da hub.la
+    // lista de permissão, não lista de bloqueio: o destino é uma página de
+    // pagamento, e repassar parâmetro arbitrário para lá deixa qualquer pessoa
+    // montar um link que altera o checkout. Ver PARAMS_EXATOS em config.
+    if (!paramPermitido(chave)) continue;
     if (!alvo.searchParams.has(chave)) alvo.searchParams.set(chave, valor);
   }
 

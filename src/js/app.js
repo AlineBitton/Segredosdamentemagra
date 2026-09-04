@@ -116,10 +116,16 @@
   (function utm() {
     const HOSTS = ['pay.hub.la', 'invoice.hub.la', 'app.hub.la', 'hub.la'];
     const CHAVES = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+    const EXATOS = new Set(['sck', 'src', 'ref', 'xcod', 'aff', 'affiliate', 'fbclid',
+      'gclid', 'ttclid', 'msclkid', 'twclid', 'li_fat_id', 'epik', 'igshid']);
+    // mesma lista de permissao da borda: o destino e uma pagina de pagamento e
+    // repassar parametro arbitrario para la deixa qualquer pessoa montar um
+    // link que altera o checkout
+    const permitido = (k) => k.toLowerCase().startsWith('utm_') || EXATOS.has(k.toLowerCase());
     const GUARDA = 'smm:utm';
 
     let params = new URLSearchParams(location.search);
-    params.delete('p');
+    for (const k of [...params.keys()]) if (!permitido(k)) params.delete(k);
 
     try {
       if (params.toString()) sessionStorage.setItem(GUARDA, params.toString());
