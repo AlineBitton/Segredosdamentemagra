@@ -5,3 +5,6 @@ dist/
 *.log
 .env
 .env.*
+
+# fontes subsetadas SAO versionadas (build nao depende de Python)
+!public/fonts/*.woff2

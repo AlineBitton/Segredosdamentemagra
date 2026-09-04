@@ -1,0 +1,90 @@
+/* ============================================================
+   Segredos da Mente Magra — tokens do sistema de design
+   Todo valor de cor aqui foi verificado por `npm run contraste`.
+   ============================================================ */
+
+:root {
+  /* ---- ação: verde, e só verde -------------------------- */
+  --cta:        #0F863B;   /* 4,67:1 com branco — passa AA          */
+  --cta-hover:  #0C6E30;   /* 6,39:1                                */
+  --cta-ring:   #22C55E;   /* anel de foco — nunca texto            */
+  --cta-text:   #FFFFFF;
+  --cta-shadow: 0 6px 20px rgb(15 134 59 / .32);
+
+  /* ---- superfícies -------------------------------------- */
+  --ink-900: #0C0F0E;
+  --ink-800: #131817;
+  --ink-700: #1C2321;
+  --line-dk: #2C3532;
+
+  --paper:   #FAF8F5;
+  --paper-2: #F1EDE7;
+  --line-lt: #E2DCD3;
+
+  /* ---- texto -------------------------------------------- */
+  --on-dark-hi:   #F6F4F1;
+  --on-dark-mid:  #B9C0BB;
+  --on-light-hi:  #14100C;
+  --on-light-mid: #4A4741;
+
+  /* ---- destaque e urgência (nunca verde) ---------------- */
+  --accent:      #C9A227;
+  --accent-ink:  #14100C;
+  --accent-soft: #F0E4BC;
+  --warm:        #A94D29;
+
+  /* ---- tipografia --------------------------------------- */
+  --font-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-text: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+
+  --fs-display: clamp(2.5rem, 1.7rem + 3.6vw, 4.75rem);
+  --fs-h1:      clamp(2.125rem, 1.55rem + 2.6vw, 3.5rem);
+  --fs-h2:      clamp(1.625rem, 1.35rem + 1.4vw, 2.5rem);
+  --fs-h3:      clamp(1.1875rem, 1.1rem + .5vw, 1.4375rem);
+  --fs-lead:    clamp(1.0625rem, 1rem + .4vw, 1.3125rem);
+  --fs-body:    clamp(1rem, .975rem + .15vw, 1.0625rem);
+  --fs-sm:      .9375rem;
+  --fs-xs:      .8125rem;
+
+  --lh-tight: 1.08;
+  --lh-head:  1.16;
+  --lh-body:  1.62;
+
+  --measure:       62ch;
+  --measure-tight: 46ch;
+
+  /* ---- espaço e forma ----------------------------------- */
+  --s-1: .25rem;  --s-2: .5rem;   --s-3: .75rem;  --s-4: 1rem;
+  --s-5: 1.5rem;  --s-6: 2rem;    --s-7: 2.5rem;  --s-8: 3.5rem;
+  --s-9: 5rem;    --s-10: 7rem;
+
+  --section-y:   clamp(3.5rem, 2rem + 6vw, 7rem);
+  --wrap:        min(100% - 2.5rem, 68rem);
+  --wrap-narrow: min(100% - 2.5rem, 44rem);
+
+  --r-sm: 8px; --r-md: 14px; --r-lg: 22px; --r-pill: 999px;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+
+  /* altura da barra fixa de compra — usada no padding do <body> */
+  --barra-h: 4rem;
+
+  color-scheme: dark;
+}
+
+/* Superfícies como classes utilitárias: cada dobra declara em qual vive.
+   Alternar claro/escuro dá ritmo sem divisores decorativos — menos DOM. */
+.sup-escura {
+  --bg: var(--ink-900);
+  --bg-2: var(--ink-800);
+  --linha: var(--line-dk);
+  --txt: var(--on-dark-hi);
+  --txt-2: var(--on-dark-mid);
+}
+.sup-clara {
+  --bg: var(--paper);
+  --bg-2: var(--paper-2);
+  --linha: var(--line-lt);
+  --txt: var(--on-light-hi);
+  --txt-2: var(--on-light-mid);
+}

@@ -226,11 +226,17 @@ já instalado neste ambiente, mobile + desktop, relatório salvo em `docs/`.
 Todos os CTAs passam a ser **verdes**. Token proposto:
 
 ```
---cta:        #17A44B   /* verde principal */
---cta-hover:  #12873D
---cta-shadow: rgba(23,164,75,.35)
---cta-text:   #FFFFFF   /* contraste 4.6:1 — passa AA */
+--cta:        #0F863B   /* verde principal · 4,67:1 com branco — passa AA */
+--cta-hover:  #0C6E30   /* 6,39:1 */
+--cta-ring:   #22C55E   /* anel de foco — uso não-textual */
+--cta-shadow: 0 6px 20px rgba(15,134,59,.32)
+--cta-text:   #FFFFFF
 ```
+
+> ⚠️ **Correção.** A primeira versão deste documento trazia `#17A44B` com a
+> afirmação "contraste 4.6:1 — passa AA". O valor real, calculado, é **3,26:1**:
+> passa apenas em texto grande e reprovaria a auditoria do Lighthouse.
+> O verde oficial é `#0F863B`. Ver doc 03, §0.
 
 Regra de neurodesign que faz isso funcionar — **efeito Von Restorff (isolamento)**:
 o verde só captura atenção pré-atentiva se for a **única** coisa verde na página.
