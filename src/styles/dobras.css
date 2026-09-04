@@ -623,7 +623,14 @@
 @media (min-width: 720px) {
   .rodape__grade { grid-template-columns: 1fr auto; align-items: center; }
 }
-.rodape a { text-decoration: underline; text-underline-offset: 3px; }
+.rodape a {
+  display: inline-block;
+  /* 19px de altura de texto e pouco para o dedo; o padding leva o alvo
+     acima dos 24px do WCAG 2.5.8 sem mudar nada visualmente */
+  padding-block: var(--s-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .rodape__legal { margin-top: var(--s-4); font-size: var(--fs-xs); line-height: 1.5; max-width: 68ch; }
 
 /* ─── páginas legais ─────────────────────────────────────────── */

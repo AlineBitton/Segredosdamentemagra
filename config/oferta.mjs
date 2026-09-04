@@ -161,6 +161,24 @@ export function contadorTexto(agora = Date.now()) {
   return d > 0 ? `${d}d ${dd(h)}h ${dd(m)}m ${dd(seg)}s` : `${dd(h)}h ${dd(m)}m ${dd(seg)}s`;
 }
 
+/**
+ * Prazo do lote por extenso, em horário de Brasília. O contador que fica
+ * girando é útil para quem vê; para quem usa leitor de tela, "5d 09h 19m 52s"
+ * é críptico. Esta frase entra escondida ao lado dele.
+ */
+export function prazoTexto(agora = Date.now()) {
+  const l = loteAtivo(agora);
+  if (!l.fim) return 'As inscrições estão encerradas.';
+  const d = new Date(Date.parse(l.fim));
+  const data = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo', day: 'numeric', month: 'long',
+  }).format(d);
+  const hora = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit',
+  }).format(d).replace(':', 'h');
+  return `O ${l.nome} termina em ${data}, às ${hora}, no horário de Brasília.`;
+}
+
 /** Variante de promessa a partir dos parâmetros da URL. Sempre válida. */
 export function escolherPromessa(params) {
   const bruto = (params.get('p') || params.get('utm_content') || '')

@@ -16,6 +16,7 @@ npm run dev          # servidor local com a função de borda ativa (porta 8788)
 npm run borda        # testes de integração da borda (precisa do dev rodando)
 npm run pronto       # checagem de pré-voo: reprova se algo ainda estiver pendente
 npm run medir        # Lighthouse mobile + desktop
+npm run a11y         # navegação por teclado, reflow, semântica
 npm run cls          # diagnóstico: quais elementos deslocam o layout
 npm run render       # capturas de tela em mobile e desktop
 ```
@@ -60,6 +61,7 @@ docs/                    Estratégia, copy, narrativa e sistema de design.
 | `docs/03-design-system.md` | Paleta verificada, tipografia, grid, orçamento de performance |
 | `docs/04-medicao.md` | Lighthouse, o que foi corrigido e como remedir |
 | `docs/05-publicacao.md` | GoDaddy → Cloudflare → Pages, com verificação a cada passo |
+| `docs/06-acessibilidade.md` | O que a auditoria manual encontrou além do Lighthouse |
 
 ---
 

@@ -23,6 +23,7 @@ import {
   checkoutComum,
   contadorTexto,
   escolherPromessa,
+  prazoTexto,
   loteAtivo,
   proximoLote,
   segundosAteVirada,
@@ -51,6 +52,7 @@ export const onRequest = async (context) => {
     'preco-proximo': proximo ? brl(proximo.centavos) : '',
     'preco-vip': brl(VIP.centavos),
     'promessa-sub': promessa.sub,
+    'prazo-extenso': prazoTexto(agora),
   };
   if (VIP.ancoraAvulsaCentavos && lote.centavos != null) {
     textos['ancora-vip'] =

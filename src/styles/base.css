@@ -223,3 +223,24 @@ p { max-width: var(--measure); text-wrap: pretty; }
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* O atalho de pular precisa APARECER ao receber foco. Escondido para sempre,
+   quem navega por teclado enxergando aperta Tab e o foco some da tela —
+   falha de WCAG 2.4.7 que nenhuma auditoria automatica pega. */
+a.so-leitor:focus,
+a.so-leitor:focus-visible {
+  position: fixed;
+  top: var(--s-4); left: var(--s-4);
+  z-index: 100;
+  width: auto; height: auto;
+  margin: 0;
+  padding: var(--s-3) var(--s-5);
+  overflow: visible;
+  clip-path: none;
+  background: var(--cta);
+  color: var(--cta-text);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--r-pill);
+  box-shadow: var(--cta-shadow);
+}

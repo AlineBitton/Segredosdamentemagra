@@ -24,7 +24,7 @@ import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
   CHECKOUT, EVENTO, META, PROMESSAS, VIP,
-  brl, checkoutComum, contadorTexto, loteAtivo, proximoLote,
+  brl, checkoutComum, contadorTexto, loteAtivo, prazoTexto, proximoLote,
 } from '../config/oferta.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -112,6 +112,7 @@ async function main() {
     'preco-vip': brl(VIP.centavos),
     'deadline': lote.fim || '',
     'contador': contadorTexto(agora),
+    'prazo-extenso': prazoTexto(agora),
     'lote-id': lote.id,
     'checkout-comum': checkoutComum(lote),
     'checkout-vip': CHECKOUT.vip,
