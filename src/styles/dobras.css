@@ -625,3 +625,10 @@
 }
 .rodape a { text-decoration: underline; text-underline-offset: 3px; }
 .rodape__legal { margin-top: var(--s-4); font-size: var(--fs-xs); line-height: 1.5; max-width: 68ch; }
+
+/* ─── páginas legais ─────────────────────────────────────────── */
+.legal h1 { margin-bottom: var(--s-3); }
+.legal h2 { margin-top: var(--s-7); }
+.legal p, .legal ul { margin-top: var(--s-4); }
+.legal a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.legal .eyebrow a { text-decoration: none; }

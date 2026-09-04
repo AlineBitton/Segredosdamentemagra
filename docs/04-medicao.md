@@ -98,6 +98,17 @@ desenha a cadeia de requisições. A nossa tem profundidade 2: HTML → fontes.
 
 ---
 
+## Cuidado ao remedir
+
+**Meça com a máquina ociosa.** Numa rodada com o servidor de desenvolvimento
+ligado em paralelo, o mobile caiu para **99 com TBT de 115 ms** — sem nenhuma
+mudança de código. O Lighthouse simula CPU 4× mais lenta, então qualquer
+processo competindo por CPU entra direto na conta. Desligado o servidor, o
+mesmo build voltou a 100 com TBT 0.
+
+Se um número piorar de repente, confira `uptime` antes de sair caçando
+regressão no código.
+
 ## Como a medição é feita
 
 `scripts/medir.mjs` sobe o `dist/` num servidor local que **comprime com gzip**,

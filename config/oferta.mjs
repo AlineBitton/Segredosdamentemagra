@@ -103,6 +103,11 @@ export const PROMESSAS = {
   },
 };
 
+/** Meta Pixel. Enquanto for null, nenhum script de rastreio entra na pagina. */
+export const META = {
+  pixelId: null,   // [[PRECISO]] ex.: '1234567890123456'
+};
+
 export const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
 /* ───────────────────────── motor ───────────────────────── */

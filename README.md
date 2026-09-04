@@ -13,8 +13,23 @@ npm install          # dependências de build
 npm run verificar    # testes do motor de lotes + auditoria de contraste
 npm run build        # gera dist/
 npm run dev          # servidor local com a função de borda ativa (porta 8788)
-npm run medir        # Lighthouse mobile + desktop sobre o dist/
+npm run borda        # testes de integração da borda (precisa do dev rodando)
+npm run medir        # Lighthouse mobile + desktop
+npm run cls          # diagnóstico: quais elementos deslocam o layout
+npm run render       # capturas de tela em mobile e desktop
 ```
+
+Geram artefatos versionados, rodam só quando a origem muda:
+
+```bash
+npm run fontes       # subset das fontes (precisa de Python + fonttools)
+npm run imagens      # AVIF + WebP a partir de src/img-originais/
+npm run og           # imagem de compartilhamento 1200×630
+```
+
+> **Ao rodar `npm run medir`, desligue o `npm run dev`.** O Lighthouse simula
+> CPU 4× mais lenta; qualquer processo competindo por CPU derruba a nota sem
+> que nada tenha mudado no código.
 
 `npm run fontes` regera os `.woff2` subsetados. Só é necessário ao trocar de
 fonte — os arquivos ficam versionados em `public/fonts/` e exigem Python

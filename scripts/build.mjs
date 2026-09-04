@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
-  CHECKOUT, PROMESSAS, VIP,
+  CHECKOUT, EVENTO, META, PROMESSAS, VIP,
   brl, checkoutComum, loteAtivo, proximoLote,
 } from '../config/oferta.mjs';
 
@@ -45,7 +45,26 @@ const ORCAMENTO = {
   dobra1: 120 * 1024,     // html comprimido + as duas fontes
 };
 
+const SITE = 'https://afinandocorpoemente.com.br';
+
 const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
+
+/**
+ * Meta Pixel. Enquanto META.pixelId for null, NADA e injetado — a pagina
+ * nao carrega script de terceiro nenhum, e a politica de privacidade continua
+ * verdadeira. Assim que o ID entrar no config, o snippet aparece sozinho.
+ */
+function pixelCabecalho() {
+  if (!META.pixelId) return '';
+  return `<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?` +
+    `n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;` +
+    `n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;` +
+    `t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}` +
+    `(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');` +
+    `fbq('init','${META.pixelId}');fbq('track','PageView');</script>` +
+    `<noscript><img height="1" width="1" style="display:none" alt=""` +
+    ` src="https://www.facebook.com/tr?id=${META.pixelId}&ev=PageView&noscript=1"></noscript>`;
+}
 
 async function main() {
   await rm(p('dist'), { recursive: true, force: true });
@@ -103,19 +122,37 @@ async function main() {
   };
 
   /* ---------- HTML ---------- */
-  let html = await readFile(p('src/index.html'), 'utf8');
+  // Todo .html em src/ vira uma pagina. So a index leva JavaScript: as
+  // paginas legais nao tem contador, barra fixa nem rastreio.
+  const paginas = (await readdir(p('src'))).filter((f) => f.endsWith('.html'));
+  let html = '';
 
-  html = html
-    .replace('<!--CSS-->', `<style>${css}</style>`)
-    .replace('<!--JS-->', js ? `<script>${js}</script>` : '');
+  for (const arquivo of paginas) {
+    let doc = await readFile(p('src', arquivo), 'utf8');
+    const ehIndex = arquivo === 'index.html';
 
-  html = html.replace(/\{\{([\w-]+)\}\}/g, (m, chave) => {
-    if (!(chave in valores)) throw new Error(`placeholder desconhecido no HTML: {{${chave}}}`);
-    return valores[chave];
-  });
+    doc = doc
+      .replace('<!--CSS-->', `<style>${css}</style>${ehIndex ? pixelCabecalho() : ''}`)
+      .replace('<!--JS-->', ehIndex && js ? `<script>${js}</script>` : '');
 
-  html = minificarHtml(html);
-  await writeFile(p('dist/index.html'), html);
+    doc = doc.replace(/\{\{([\w-]+)\}\}/g, (m, chave) => {
+      if (!(chave in valores)) throw new Error(`placeholder desconhecido em ${arquivo}: {{${chave}}}`);
+      return valores[chave];
+    });
+
+    doc = minificarHtml(doc);
+    await writeFile(p('dist', arquivo), doc);
+    if (ehIndex) html = doc;
+  }
+
+  /* ---------- robots e sitemap ---------- */
+  const hoje = new Date().toISOString().slice(0, 10);
+  await writeFile(p('dist/robots.txt'),
+    `User-agent: *\nAllow: /\nDisallow: /termos\nDisallow: /privacidade\n\nSitemap: ${SITE}/sitemap.xml\n`);
+  await writeFile(p('dist/sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    `  <url><loc>${SITE}/</loc><lastmod>${hoje}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n` +
+    `</urlset>\n`);
 
   /* ---------- estáticos ---------- */
   if (existsSync(p('public'))) await cp(p('public'), p('dist'), { recursive: true });

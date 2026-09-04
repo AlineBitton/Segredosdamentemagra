@@ -85,6 +85,29 @@
     ).observe(gatilho);
   })();
 
+  /* ─── evento de checkout no Pixel ─────────────────────────
+     Dispara so se o Pixel existir. Sem ID no config, este bloco nao faz
+     nada e nenhum script de terceiro e carregado.
+     ---------------------------------------------------------- */
+  (function checkoutTrack() {
+    document.addEventListener('click', (ev) => {
+      const a = ev.target.closest('a[data-checkout]');
+      if (!a || typeof window.fbq !== 'function') return;
+      const tipo = a.getAttribute('data-checkout');
+      const preco = document.querySelector(
+        tipo === 'vip' ? '[data-slot="preco-vip"]' : '[data-slot="preco-comum"]'
+      );
+      const valor = preco ? Number(preco.textContent.replace(/[^\d]/g, '')) : undefined;
+      const lote = document.documentElement.getAttribute('data-lote') || '';
+      window.fbq('track', 'InitiateCheckout', {
+        content_name: tipo === 'vip' ? 'VIP Diagnostico dos 5 Corpos' : `Comum ${lote}`,
+        content_category: 'Imersao Segredos da Mente Magra',
+        value: valor,
+        currency: 'BRL',
+      });
+    }, { passive: true });
+  })();
+
   /* ─── UTM: rede de segurança ──────────────────────────────
      A borda já decora os links de checkout. Isto cobre dois casos que
      a borda não alcança: links inseridos depois do carregamento, e a
