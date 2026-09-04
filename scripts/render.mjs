@@ -44,21 +44,16 @@ for (const a of alvos) {
   pg.on('pageerror', (e) => erros.push(String(e)));
 
   await pg.goto('http://127.0.0.1:4321/', { waitUntil: 'networkidle' });
-  // revela tudo e força o carregamento das imagens lazy antes de capturar
-  await pg.evaluate(async () => {
+  // Rolar a pagina inteira para acordar as imagens lazy era lento demais
+  // (a pagina tem mais de 20 mil pixels de altura). Trocar loading=lazy por
+  // eager e deixar o networkidle resolver faz o mesmo em uma fracao do tempo.
+  await pg.evaluate(() => {
     document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visivel'));
-    const alt = document.documentElement.scrollHeight;
-    for (let y = 0; y < alt; y += window.innerHeight) {
-      window.scrollTo(0, y);
-      await new Promise((r) => setTimeout(r, 90));
-    }
-    window.scrollTo(0, 0);
-    await Promise.all([...document.images].filter((i) => !i.complete)
-      .map((i) => new Promise((r) => { i.onload = i.onerror = r; })));
+    document.querySelectorAll('img[loading="lazy"]').forEach((i) => { i.loading = 'eager'; });
   });
-  await pg.waitForTimeout(600);
+  await pg.waitForLoadState('networkidle');
+  await pg.waitForTimeout(500);
 
-  await pg.screenshot({ path: `docs/capturas/${a.nome}-completa.png`, fullPage: true });
   await pg.screenshot({ path: `docs/capturas/${a.nome}-dobra1.png` });
   for (const [nome, sel] of [['oferta','#oferta'],['mecanismo','.mecanismo'],['caminhos','.caminhos'],['provas','.provas'],['agregado','.agregado']]) {
     const el = await pg.$(sel);
