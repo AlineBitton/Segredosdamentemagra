@@ -50,7 +50,7 @@
             <span data-slot="lote-nome">{{lote-nome}}</span> ·
             <strong data-slot="preco-comum">{{preco-comum}}</strong> ·
             o valor sobe em
-            <time data-deadline="{{deadline}}"><b data-cd>—</b></time>
+            <time data-deadline="{{deadline}}"><b data-cd>{{contador}}</b></time>
           </p>
         </div>
       </div>
@@ -217,6 +217,10 @@
         <p style="margin-top:var(--s-5)">
           <strong>Como eu sei disso? Porque eu vivi na pele.</strong>
         </p>
+        <p style="margin-top:var(--s-4)">
+          Não é teoria que eu li. É o caminho que eu fiz — e depois refiz com
+          centenas de mulheres, até virar método.
+        </p>
 
         <!-- [[PRECISO: a história da Aline em 4 partes — onde ela estava (com
              uma cena concreta), o que tentou antes, o que virou a chave, e
@@ -317,6 +321,14 @@
             <p class="eco">A mão que abre a geladeira sem você ter decidido.</p>
           </li>
         </ul>
+      </div>
+
+      <div class="bloco">
+        <p class="lead">
+          <strong>Pensar, sentir e agir é o que acontece.</strong><br>
+          Os 5 corpos são <strong>onde</strong> acontece — e é por eles que a
+          gente vai trabalhar nos 3 dias.
+        </p>
       </div>
 
       <div class="bloco">
@@ -482,6 +494,12 @@
         </li>
       </ul>
 
+      <p class="depois-do-depois">
+        Você já viu muitos antes e depois. A pergunta que você faz — e que
+        ninguém responde — é o que aconteceu <strong>depois do depois</strong>.
+        É essa a conversa dos 3 dias.
+      </p>
+
       <div class="cta" style="text-align:center">
         <a class="btn btn--bloco" href="#oferta">Quero esse resultado para mim</a>
       </div>
@@ -560,7 +578,7 @@
       <div class="oferta__topo reveal">
         <p class="eyebrow contador">
           <span data-slot="lote-nome">{{lote-nome}}</span> · termina em
-          <b data-cd>—</b>
+          <b data-cd>{{contador}}</b>
         </p>
         <h2 class="h2" style="margin-top:var(--s-3)">Escolha como você quer viver esses 3 dias</h2>
         <p class="lead" style="margin-top:var(--s-4)">
@@ -582,9 +600,12 @@
             <li>Aplicação prática em todos os dias</li>
             <li>Garantia incondicional já no 1º dia</li>
           </ul>
+          <!-- [[CONFIRMAR: existe replay de curta duracao para o Comum? Se
+               existir, dizer aqui. Se nao, acrescentar "depois dos 3 dias o
+               acesso encerra" — mas so com a sua confirmacao.]] -->
           <p class="plano__nao">
-            Não inclui o Diagnóstico dos 5 Corpos nem o Passe de 1 ano.
-            Depois dos 3 dias, o acesso encerra.
+            Não inclui o Diagnóstico dos 5 Corpos nem o Passe de 1 ano
+            para rever a imersão.
           </p>
           <div class="cta">
             <a class="btn" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
@@ -645,7 +666,7 @@
 
       <p class="oferta__rodape">
         Compra 100% segura via Hub.la · Garantia incondicional no 1º dia ·
-        O <span data-slot="lote-nome">{{lote-nome}}</span> termina em <b class="contador" data-cd>—</b>.
+        O <span data-slot="lote-nome">{{lote-nome}}</span> termina em <b class="contador" data-cd>{{contador}}</b>.
         Depois, o Comum passa para <span data-slot="preco-proximo">{{preco-proximo}}</span>.
       </p>
     </div>
@@ -693,6 +714,11 @@
           realidade materializada. Quilos a menos na balança.
         </p>
       </div>
+
+      <p style="margin-top:var(--s-6)">
+        E se você escolher o VIP, o que você está pagando não é o evento.
+        <strong>É a hora que eu vou passar olhando só o seu caso.</strong>
+      </p>
 
       <div class="cta">
         <a class="btn btn--bloco" href="#oferta">Quero garantir minha vaga</a>

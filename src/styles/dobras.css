@@ -632,3 +632,15 @@
 .legal p, .legal ul { margin-top: var(--s-4); }
 .legal a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .legal .eyebrow a { text-decoration: none; }
+
+/* fecho da dobra de provas: nomeia a desconfiança dela com antes-e-depois
+   antes que ela a formule, e reivindica o território dos 3 dias. */
+.depois-do-depois {
+  max-width: 54ch;
+  margin: var(--s-7) auto 0;
+  text-align: center;
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--txt-2);
+}
+.depois-do-depois strong { color: var(--txt); }

@@ -21,6 +21,7 @@ import {
   VIP,
   brl,
   checkoutComum,
+  contadorTexto,
   escolherPromessa,
   loteAtivo,
   proximoLote,
@@ -88,6 +89,13 @@ export const onRequest = async (context) => {
     .on('[data-deadline]', {
       element(el) {
         el.setAttribute('data-deadline', lote.fim || '');
+      },
+    })
+    // valor inicial do contador: a página já nasce com o tempo certo, sem
+    // travessão piscando antes do JavaScript e funcionando sem ele
+    .on('[data-cd]', {
+      element(el) {
+        el.setInnerContent(contadorTexto(agora));
       },
     })
     // links de checkout, já com UTM e sck

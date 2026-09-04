@@ -144,6 +144,23 @@ export function brl(centavos) {
   );
 }
 
+/**
+ * Texto do contador no instante `agora`. Usado no build e na borda para que a
+ * página já nasça com o tempo certo — sem travessão piscando antes do
+ * JavaScript, e funcionando mesmo com JavaScript desligado.
+ */
+export function contadorTexto(agora = Date.now()) {
+  const l = loteAtivo(agora);
+  if (!l.fim) return 'encerrado';
+  const s = Math.max(0, Math.floor((Date.parse(l.fim) + 1 - agora) / 1000));
+  const dd = (n) => String(n).padStart(2, '0');
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const seg = s % 60;
+  return d > 0 ? `${d}d ${dd(h)}h ${dd(m)}m ${dd(seg)}s` : `${dd(h)}h ${dd(m)}m ${dd(seg)}s`;
+}
+
 /** Variante de promessa a partir dos parâmetros da URL. Sempre válida. */
 export function escolherPromessa(params) {
   const bruto = (params.get('p') || params.get('utm_content') || '')

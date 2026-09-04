@@ -892,3 +892,85 @@ Aparece após o usuário passar da dobra 03. Altura ≤ 64px, sem empurrar layou
 | **Narrativa:** 93/7 como alívio, não sentença | ✅ Dobra 07, bloco 3 |
 | **Narrativa:** tríade pensar-sentir-agir | ✅ Dobra 07, bloco 4 · Dobra 04, bullet 2 |
 | **Narrativa:** Ponto B como capacidade, não desfecho | ✅ "a mudança passar a ser sua" — nunca "você conseguiu" |
+
+---
+
+# REVISÃO PÓS-MONTAGEM
+
+*Feita depois de ler a página inteira montada, na ordem em que a Renata leria.
+Sete achados. Dois eram bugs de implementação; cinco eram de copy.*
+
+## 1 · A incoerência que custava credibilidade ⚠️
+
+A página montada ensinava **três** frameworks e nunca dizia como se encaixam:
+
+| Onde | O que dizia |
+|---|---|
+| Dobra 07 | "tríade que dança entre pensar, sentir e agir" — **3** |
+| Dobra 05 | "corpo físico, mental, emocional e espiritual" — **4** |
+| Dobras 12, 14, FAQ 1 e 4 | "inteligência dos 5 corpos" — **5** |
+| Card do VIP | "o que você pensa, o que você sente e o que você faz" — **3** |
+
+Para uma gestora de 44 anos que já leu bula, isso não lê como profundidade.
+Lê como desleixo — e desleixo é exatamente o que faz essa mulher descontar
+autoridade.
+
+**Correção**, ao fim da dobra 07:
+
+> **Pensar, sentir e agir é o que acontece.**
+> Os 5 corpos são **onde** acontece — e é por eles que a gente vai trabalhar
+> nos 3 dias.
+
+Duas linhas, e os dois vocabulários passam a se sustentar em vez de competir.
+Não depende de saber qual é o 5º corpo — mas a decisão do doc 02, §3 continua
+de pé.
+
+## 2 · A dobra emocional prometia e parava
+
+Ela terminava em *"Como eu sei disso? Porque eu vivi na pele."* — e ia direto
+para o botão. Uma promessa de história que a página não contava, três dobras
+antes da oferta, justamente onde a confiança deveria estar subindo.
+
+Acrescentado um fecho que funciona com ou sem a história, mantendo o espaço
+marcado para ela:
+
+> Não é teoria que eu li. É o caminho que eu fiz — e depois refiz com centenas
+> de mulheres, até virar método.
+
+## 3 · Eu tinha afirmado algo que não sei
+
+O card do Comum dizia *"Depois dos 3 dias, o acesso encerra."* Eu escrevi isso
+por dedução — o VIP inclui o Passe de 1 ano, logo o Comum não tem acesso longo.
+Mas **não sei se existe um replay curto**, e o anexo das ofertas nunca chegou.
+
+Removido. Ficou só o que é certo: *"Não inclui o Diagnóstico dos 5 Corpos nem o
+Passe de 1 ano para rever a imersão."* Marcado `[[CONFIRMAR]]` no código.
+
+## 4 · "Por que custa tão barato" desvalorizava o VIP
+
+Essa dobra vem **depois** da oferta e argumenta valor simbólico, iFood, preço
+baixo. Para quem acabou de considerar o VIP de R$197, isso empurra na direção
+errada. Acrescentado antes do CTA:
+
+> E se você escolher o VIP, o que você está pagando não é o evento.
+> **É a hora que eu vou passar olhando só o seu caso.**
+
+## 5 · A prova social não falava a moeda dela
+
+Ela já viu mil antes e depois. O mapa diz que a pergunta dela é
+*"você já viu alguém parar e ficar bem? alguém de verdade, não de propaganda?"*
+
+Nomear a desconfiança **antes** que ela a formule é o movimento de
+reconhecimento do mapa. Acrescentado ao fim do grid:
+
+> Você já viu muitos antes e depois. A pergunta que você faz — e que ninguém
+> responde — é o que aconteceu **depois do depois**. É essa a conversa dos 3 dias.
+
+## 6 e 7 · Dois bugs de implementação
+
+- **O minificador colava tags** e comia espaço significativo entre elementos
+  inline: `R$ 27` + `à vista` virava `R$ 27à vista` no texto do documento.
+  Passou a deixar um espaço. Custo depois do brotli: zero.
+- **Os três contadores nasciam com um travessão** até o JavaScript rodar.
+  Agora o valor inicial é calculado no build e na borda — a página nasce com o
+  tempo certo, sem piscar, e o contador funciona até com JavaScript desligado.

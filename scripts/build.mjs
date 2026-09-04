@@ -24,7 +24,7 @@ import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
   CHECKOUT, EVENTO, META, PROMESSAS, VIP,
-  brl, checkoutComum, loteAtivo, proximoLote,
+  brl, checkoutComum, contadorTexto, loteAtivo, proximoLote,
 } from '../config/oferta.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -111,6 +111,7 @@ async function main() {
     'preco-proximo': proximo ? brl(proximo.centavos) : '',
     'preco-vip': brl(VIP.centavos),
     'deadline': lote.fim || '',
+    'contador': contadorTexto(agora),
     'lote-id': lote.id,
     'checkout-comum': checkoutComum(lote),
     'checkout-vip': CHECKOUT.vip,
@@ -200,7 +201,10 @@ function minificarHtml(s) {
   s = s
     .replace(/<!--(?!\[if)[\s\S]*?-->/g, '')
     .replace(/\n\s*/g, '\n')
-    .replace(/>\s+</g, '><')
+    // um espaco, nao zero: colar as tags remove espaco significativo entre
+    // elementos inline ("R$ 27" + "a vista" virava "R$ 27a vista"). Layouts
+    // de bloco, flex e grid ignoram texto so-de-espaco, entao nao ha custo.
+    .replace(/>\s+</g, '> <')
     .replace(/\s{2,}/g, ' ')
     .trim();
   return s.replace(/@@G(\d+)@@/g, (_, i) => guardados[+i]);
