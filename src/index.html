@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" data-lote="{{lote-id}}" data-promessa="padrao">
+<html lang="pt-BR" data-lote="{{lote-id}}" data-promessa="padrao"{{encerrado-attr}}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,6 +53,21 @@
             <time data-deadline="{{deadline}}"><b data-cd>{{contador}}</b></time>
             <span class="so-leitor" data-slot="prazo-extenso">{{prazo-extenso}}</span>
           </p>
+        </div>
+
+        <!-- Aparece só quando as vendas encerram. A regra de exibição está no
+             CSS, a partir do atributo data-encerrado que a borda põe no <html>. -->
+        <div class="encerrado">
+          <p class="encerrado__titulo">As inscrições para esta edição estão encerradas.</p>
+          <p class="mt-4">
+            A imersão aconteceu nos dias 25, 26 e 27 de setembro. Se você quiser
+            saber da próxima antes de todo mundo, fale com a nossa equipe.
+          </p>
+          <div class="cta encerrado__cta">
+            <a class="btn btn--zap" href="https://wa.me/55DDDNUMERO?text=Oi!%20Quero%20saber%20da%20pr%C3%B3xima%20turma%20da%20Imers%C3%A3o%20Segredos%20da%20Mente%20Magra" rel="noopener" target="_blank">
+              Quero saber da próxima turma
+            </a>
+          </div>
         </div>
       </div>
 
@@ -588,6 +603,15 @@
         </p>
       </div>
 
+      <div class="encerrado">
+        <p class="encerrado__titulo">As inscrições para esta edição estão encerradas.</p>
+        <div class="cta encerrado__cta">
+          <a class="btn btn--zap" href="https://wa.me/55DDDNUMERO?text=Oi!%20Quero%20saber%20da%20pr%C3%B3xima%20turma%20da%20Imers%C3%A3o%20Segredos%20da%20Mente%20Magra" rel="noopener" target="_blank">
+            Quero saber da próxima turma
+          </a>
+        </div>
+      </div>
+
       <div class="planos">
         <!-- ── Comum ── -->
         <article class="plano reveal">
@@ -668,7 +692,7 @@
       <p class="oferta__rodape">
         Compra 100% segura via Hub.la · Garantia incondicional no 1º dia ·
         O <span data-slot="lote-nome">{{lote-nome}}</span> termina em <b class="contador" data-cd>{{contador}}</b>.
-        Depois, o Comum passa para <span data-slot="preco-proximo">{{preco-proximo}}</span>.
+        <span data-slot="proximo-aviso">{{proximo-aviso}}</span>
       </p>
     </div>
   </section>

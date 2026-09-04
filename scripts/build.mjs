@@ -100,21 +100,36 @@ async function main() {
     js = r.outputFiles[0].text.trim();
   }
 
-  /* ---------- valores do lote vigente ---------- */
-  const agora = Date.now();
+  /* ---------- valores do lote vigente ----------
+     SMM_AGORA permite construir a pagina como ela ficara numa data futura.
+     Serve para revisar cada lote e o estado de encerrado antes que aconteca:
+       SMM_AGORA="2026-09-12 10:00" npm run build
+     Sem a variavel, usa o relogio real. */
+  const agora = process.env.SMM_AGORA
+    ? Date.parse(process.env.SMM_AGORA.replace(' ', 'T') +
+        (/[Z+]|-\d\d:\d\d$/.test(process.env.SMM_AGORA) ? '' : '-03:00'))
+    : Date.now();
+  if (Number.isNaN(agora)) throw new Error(`SMM_AGORA invalido: ${process.env.SMM_AGORA}`);
+  if (process.env.SMM_AGORA) {
+    console.log(`\n  ** simulando ${new Date(agora).toISOString()} (SMM_AGORA) **`);
+  }
   const lote = loteAtivo(agora);
   const proximo = proximoLote(agora);
   const padrao = PROMESSAS.padrao;
 
   const valores = {
     'lote-nome': lote.nome,
-    'preco-comum': lote.centavos == null ? '--' : brl(lote.centavos),
+    'preco-comum': lote.centavos == null ? '—' : brl(lote.centavos),
     'preco-proximo': proximo ? brl(proximo.centavos) : '',
+    'proximo-aviso': proximo
+      ? `Depois, o Comum passa para ${brl(proximo.centavos)}.`
+      : 'Este é o último lote — as inscrições encerram no dia 25 de setembro.',
     'preco-vip': brl(VIP.centavos),
     'deadline': lote.fim || '',
     'contador': contadorTexto(agora),
     'prazo-extenso': prazoTexto(agora),
     'lote-id': lote.id,
+    'encerrado-attr': lote.id === 'encerrado' ? ' data-encerrado' : '',
     'checkout-comum': checkoutComum(lote),
     'checkout-vip': CHECKOUT.vip,
     'ancora-vip': VIP.ancoraAvulsaCentavos && lote.centavos != null

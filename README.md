@@ -16,6 +16,7 @@ npm run dev          # servidor local com a função de borda ativa (porta 8788)
 npm run borda        # testes de integração da borda (precisa do dev rodando)
 npm run pronto       # checagem de pré-voo: reprova se algo ainda estiver pendente
 npm run medir        # Lighthouse mobile + desktop
+npm run estados      # constrói os 5 estados do ciclo e confere a copy
 npm run csp          # abre a página com a CSP valendo de verdade
 npm run a11y         # navegação por teclado, reflow, semântica
 npm run urls         # URLs prontas de cada variante, com UTM

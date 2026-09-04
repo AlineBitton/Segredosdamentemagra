@@ -179,3 +179,31 @@ usar `?p=<nome>`. Não precisa tocar no HTML.
 npm run medir
 ```
 Com o `npm run dev` **desligado** — ver doc 04.
+
+---
+
+## Etapa 6 · O fim do ciclo
+
+A página tem **cinco estados**, e todos já estão prontos e testados
+(`npm run estados`):
+
+| Data | Estado | O que a página mostra |
+|---|---|---|
+| até 09/09 | Lote Especial | R$27 · "Depois, o Comum passa para R$47." |
+| 10 a 15/09 | 2º Lote | R$47 · "Depois, o Comum passa para R$67." |
+| 16 a 22/09 | 3º Lote | R$67 · "Depois, o Comum passa para R$97." |
+| 23 a 25/09 | Último Lote | R$97 · **"Este é o último lote — as inscrições encerram no dia 25."** |
+| a partir de 26/09 | **Encerrado** | Sem preço, sem contador, sem botão de compra. No lugar: *"As inscrições para esta edição estão encerradas"* e um botão de WhatsApp para a próxima turma. |
+
+A virada para o estado encerrado é **automática**, decidida pelo relógio da
+Cloudflare. Você não precisa fazer nada no dia 26 — e, principalmente, a página
+não fica vendendo um evento que já aconteceu enquanto ninguém percebe.
+
+### Para revisar antes de acontecer
+
+```bash
+SMM_AGORA="2026-09-26 10:00" npm run build && npm run render
+```
+
+Isso constrói a página como ela ficará naquela data e gera as capturas.
+Nada é publicado — é só para você olhar.

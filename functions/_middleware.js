@@ -51,6 +51,9 @@ export const onRequest = async (context) => {
     'preco-comum': encerrado ? '—' : brl(lote.centavos),
     'preco-comum-numero': encerrado ? '—' : String(lote.centavos / 100),
     'preco-proximo': proximo ? brl(proximo.centavos) : '',
+    'proximo-aviso': proximo
+      ? `Depois, o Comum passa para ${brl(proximo.centavos)}.`
+      : 'Este é o último lote — as inscrições encerram no dia 25 de setembro.',
     'preco-vip': brl(VIP.centavos),
     'promessa-sub': promessa.sub,
     'prazo-extenso': prazoTexto(agora),

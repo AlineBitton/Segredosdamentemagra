@@ -651,3 +651,31 @@
   color: var(--txt-2);
 }
 .depois-do-depois strong { color: var(--txt); }
+
+/* ─── estado encerrado ───────────────────────────────────────
+   Depois do último lote, a página não pode continuar vendendo nem
+   exibindo contador. A borda marca <html data-encerrado> e o CSS
+   troca o estado inteiro — sem JavaScript, e sem uma segunda página
+   para manter em sincronia.
+   ------------------------------------------------------------ */
+.encerrado { display: none; }
+
+[data-encerrado] .encerrado { display: block; }
+[data-encerrado] .cta:not(.encerrado__cta),
+[data-encerrado] .barra,
+[data-encerrado] .planos,
+[data-encerrado] .contador,
+[data-encerrado] .oferta__rodape,
+[data-encerrado] .selos { display: none !important; }
+
+.hero .encerrado { margin-top: var(--s-6); }
+
+.encerrado__titulo {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+  color: var(--accent);
+  max-width: 30ch;
+}
+.oferta .encerrado { text-align: center; }
+.oferta .encerrado__titulo { margin-inline: auto; }
