@@ -100,7 +100,7 @@
       const valor = preco ? Number(preco.textContent.replace(/[^\d]/g, '')) : undefined;
       const lote = document.documentElement.getAttribute('data-lote') || '';
       window.fbq('track', 'InitiateCheckout', {
-        content_name: tipo === 'vip' ? 'VIP Diagnostico dos 5 Corpos' : `Comum ${lote}`,
+        content_name: tipo === 'vip' ? 'VIP Diagnostico Completo' : `Comum ${lote}`,
         content_category: 'Imersao Segredos da Mente Magra',
         value: valor,
         currency: 'BRL',

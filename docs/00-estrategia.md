@@ -122,12 +122,16 @@ Total: 17 dobras + barra fixa. **10 CTAs verdes**, espaçados a cada ~1,5 dobra.
 
 ### Tabela oficial
 
-| Lote | Início (America/Sao_Paulo) | Fim | Comum | VIP |
-|---|---|---|---|---|
-| Especial | — | **09/09 23:59:59** | **R$27** | R$197 |
-| 2 | 10/09 00:00:00 | 15/09 23:59:59 | **R$47** | R$197 |
-| 3 | 16/09 00:00:00 | 22/09 23:59:59 | **R$67** | R$197 |
-| 4 | 23/09 00:00:00 | 25/09 (início do evento) | **R$97** | R$197 |
+| Lote | Início (horário de Brasília) | Fim | Comum | Checkout | VIP |
+|---|---|---|---|---|---|
+| Especial | — | **10/09 00:59:59** | **R$27** | `pay.hub.la/b4A2La…` | R$197 |
+| 2 | **10/09 01:00:00** | 15/09 23:59:59 | **R$47** | `pay.hub.la/wMASUe…` | R$197 |
+| 3 | 16/09 00:00:00 | 22/09 23:59:59 | **R$67** | `pay.hub.la/z4k0h4…` | R$197 |
+| 4 | 23/09 00:00:00 | 25/09 23:59:59 | **R$97** | `pay.hub.la/dpK8mM…` | R$197 |
+
+> ⚠️ **A primeira virada é à 1h da manhã**, não à meia-noite — definido pela
+> Aline. As outras três viram 00:00. Quem entrar na página entre 00:00 e 00:59
+> do dia 10 ainda vê R$27, e o checkout cobra R$27. Testado.
 
 Regra: **em cada data aparecem exatamente dois preços** — Comum (do lote vigente)
 e VIP (R$197, fixo). Nunca mostrar os quatro lotes ao mesmo tempo como tabela.

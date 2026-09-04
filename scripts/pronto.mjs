@@ -55,7 +55,10 @@ for (const f of ['index.html', 'termos.html', 'privacidade.html', 'robots.txt',
 }
 
 /* ── configuração da oferta ───────────────────────────────────── */
-if (!EVENTO.horario) erro('EVENTO.horario nao definido', 'preencha em config/oferta.mjs');
+// o horario nao impede publicar (o acesso e combinado por WhatsApp), mas a
+// pagina converte melhor dizendo a que horas comeca
+if (!EVENTO.horario) aviso('horario de inicio nao definido',
+  'a pagina nao diz a que horas os 3 dias comecam — e a pergunta que mais chega no suporte');
 if (!EVENTO.plataforma) erro('EVENTO.plataforma nao definida', 'preencha em config/oferta.mjs');
 
 const semLink = LOTES.filter((l) => !CHECKOUT.comumPorLote?.[l.id]);
@@ -68,10 +71,8 @@ if (semLink.length === LOTES.length) {
 }
 
 if (!META.pixelId) aviso('Meta Pixel desligado', 'sem ele nao da para otimizar campanha nem medir conversao');
-if (!VIP.ancoraAvulsaCentavos) {
-  aviso('ancora de preco do VIP desligada',
-        'preencha VIP.ancoraAvulsaCentavos com o valor da consulta avulsa: e a maior alavanca do VIP');
-}
+// decisao da Aline: o valor da consulta avulsa nao entra na pagina.
+// Nao e pendencia, e escolha — por isso nao vira aviso.
 
 /* ── links de checkout no HTML final ──────────────────────────── */
 {

@@ -53,39 +53,31 @@ Ver §4 — escrevi as duas versões, você decide.
 
 ---
 
-## 3. ⚠️ A bifurcação: "5 corpos" × narrativa
+## 3. ✅ RESOLVIDO — os "5 corpos" saíram da página
 
-**A narrativa não menciona os 5 corpos em nenhum ponto.** Ela é construída sobre a
-tríade *pensar / sentir / agir* e sobre padrões no sistema nervoso.
+*Decisão da Aline, 04/09: "você viajou sobre esses 5 corpos, não fale sobre isso."*
 
-A copy aprovada em consultoria menciona "a inteligência dos 5 corpos" **sete vezes** —
-inclusive na promessa central.
+A página agora tem **um único vocabulário**: a tríade **pensar, sentir e agir**,
+que é a da narrativa. Todas as 13 menções aos "5 corpos" foram substituídas:
 
-Além disso: o 5º corpo nunca foi nomeado em nenhum material que recebi (a dobra 4
-lista só quatro — físico, mental, emocional, espiritual).
-
-E há um risco de persona: *"inteligência dos 5 corpos"* é exatamente o tipo de
-construção que o mapa classifica como **jargão técnico da profissional — "ela lê
-como enrolação"**. Renata é gestora, já leu bula, e desconta autoridade de quem
-soa esotérico. Já *"pensar, sentir, agir"* e *"93% / 7%"* ela respeita na hora.
-
-### Três caminhos
-
-| | Caminho | Consequência |
+| Onde | Antes | Agora |
 |---|---|---|
-| **A** | **Tríade como tese pública, 5 corpos como estrutura interna da imersão** ⭐ | Hero, dobras 03/04/07 e anúncios falam pensar-sentir-agir e 93/7. Os 5 corpos aparecem só na dobra 05 ("o que você faz nos 3 dias"), como grade do conteúdo. **Recomendado.** Zero jargão na entrada, método preservado por dentro. |
-| **B** | Manter 5 corpos em tudo | Coerente com a copy aprovada, mas expõe a promessa central ao filtro de enrolação da persona — e exige nomear o 5º corpo. |
-| **C** | Remover 5 corpos por completo | Narrativa mais limpa e mais afiada. Mas contraria a copy aprovada em consultoria e pode não refletir o que você realmente ensina nos 3 dias. |
+| Dobra 05, item 4 | "unir corpo físico, mental, emocional e espiritual" | "unir o que você pensa, o que sente e o que faz" |
+| Dobra 07 | ponte "os 5 corpos são onde acontece" | removida — não há mais dois vocabulários para conciliar |
+| 2 caminhos | "ativar a inteligência dos 5 corpos" | "trabalhar as três pontas — pensar, sentir e agir" |
+| Nome do VIP | "Diagnóstico dos 5 Corpos" | **"Diagnóstico Completo"** |
+| Por que custa tão barato | "para ativar a inteligência dos 5 corpos" | "para trabalhar as três pontas que decidem o seu resultado" |
+| FAQ 1 | "quando os 5 corpos são nutridos juntos" | "quando pensar, sentir e agir andam juntos" |
+| FAQ 4 | "quando os 5 corpos começam a ser nutridos" | "quando as três pontas começam a ser trabalhadas juntas" |
 
-**Minha recomendação: A.**
-Não porque os 5 corpos sejam fracos — mas porque *entrada* e *conteúdo* têm funções
-diferentes. A entrada precisa de mecanismo concreto para vencer o ceticismo de quem
-já tentou por 20 anos. O conteúdo pode ter a estrutura que você quiser, e ela ganha
-credibilidade **depois** que o mecanismo convenceu.
+Isso resolve, de vez, a incoerência apontada na revisão pós-montagem
+(doc 01): a página ensinava 3, 4 e 5 sem dizer como se encaixavam. Agora
+ensina uma coisa só, e é a mesma coisa da narrativa.
 
-**Preciso da sua decisão.** E, se for B, preciso do 5º corpo.
-
----
+**Sobre o nome do VIP.** "Diagnóstico" fica porque é a palavra que essa persona
+respeita — ela já leu bula. "Completo" entrou porque é a resposta direta à dor
+central do mapa: *cada um leu uma fatia, ninguém leu o conjunto*. Se preferir
+outro nome, é uma linha em `config/oferta.mjs`.
 
 ## 4. Faixa etária — três números diferentes em circulação
 

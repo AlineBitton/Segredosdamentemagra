@@ -12,20 +12,25 @@ export const EVENTO = {
   nome: 'Imersão Segredos da Mente Magra',
   datas: '25, 26 e 27 de setembro',
   ano: 2026,
-  horario: null,        // [[PRECISO]] ex.: '20h (horário de Brasília)'
-  plataforma: null,     // [[PRECISO]] ex.: 'Zoom'
+  fuso: 'horário de Brasília',
+  horario: null,        // [[PRECISO]] o horário de início — ex.: '20h'
+  plataforma: 'O link de acesso é enviado por WhatsApp',
 };
 
 /**
  * Lotes do ingresso COMUM.
  * `fim` = último instante em que o lote está ativo (UTC).
- *   Lote Especial …… até 09/09 23:59:59 BRT  →  2026-09-10T02:59:59.999Z
+ *   Lote Especial …… até 10/09 00:59:59 BRT  →  2026-09-10T03:59:59.999Z
  *   2º lote ………………… até 15/09 23:59:59 BRT  →  2026-09-16T02:59:59.999Z
  *   3º lote ………………… até 22/09 23:59:59 BRT  →  2026-09-23T02:59:59.999Z
  *   Último lote ……… até 25/09 23:59:59 BRT  →  2026-09-26T02:59:59.999Z
+ *
+ * ⚠️ O 1º lote vai até 1h da manhã do dia 10, conforme definido pela Aline —
+ *    é a única virada que não acontece à meia-noite. As outras três viram
+ *    00:00. Ver doc 00, §5.
  */
 export const LOTES = [
-  { id: 'especial', nome: 'Lote Especial', centavos: 2700, fim: '2026-09-10T02:59:59.999Z' },
+  { id: 'especial', nome: 'Lote Especial', centavos: 2700, fim: '2026-09-10T03:59:59.999Z' },
   { id: 'lote2',    nome: '2º Lote',       centavos: 4700, fim: '2026-09-16T02:59:59.999Z' },
   { id: 'lote3',    nome: '3º Lote',       centavos: 6700, fim: '2026-09-23T02:59:59.999Z' },
   { id: 'lote4',    nome: 'Último Lote',   centavos: 9700, fim: '2026-09-26T02:59:59.999Z' },
@@ -34,18 +39,26 @@ export const LOTES = [
 /** VIP: preço fixo, sem lote. */
 export const VIP = {
   id: 'vip',
-  nome: 'VIP · Diagnóstico dos 5 Corpos',
+  nome: 'VIP · Diagnóstico Completo',
   centavos: 19700,
-  // [[PRECISO]] valor da consulta avulsa de 50 min — usado na âncora de preço.
+  // Decisão da Aline: o valor da consulta avulsa NÃO entra na página.
+  // Deixar em null mantém a linha de ancoragem desligada.
   ancoraAvulsaCentavos: null,
 };
 
 export const CHECKOUT = {
-  // [[CONFIRMAR]] o link do Comum muda de preço sozinho na hub.la por lote?
-  // Se existir um link por lote, preencher `porLote` e o motor passa a usá-lo.
-  comum: 'https://hub.la/g/EsOXcCvHKYCeq0J2t5Zk',
-  comumPorLote: { especial: null, lote2: null, lote3: null, lote4: null },
-  // Checkout direto converte mais que a página de produto.
+  // A hub.la NÃO muda o preço sozinha: cada lote tem o seu próprio checkout.
+  // O motor troca o link junto com o preço, então página e cobrança nunca
+  // divergem. Todos são checkout direto (pay.hub.la), que converte mais que
+  // a página de produto.
+  comumPorLote: {
+    especial: 'https://pay.hub.la/b4A2LaNKsKbREw7QRHQs',  // R$27
+    lote2:    'https://pay.hub.la/wMASUevrR6GHnmQbZebx',  // R$47
+    lote3:    'https://pay.hub.la/z4k0h48mWz6aC1PD7nO5',  // R$67
+    lote4:    'https://pay.hub.la/dpK8mM9W1QylMVFmwcj1',  // R$97
+  },
+  // usado só se algum lote ficar sem link próprio
+  comum: 'https://pay.hub.la/b4A2LaNKsKbREw7QRHQs',
   vip: 'https://pay.hub.la/tdO52QluixGZPMu0Oqt7',
   vipFallback: 'https://hub.la/g/8uuaLE8FfUWJC4d2rn4t',
   // Hosts cujos links recebem propagação de UTM + sck.

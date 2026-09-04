@@ -3,7 +3,7 @@
  * às datas que a Aline definiu no horário de Brasília.
  * Roda com: npm test
  */
-import { LOTES, loteAtivo, proximoLote, segundosAteVirada, brl, escolherPromessa } from '../config/oferta.mjs';
+import { LOTES, checkoutComum, loteAtivo, proximoLote, segundosAteVirada, brl, escolherPromessa } from '../config/oferta.mjs';
 
 let falhas = 0;
 const ok = (cond, msg) => {
@@ -25,7 +25,7 @@ const emSP = (iso) =>
     .replace(',', ''); // pt-BR insere vírgula entre data e hora
 
 console.log('\n── fronteiras em horário de Brasília ───────────────────────');
-const esperado = ['09/09/2026 23:59:59', '15/09/2026 23:59:59', '22/09/2026 23:59:59', '25/09/2026 23:59:59'];
+const esperado = ['10/09/2026 00:59:59', '15/09/2026 23:59:59', '22/09/2026 23:59:59', '25/09/2026 23:59:59'];
 LOTES.forEach((l, i) => {
   ok(emSP(l.fim) === esperado[i], `${l.nome.padEnd(14)} termina ${emSP(l.fim)} BRT`);
 });
@@ -33,8 +33,9 @@ LOTES.forEach((l, i) => {
 console.log('\n── lote ativo por data ─────────────────────────────────────');
 const casos = [
   ['2026-09-04 10:00:00', 'especial', 'hoje'],
-  ['2026-09-09 23:59:59', 'especial', 'último segundo do Lote Especial'],
-  ['2026-09-10 00:00:00', 'lote2',    'virada para o 2º lote'],
+  ['2026-09-09 23:59:59', 'especial', 'meia-noite ainda e o 1o lote'],
+  ['2026-09-10 00:59:59', 'especial', 'último segundo do Lote Especial'],
+  ['2026-09-10 01:00:00', 'lote2',    'virada para o 2º lote, 1h da manha'],
   ['2026-09-15 23:59:59', 'lote2',    'último segundo do 2º lote'],
   ['2026-09-16 00:00:00', 'lote3',    'virada para o 3º lote'],
   ['2026-09-22 23:59:59', 'lote3',    'último segundo do 3º lote'],
@@ -57,8 +58,18 @@ ok(brl(19700) === 'R$ 197', 'VIP = R$ 197');
 console.log('\n── próximo lote e contador ─────────────────────────────────');
 ok(proximoLote(brt('2026-09-04 10:00:00')).centavos === 4700, 'depois do especial vem R$ 47');
 ok(proximoLote(brt('2026-09-24 10:00:00')) === null, 'o último lote não tem próximo');
-const s = segundosAteVirada(brt('2026-09-09 23:59:00'));
+const s = segundosAteVirada(brt('2026-09-10 00:59:00'));
 ok(s === 60, `faltando 60s para a virada, o motor devolve ${s}`);
+
+console.log('\n── um checkout por lote ────────────────────────────────────');
+{
+  const links = LOTES.map((l) => checkoutComum(l));
+  ok(new Set(links).size === LOTES.length, 'os 4 lotes tem links DIFERENTES');
+  LOTES.forEach((l, i) => {
+    ok(/^https:\/\/pay\.hub\.la\/[A-Za-z0-9]+$/.test(links[i]),
+       `${l.nome.padEnd(14)} ${brl(l.centavos).padEnd(6)} -> ${links[i].split('/').pop()}`);
+  });
+}
 
 console.log('\n── troca de promessa ───────────────────────────────────────');
 const q = (s) => new URLSearchParams(s);
