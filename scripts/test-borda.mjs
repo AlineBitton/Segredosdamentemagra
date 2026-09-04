@@ -50,7 +50,7 @@ console.log('\n── resposta base ──────────────�
 }
 
 console.log('\n── troca de promessa ───────────────────────────────────────');
-for (const id of ['edepois', '93', 'bariatrica', 'divisao']) {
+for (const id of Object.keys(PROMESSAS).filter((k) => k !== 'padrao')) {
   const { html } = await pegar(`?p=${id}`);
   const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || '';
   const esperado = PROMESSAS[id].h1.replace(/<[^>]+>/g, '').slice(0, 24);
