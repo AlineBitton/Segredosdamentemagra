@@ -1,0 +1,51 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 880,
+      "h": 640
+    },
+    {
+      "file": "Afinacao.dc.html",
+      "x": 980,
+      "y": 0,
+      "w": 880,
+      "h": 640
+    },
+    {
+      "file": "Ponto.dc.html",
+      "x": 1960,
+      "y": 0,
+      "w": 880,
+      "h": 640
+    },
+    {
+      "file": "Rota.dc.html",
+      "x": 490,
+      "y": 780,
+      "w": 880,
+      "h": 640
+    },
+    {
+      "file": "Tipografica.dc.html",
+      "x": 1470,
+      "y": 780,
+      "w": 880,
+      "h": 640
+    }
+  ],
+  "annotations": [
+    {
+      "id": "restricoes",
+      "x": 0,
+      "y": -230,
+      "w": 700,
+      "text": "Cinco direções para a marca do evento.\n\nTodas dentro do guia: só as cinco cores da marca, traço fino sem preenchimento, formas abertas, sem caixa alta, sem negrito, sem degradê.\n\nFora, por decisão do guia: cérebro, balança, borboleta, lótus, círculo concêntrico e qualquer coisa que meça o corpo dela.\n\nO traço nunca é ameixa — ameixa é destaque, não é ícone."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

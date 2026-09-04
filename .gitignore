@@ -19,3 +19,6 @@ docs/medicao/
 
 # previa autocontida para revisao: 500 KB, regeneravel com npm run previa
 segredos-da-mente-magra-previa.html
+
+# canvas montado da marca: 2,5 MB, regeneravel com logo/montar.mjs + o seeder
+logo/marca-mente-magra.html
