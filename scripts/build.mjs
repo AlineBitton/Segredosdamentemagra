@@ -16,6 +16,7 @@
  *   página continua correta — apenas congelada no lote do build.
  */
 import { readFile, writeFile, mkdir, rm, cp, readdir, stat } from 'node:fs/promises';
+import { gzipSync, brotliCompressSync, constants as zlib } from 'node:zlib';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -32,11 +33,16 @@ const p = (...s) => path.join(RAIZ, ...s);
 /* ordem importa: tokens antes de tudo que os consome */
 const CSS = ['tokens.css', 'base.css', 'dobras.css'];
 
+/**
+ * Os tetos que importam são os COMPRIMIDOS: é isso que trafega. O tamanho cru
+ * do HTML só interessa como sinal de que a marcação está inchando.
+ */
 const ORCAMENTO = {
-  html: 26 * 1024,   // já com CSS e JS embutidos
-  css: 22 * 1024,
-  js: 5 * 1024,
-  dobra1: 120 * 1024,
+  cssCru: 22 * 1024,
+  jsCru: 5 * 1024,
+  htmlCru: 64 * 1024,
+  htmlBr: 14 * 1024,      // o que a Cloudflare entrega de fato
+  dobra1: 120 * 1024,     // html comprimido + as duas fontes
 };
 
 const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
@@ -89,6 +95,9 @@ async function main() {
     'lote-id': lote.id,
     'checkout-comum': checkoutComum(lote),
     'checkout-vip': CHECKOUT.vip,
+    'ancora-vip': VIP.ancoraAvulsaCentavos && lote.centavos != null
+      ? `<p class="plano__ancora" data-slot="ancora-vip">O Diagnóstico dos 5 Corpos, avulso, custa ${brl(VIP.ancoraAvulsaCentavos)}. Aqui ele entra por ${brl(VIP.centavos - lote.centavos)} a mais.</p>`
+      : '',
     'promessa-h1': padrao.h1,
     'promessa-sub': padrao.sub,
   };
@@ -123,15 +132,23 @@ async function main() {
     if (!ok) estourou = true;
     console.log(`  ${ok ? 'ok  ' : 'FURO'}  ${nome.padEnd(22)} ${kb(bytes).padStart(9)} / ${kb(teto)}`);
   };
-  linha('CSS (minificado)', Buffer.byteLength(css), ORCAMENTO.css);
-  linha('JS (minificado)', Buffer.byteLength(js), ORCAMENTO.js);
-  linha('index.html (tudo)', Buffer.byteLength(html), ORCAMENTO.html);
+  const htmlCru = Buffer.byteLength(html);
+  const htmlGz = gzipSync(html, { level: 9 }).length;
+  const htmlBr = brotliCompressSync(Buffer.from(html), {
+    params: { [zlib.BROTLI_PARAM_QUALITY]: 11 },
+  }).length;
+
+  linha('CSS minificado', Buffer.byteLength(css), ORCAMENTO.cssCru);
+  linha('JS minificado', Buffer.byteLength(js), ORCAMENTO.jsCru);
+  linha('index.html cru', htmlCru, ORCAMENTO.htmlCru);
+  console.log(`  ..    ${'index.html gzip'.padEnd(22)} ${kb(htmlGz).padStart(9)}`);
+  linha('index.html brotli', htmlBr, ORCAMENTO.htmlBr);
 
   const fontes = await pesoDe(p('dist/fonts'));
-  console.log(`  ..    ${'fontes'.padEnd(22)} ${kb(fontes).padStart(9)}`);
-  const total = Buffer.byteLength(html) + fontes;
+  console.log(`  ..    ${'fontes (woff2)'.padEnd(22)} ${kb(fontes).padStart(9)}`);
+  const total = htmlBr + fontes;
   console.log('  ' + '-'.repeat(58));
-  linha('primeira dobra', total, ORCAMENTO.dobra1);
+  linha('TRANSFERENCIA 1a dobra', total, ORCAMENTO.dobra1);
   console.log(`\n  ${estourou ? 'X orcamento estourado' : 'OK dentro do orcamento'}\n`);
   if (estourou) process.exitCode = 1;
 }

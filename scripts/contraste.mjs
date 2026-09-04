@@ -23,6 +23,8 @@ const pares = [
   ['#C9A227', '#0C0F0E', 'texto', 'dourado sobre escuro'],
   ['#14100C', '#C9A227', 'texto', 'texto sobre o badge dourado'],
   ['#A94D29', '#FAF8F5', 'texto', 'terracota do contador'],
+  ['#17853F', '#FFFFFF', 'texto', 'rótulo do botão de WhatsApp'],
+  ['#126B32', '#FFFFFF', 'texto', 'WhatsApp em hover'],
 ];
 
 let falhas = 0;

@@ -51,6 +51,11 @@ export const onRequest = async (context) => {
     'preco-vip': brl(VIP.centavos),
     'promessa-sub': promessa.sub,
   };
+  if (VIP.ancoraAvulsaCentavos && lote.centavos != null) {
+    textos['ancora-vip'] =
+      `O Diagnóstico dos 5 Corpos, avulso, custa ${brl(VIP.ancoraAvulsaCentavos)}. ` +
+      `Aqui ele entra por ${brl(VIP.centavos - lote.centavos)} a mais.`;
+  }
 
   const hrefs = {
     comum: comQueryDaCampanha(checkoutComum(lote), url),

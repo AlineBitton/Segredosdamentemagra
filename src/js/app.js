@@ -16,19 +16,20 @@
   /* ─── contador ────────────────────────────────────────────── */
   (function contador() {
     const alvo = $('[data-deadline]');
-    const saida = $('[data-cd]');
-    if (!alvo || !saida) return;
+    const saidas = $$('[data-cd]');   // a página tem 3: hero, oferta e rodapé da oferta
+    if (!alvo || !saidas.length) return;
 
     const fim = Date.parse(alvo.getAttribute('data-deadline'));
     if (!Number.isFinite(fim)) return;
 
     const dd = (n) => String(n).padStart(2, '0');
+    const escrever = (txt) => saidas.forEach((e) => { e.textContent = txt; });
 
     const passo = () => {
       const resta = fim - Date.now();
       if (resta <= 0) {
         // o lote virou: a borda é quem sabe o novo preço, então recarrega
-        saida.textContent = 'atualizando…';
+        escrever('atualizando…');
         setTimeout(() => location.reload(), 1200);
         return;
       }
@@ -37,9 +38,9 @@
       const h = Math.floor((s % 86400) / 3600);
       const m = Math.floor((s % 3600) / 60);
       const seg = s % 60;
-      saida.textContent = d > 0
+      escrever(d > 0
         ? `${d}d ${dd(h)}h ${dd(m)}m ${dd(seg)}s`
-        : `${dd(h)}h ${dd(m)}m ${dd(seg)}s`;
+        : `${dd(h)}h ${dd(m)}m ${dd(seg)}s`);
       requestAnimationFrame(() => setTimeout(passo, 1000 - (Date.now() % 1000)));
     };
     passo();
