@@ -22,46 +22,56 @@ const cor = (nome) => {
 const PAPEL  = cor('papel'),  LINHO   = cor('linho');
 const CACAU  = cor('cacau'),  CACAU2  = cor('cacau-2');
 const AMEIXA = cor('ameixa'), BARRO   = cor('barro'), BARRO_CLARO = cor('barro-claro');
-const VERDE  = cor('verde'),  VERDE2  = cor('verde-2'), ANEL = cor('verde-anel');
-const CLARO  = cor('sobre-claro'),  CLARO2  = cor('sobre-claro-2');
 const ESCURO = cor('sobre-escuro'), ESCURO2 = cor('sobre-escuro-2');
 
+// Os mínimos seguem a WCAG: 4,5:1 para texto de leitura, 3:1 para texto
+// grande (>= 24px sem negrito) e para objeto — fronteira de botão, fio,
+// ícone, anel de foco. É por isso que barro serve de título grande e
+// reprova como parágrafo: o guia da marca e a norma dizem a mesma coisa.
 const pares = [
-  // ── ação: o verde só existe dentro do botão ──
-  [VERDE,  '#FFFFFF', 'texto',  'rótulo do CTA'],
-  [VERDE2, '#FFFFFF', 'texto',  'rótulo do CTA em hover'],
-  [ANEL,   CACAU,     'objeto', 'fio do botão sobre campo de cacau'],
-  [VERDE,  PAPEL,     'objeto', 'botão sobre campo de papel cru'],
-  [VERDE,  LINHO,     'objeto', 'botão sobre campo de linho'],
-  [ANEL,   CACAU,     'objeto', 'anel de foco sobre cacau'],
-  [VERDE,  PAPEL,     'objeto', 'anel de foco sobre papel cru'],
-  [VERDE,  LINHO,     'objeto', 'anel de foco sobre linho'],
+  // ── botão: ameixa nos campos claros, papel cru nos escuros ──
+  [PAPEL,  AMEIXA, 'texto',  'rótulo do botão sobre ameixa'],
+  [AMEIXA, PAPEL,  'objeto', 'botão de ameixa sobre papel cru'],
+  [AMEIXA, LINHO,  'objeto', 'botão de ameixa sobre linho'],
+  [PAPEL,  CACAU,  'texto',  'rótulo em papel no hover (fundo cacau)'],
+  [CACAU,  PAPEL,  'texto',  'rótulo do botão claro sobre cacau'],
+  [PAPEL,  CACAU,  'objeto', 'botão claro sobre campo de cacau'],
+  [PAPEL,  AMEIXA, 'objeto', 'botão claro sobre o cartão de ameixa'],
 
-  // ── leitura sobre os dois campos de respiro ──
-  [CLARO,   PAPEL, 'texto', 'texto de leitura (cacau) sobre papel cru'],
-  [CLARO,   LINHO, 'texto', 'texto de leitura (cacau) sobre linho'],
-  [CLARO2,  PAPEL, 'texto', 'texto secundário (ameixa) sobre papel cru'],
-  [CLARO2,  LINHO, 'texto', 'texto secundário (ameixa) sobre linho'],
-  [AMEIXA,  PAPEL, 'texto', 'título de força em ameixa sobre papel cru'],
-  [AMEIXA,  LINHO, 'texto', 'título de força em ameixa sobre linho'],
+  // ── anel de foco: 3:1 contra o campo em que aparece ──
+  [BARRO,       PAPEL,  'objeto', 'anel de foco sobre papel cru'],
+  [BARRO,       LINHO,  'objeto', 'anel de foco sobre linho'],
+  [BARRO_CLARO, CACAU,  'objeto', 'anel de foco sobre cacau'],
+  [BARRO_CLARO, AMEIXA, 'objeto', 'anel de foco sobre ameixa'],
 
-  // ── leitura sobre a âncora escura ──
-  [ESCURO,  CACAU,  'texto', 'texto principal sobre cacau'],
+  // ── barro: título grande, ícone e fio. Nunca texto de leitura ──
+  [BARRO, PAPEL, 'grande', 'título grande em barro sobre papel cru'],
+  [BARRO, LINHO, 'grande', 'título grande em barro sobre linho'],
+  [BARRO, PAPEL, 'objeto', 'fio e ícone de barro sobre papel cru'],
+  [BARRO, LINHO, 'objeto', 'fio e ícone de barro sobre linho'],
+  [BARRO_CLARO, CACAU,  'grande', 'título grande sobre cacau'],
+  [BARRO_CLARO, AMEIXA, 'grande', 'título grande sobre o cartão de ameixa'],
+
+  // ── ameixa: destaque, título de força, ênfase ──
+  [AMEIXA, PAPEL, 'texto', 'ênfase e etiqueta em ameixa sobre papel cru'],
+  [AMEIXA, LINHO, 'texto', 'ênfase e etiqueta em ameixa sobre linho'],
+
+  // ── cacau: o texto de leitura ──
+  [CACAU, PAPEL, 'texto', 'texto de leitura sobre papel cru'],
+  [CACAU, LINHO, 'texto', 'texto de leitura sobre linho'],
+
+  // ── leitura sobre os campos escuros ──
+  [ESCURO,  CACAU,  'texto', 'texto de leitura sobre cacau'],
   [ESCURO2, CACAU,  'texto', 'texto secundário sobre cacau'],
-  [ESCURO,  CACAU2, 'texto', 'texto principal sobre cacau profundo'],
+  [ESCURO,  CACAU2, 'texto', 'texto de leitura sobre cacau profundo'],
   [ESCURO2, CACAU2, 'texto', 'texto secundário sobre cacau profundo'],
-  [BARRO_CLARO, CACAU,  'texto', 'etiqueta em barro clareado sobre cacau'],
-  [BARRO_CLARO, CACAU2, 'texto', 'etiqueta em barro clareado sobre cacau profundo'],
+  [BARRO_CLARO, CACAU,  'texto', 'etiqueta sobre cacau'],
+  [BARRO_CLARO, CACAU2, 'texto', 'etiqueta sobre cacau profundo'],
 
-  // ── barro: traço e etiqueta, nunca parágrafo ──
-  [BARRO, PAPEL, 'objeto', 'fio de barro sobre papel cru'],
-  [BARRO, LINHO, 'objeto', 'fio de barro sobre linho'],
-
-  [AMEIXA, PAPEL, 'texto', 'etiqueta em ameixa sobre papel cru'],
-  [AMEIXA, LINHO, 'texto', 'etiqueta em ameixa sobre linho'],
-
-  // ── selo do VIP ──
-  [PAPEL, AMEIXA, 'texto', 'texto do selo sobre ameixa'],
+  // ── dentro do cartão de ameixa ──
+  [LINHO,       AMEIXA, 'texto', 'texto de leitura sobre ameixa'],
+  [PAPEL,       AMEIXA, 'texto', 'ênfase sobre ameixa'],
+  [PAPEL,       AMEIXA, 'texto', 'etiqueta sobre ameixa'],
 ];
 
 let falhas = 0;
@@ -69,7 +79,7 @@ console.log('\n  razão   mín   veredito    par');
 console.log('  ' + '─'.repeat(72));
 for (const [fg, bg, tipo, nota] of pares) {
   const r = razao(fg, bg);
-  const min = tipo === 'texto' ? 4.5 : 3;
+  const min = tipo === 'texto' ? 4.5 : 3;   // grande e objeto: 3:1
   const passa = r >= min;
   if (!passa) falhas++;
   console.log(

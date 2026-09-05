@@ -4,15 +4,15 @@
    Cinco cores, duas delas de respiro. A proporção é regra, não
    preferência:
 
-     papel cru  domina a página inteira
-     linho      entra em alternância, para dar respiração
-     cacau      ancora só a abertura e o fechamento
-     barro      traço, etiqueta, numeral — nunca parágrafo
-     ameixa     título de força e texto de leitura sobre papel
+     papel cru  fundo principal — o campo da maioria das dobras
+     linho      fundo alternativo — alterna seções e destaca blocos
+     cacau      TEXTO. E o bloco escuro de capa e fechamento
+     barro      apoio: ícone, fio divisório, título grande
+                — nunca texto de leitura
+     ameixa     destaque: título de força, ênfase, botão
 
-   Barro e ameixa somados não passam de um quarto da peça.
-   Nenhuma cor nova entra — o verde do botão é a única exceção,
-   pedida em consultoria, e existe apenas dentro do botão.
+   Barro e ameixa somados não passam de um quarto da peça, e nenhuma
+   cor nova entra. Não há verde nesta página.
    ============================================================ */
 
 :root {
@@ -22,23 +22,22 @@
   --cacau:  #3A322C;   /* âncora  · abertura e fechamento            */
   --cacau-2:#2E2823;   /* profundidade dentro da âncora              */
 
-  /* ---- ênfase ------------------------------------------- */
-  --ameixa: #5E3A46;   /* 8,31:1 sobre papel · lê como texto         */
-  --barro:  #9E5C42;   /* 4,52:1 sobre papel · traço e etiqueta      */
-  /* barro sobre cacau dá 2,43:1 e reprova. Esta é a mesma cor
-     clareada 40% em direção ao papel — 4,74:1 sobre cacau. */
+  /* ---- destaque e apoio --------------------------------- */
+  --ameixa: #5E3A46;   /* destaque · 8,31:1 sobre papel              */
+  /* barro dá 4,43:1 sobre papel: passa como título grande (mínimo
+     3:1) e reprova como texto de leitura (4,5:1). É exatamente por
+     isso que o guia o restringe a título grande, ícone e fio. */
+  --barro:  #9E5C42;
+  /* sobre cacau, barro cai para 2,43:1. Esta é a mesma cor clareada
+     40% em direção ao papel — 4,74:1 sobre cacau. */
   --barro-claro: #C09683;
 
-  /* ---- ação --------------------------------------------- */
-  --verde:  #2F6B44;   /* 6,35:1 com branco · só o botão             */
-  --verde-2:#255636;
-  --verde-anel:#4E9A6B;
-
-  /* ---- texto -------------------------------------------- */
+  /* ---- texto -------------------------------------------
+     Cacau é o texto. Não existe segundo tom de leitura: a hierarquia
+     é de tamanho, como o guia manda, e não de cinza.
+     ------------------------------------------------------- */
   --sobre-escuro:   #F2EDE5;
   --sobre-escuro-2: #C9BFB2;
-  --sobre-claro:    #3A322C;   /* cacau: texto de leitura sobre papel */
-  --sobre-claro-2:  #5E3A46;   /* ameixa: a única alternativa de leitura */
 
   /* ---- tipografia ---------------------------------------
      Fraunces no título, Jost no subtítulo e na etiqueta, Inter no
@@ -84,43 +83,78 @@
   --wrap:        min(100% - 2.5rem, 74rem);
   --wrap-narrow: min(100% - 2.5rem, 44rem);
 
-  /* anel de foco: precisa de 3:1 contra o campo em que aparece, então
-     ele muda de tom junto com o campo. */
-  --anel: var(--verde);
-
   --r-sm: 2px; --r-md: 3px; --r-pill: 999px;
   --ease: cubic-bezier(.22,.61,.36,1);
   --barra-h: 4.25rem;
 
-  --realce: var(--barro);
-  --forte:  var(--ameixa);
+  --txt: var(--cacau);
+  --titulo: var(--barro);
+  --fio: var(--barro);
+  --enfase: var(--ameixa);
   --rotulo: var(--ameixa);
+  --anel: var(--barro);
 
   color-scheme: light;
 }
 
-/* Campos. A página inteira nasce clara; a escura é exceção. */
+/* ============================================================
+   Campos
+   ------------------------------------------------------------
+   Cada campo declara o jogo inteiro de cor, e os papéis são os do
+   guia — não invenção:
+
+     --txt     leitura ........... cacau
+     --titulo  título grande ..... barro
+     --fio     ícone, fio, marca . barro
+     --enfase  ênfase ............ ameixa
+     --btn-*   botão ............. ameixa
+
+   O botão é sempre o objeto de maior contraste do campo em que está:
+   ameixa sobre os campos claros, e papel cru sobre os escuros, onde
+   ameixa contra cacau daria 1,3:1 e o botão sumiria.
+   ============================================================ */
 .sup-clara {
   --bg: var(--papel); --bg-2: var(--linho); --linha: #D9CEBE;
-  --txt: var(--sobre-claro); --txt-2: var(--sobre-claro-2);
-  --realce: var(--barro);   /* só traço e marca */
-  --forte: var(--ameixa);
+  --txt: var(--cacau); --txt-2: var(--cacau);
+  --titulo: var(--barro);      /* 4,43:1 — título grande pede 3:1 */
+  --fio:    var(--barro);
+  --enfase: var(--ameixa);     /* 8,31:1 */
   --rotulo: var(--ameixa);
+  --btn-bg: var(--ameixa); --btn-fg: var(--papel); --btn-bg2: var(--cacau);
+  --anel: var(--barro);
 }
 .sup-linho {
   --bg: var(--linho); --bg-2: var(--papel); --linha: #CFC3B1;
-  --txt: var(--sobre-claro); --txt-2: var(--sobre-claro-2);
-  --realce: var(--barro);   /* só traço e marca */
-  --forte: var(--ameixa);
+  --txt: var(--cacau); --txt-2: var(--cacau);
+  --titulo: var(--barro);      /* 3,88:1 */
+  --fio:    var(--barro);
+  --enfase: var(--ameixa);     /* 7,26:1 */
   --rotulo: var(--ameixa);
+  --btn-bg: var(--ameixa); --btn-fg: var(--papel); --btn-bg2: var(--cacau);
+  --anel: var(--barro);
 }
-/* A abertura, o rodapé e a barra fixa são campos de cacau sem a classe:
-   entram aqui para herdarem o mesmo jogo de realce, rótulo e anel. */
+/* A abertura, o suporte, o rodapé e a barra fixa são campos de cacau. */
 .sup-escura, .hero, .rodape, .barra {
   --bg: var(--cacau); --bg-2: var(--cacau-2); --linha: #4A423A;
   --txt: var(--sobre-escuro); --txt-2: var(--sobre-escuro-2);
-  --realce: var(--barro-claro);
-  --forte: var(--papel);
+  --titulo: var(--barro-claro);
+  --fio:    var(--barro-claro);
+  --enfase: var(--papel);
   --rotulo: var(--barro-claro);
-  --anel: var(--verde-anel);
+  --btn-bg: var(--papel); --btn-fg: var(--cacau); --btn-bg2: var(--linho);
+  --anel: var(--barro-claro);
+}
+/* O cartão VIP é campo de ameixa: é o destaque da página, e destaque
+   é o papel da ameixa. Leitura em linho (7,26:1), ênfase em papel. */
+.sup-ameixa {
+  --bg: var(--ameixa); --bg-2: #4E3039; --linha: #7A5261;
+  --txt: var(--linho); --txt-2: var(--linho);
+  --titulo: var(--barro-claro);
+  --fio:    var(--barro-claro);
+  --enfase: var(--papel);
+  /* barro clareado sobre ameixa dá 3,66:1: serve de fio e de título
+     grande, e reprova como etiqueta. A etiqueta aqui lê em papel. */
+  --rotulo: var(--papel);
+  --btn-bg: var(--papel); --btn-fg: var(--ameixa); --btn-bg2: var(--linho);
+  --anel: var(--barro-claro);
 }

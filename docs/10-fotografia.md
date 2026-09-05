@@ -123,6 +123,136 @@ sozinha já sustenta a dobra.
 
 ---
 
+## 4. Os prompts, com o porquê de cada escolha
+
+Se a produção for por IA, estes são os prompts prontos. Cada decisão de
+postura, roupa e expressão está justificada — nenhuma é estética por
+estética.
+
+### O que a persona precisa ver, e por quê
+
+A Renata do mapa tem 44 anos, usou caneta, pesa-se todo dia e carrega a
+pergunta "e quando eu parar?". Três coisas governam como ela lê um rosto:
+
+**1. Ela está em estado de ameaça, não de aspiração.** Quem vive em vigília
+processa rosto pelo circuito de perigo antes do de desejo. Rosto de "antes e
+depois triunfante", corpo exibido, sorriso de vitória — tudo isso ativa
+comparação, e comparação nessa mulher vira vergonha, não vontade. A face que
+abre é a face de **regulação**: músculo relaxado em volta dos olhos, boca sem
+tensão, ombros baixos. É o rosto de alguém que não está te avaliando.
+
+**2. Sorriso de Duchenne, e só ele.** O sorriso que recruta o orbicular dos
+olhos (pé de galinha) é lido como involuntário e, portanto, como verdadeiro;
+o que move só a boca é lido como social e aumenta desconfiança em quem já
+está desconfiada. Na abertura: sorriso pequeno **com os olhos**, não com os
+dentes. Sorriso largo de dentes vende empolgação, e empolgação é exatamente
+o que ela já comprou e não sustentou.
+
+**3. Mãos à vista.** Mão visível e aberta é um dos sinais mais antigos de
+"não há ameaça aqui" e aumenta confiança percebida de forma mensurável. Mão
+escondida, braço cruzado e bolso fazem o contrário. As três fotos mostram as
+mãos — e na de mentora elas ficam pousadas, abertas, sem gesticular.
+
+Mais quatro, que decidem o enquadramento:
+
+- **Olhar na câmera abre o circuito de atenção conjunta.** Use nos dois
+  momentos em que ela precisa se sentir endereçada: a abertura e a mentora.
+  Na dobra emocional, o olhar sai de câmera — ali a Aline está contando, não
+  convidando, e olhar fixo em texto longo cansa.
+- **Ângulo de câmera na altura dos olhos.** De baixo cria dominância, de cima
+  cria condescendência. Ambos custam confiança numa mulher que já se sentiu
+  julgada por profissional de saúde.
+- **Três quartos de corpo, não frontal rígido.** Corpo ligeiramente virado
+  com rosto voltado para a câmera é lido como aberto e não confrontador. O
+  frontal perfeito é postura de documento.
+- **Espaço acima do ombro.** Fundo com ar em volta do rosto reduz sensação de
+  pressão. Enquadramento apertado num rosto grande é agressivo em tela de
+  celular.
+
+### O linho, e por que ele não é só bonito
+
+Textura visível ativa resposta tátil mesmo em imagem 2D, e superfície natural
+e irregular é lida como honesta — o oposto do brilho de cetim ou do liso
+sintético. O linho também **amassa**, e amassado é sinal de alguém que vive
+dentro da roupa. Para uma mulher que desconfia de perfeição, esse é o
+detalhe que compra mais confiança do que qualquer credencial na legenda.
+
+Camisa de botão aberta no primeiro botão, mangas dobradas até o antebraço:
+antebraço à vista é a mesma família de sinal que a mão aberta.
+
+**Nunca:** preto (autoridade e distância), branco puro (estoura no papel cru
+e vira clínica), estampa (compete com o texto), decote profundo ou roupa
+justa marcando corpo (devolve a atenção para o corpo dela, que é justamente
+o assunto que trava a persona).
+
+### Prompt 1 — abertura
+
+> Photograph of a woman in her late forties with very short cropped grey
+> hair, seated on a simple chair, turned three-quarters toward the camera,
+> looking directly into the lens. She wears an **unstructured oatmeal linen
+> shirt**, first button open, sleeves rolled to the forearm; delicate gold
+> chain necklaces. **Small closed-lip smile that reaches the eyes** — warm,
+> calm, unforced; relaxed jaw, lowered shoulders. One hand rests open on her
+> thigh. **Soft single-source window light from the left**, no fill, gentle
+> shadow on the right side of the face. **Plain warm mid-grey backdrop**,
+> seamless, no furniture, no props. Shot at eye level on an 85mm lens, f/2.8,
+> waist-up, generous headroom, negative space on the left of the frame.
+> Natural skin texture with visible pores and fine lines, no retouching, no
+> beauty filter. Editorial portrait, muted warm palette. Vertical 4:5.
+
+*Negativo:* `no wide smile, no teeth, no crossed arms, no black clothing, no
+white background, no studio strobe, no rim light, no neon, no gradient, no
+text, no logo, no jewelry on hands, no low angle, no smoothing`
+
+### Prompt 2 — dobra emocional
+
+> Same woman, same short grey hair, **mid-sentence**, speaking, mouth
+> slightly open, **eyes looking off-camera to the left**, one hand raised in
+> a small natural gesture near chest height. She wears a **deep cocoa-brown
+> linen shirt**. Candid documentary feel, as if caught between two frames of
+> conversation. Soft daylight from a window, warm interior blurred far
+> behind her at f/2. Half-body, eye level. Natural skin texture, no
+> retouching. Vertical 4:5.
+
+*Negativo:* mesmo do prompt 1, mais `no posing, no direct eye contact, no
+symmetrical composition`
+
+### Prompt 3 — mentora
+
+> Same woman, **seated at a plain wooden table, forearms resting on the
+> surface, hands open and visible, fingers relaxed**. Facing the camera,
+> body angled slightly, **looking straight into the lens with a calm,
+> attentive, closed-lip expression — present, not selling**. She wears a
+> **plum-toned linen shirt**. Soft frontal window light, very slight shadow
+> under the jaw. **Quiet uncluttered background**, warm neutral wall, one
+> soft out-of-focus shape at most. Eye level, 85mm, chest-up. Natural skin
+> texture with visible lines, no retouching. Vertical 4:5.
+
+*Negativo:* mesmo do prompt 1, mais `no bookshelf, no colorful objects, no
+clutter, no crossed arms`
+
+### Como usar os prompts
+
+Prompt sozinho **não devolve o rosto da Aline** — devolve uma mulher
+parecida. Os três textos acima só funcionam num fluxo com **referência de
+identidade** (image-to-image, face reference, LoRA — o nome muda por
+ferramenta), alimentado com 4 a 6 fotos reais dela. A âncora de rosto é a
+foto do escritório: luz frontal macia, expressão neutra, sem sombra dura.
+
+Depois de gerar, confira nesta ordem — é aqui que a IA entrega o "quase":
+
+1. **Mãos.** Conte os dedos. Olhe as unhas e as juntas.
+2. **Olhos.** Os dois reflexos de luz têm que estar no mesmo lugar em cada
+   olho. Assimetria de catchlight é o tell mais comum e o que mais estraga
+   confiança, porque o cérebro lê olhar sem saber que está lendo.
+3. **Joias.** Corrente que se funde na pele, brinco que não fecha.
+4. **Pele.** Se estiver lisa demais, peça de novo. Poro e linha de expressão
+   são o que separam retrato de avatar — e nesta persona, especificamente,
+   pele perfeita sinaliza a promessa que ela já não acredita.
+5. **Linho.** Tem que ter ruga. Linho liso virou poliéster.
+
+---
+
 ## 4. Se for fotografar (o caminho recomendado)
 
 - **Luz:** uma janela grande, ela a 45° dela, sem sol direto. Meio da manhã ou

@@ -74,6 +74,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 144;
   line-height: var(--lh-titulo);
   letter-spacing: -.016em;
+  color: var(--titulo);
 }
 h2, .h2 {
   font-family: var(--display);
@@ -84,6 +85,7 @@ h2, .h2 {
   letter-spacing: -.01em;
   max-width: 22ch;
   text-wrap: balance;
+  color: var(--titulo);
 }
 h3, .h3 {
   font-family: var(--etiqueta);
@@ -106,6 +108,9 @@ h3, .h3 {
 }
 .miudo { font-size: var(--fs-peq); line-height: 1.55; color: var(--txt-2); }
 p { max-width: var(--medida); text-wrap: pretty; }
+/* Ênfase dentro do texto corrido: ameixa, não negrito. O guia manda
+   fugir do peso bold, então a ênfase é de cor, não de espessura. */
+strong, b { font-weight: var(--p-regular); color: var(--enfase); }
 
 /* ---- layout ------------------------------------------------ */
 .wrap { width: var(--wrap); margin-inline: auto; }
@@ -115,22 +120,28 @@ p { max-width: var(--medida); text-wrap: pretty; }
 .mt-6{margin-top:var(--s-6)} .mt-7{margin-top:var(--s-7)} .mt-8{margin-top:var(--s-8)}
 .centro{text-align:center} .centrado{margin-inline:auto} .sem-topo{padding-top:0}
 
-/* ---- botão: verde, e só ele --------------------------------- */
+/* ---- botão ------------------------------------------------
+   Ameixa é a cor do botão, por definição do guia. Mas o botão só
+   funciona se for o objeto de maior contraste do campo: ameixa sobre
+   cacau dá 1,3:1 e o botão sumiria na abertura. Por isso o par
+   fundo/rótulo vem do campo (--btn-bg / --btn-fg): ameixa sobre papel
+   e linho, papel cru sobre cacau e sobre o cartão de ameixa.
+   ----------------------------------------------------------- */
 .btn {
   --alt: 3.75rem;
   display: inline-flex; align-items: center; justify-content: center;
   min-height: var(--alt);
   padding: 0 var(--s-7);
-  background: var(--verde);
-  color: #fff;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
   font-family: var(--etiqueta);
   font-size: 1.0625rem; font-weight: var(--p-medio); letter-spacing: .03em;
   text-decoration: none; text-align: center;
-  border: 1px solid transparent; border-radius: var(--r-pill);
+  border: 0; border-radius: var(--r-pill);
   cursor: pointer;
   transition: background-color .18s var(--ease), transform .18s var(--ease);
 }
-.btn:hover { background: var(--verde-2); }
+.btn:hover { background: var(--btn-bg2); color: var(--btn-fg-hover, var(--btn-fg)); }
 .btn:active { transform: translateY(1px); }
 .btn--bloco { display: flex; width: 100%; }
 @media (min-width: 560px) { .btn--bloco { display: inline-flex; width: auto; } }
@@ -157,6 +168,6 @@ a.so-leitor:focus, a.so-leitor:focus-visible {
   position: fixed; top: var(--s-4); left: var(--s-4); z-index: 100;
   width:auto; height:auto; margin:0; padding: var(--s-3) var(--s-5);
   overflow: visible; clip-path: none;
-  background: var(--verde); color:#fff; font-weight:var(--p-medio);
+  background: var(--ameixa); color: var(--papel); font-weight: var(--p-medio);
   text-decoration:none; border-radius: var(--r-pill);
 }
