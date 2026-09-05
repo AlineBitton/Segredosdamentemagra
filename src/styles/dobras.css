@@ -291,6 +291,13 @@
 }
 .numeros dd { margin: var(--s-2) 0 0; font-size: var(--fs-mini); line-height: 1.5; color: var(--txt-2); }
 
+/* O percurso da Aline em dois quadros. Enquadramento de busto e não de
+   corpo inteiro: a 165px de celular, um rosto lê e uma silhueta não. */
+.percurso { margin: var(--s-7) 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); max-width: 27rem; }
+.percurso__quadro { display: grid; gap: var(--s-2); }
+.percurso img { width: 100%; aspect-ratio: 4/5; object-fit: cover; background: var(--bg-2); }
+.percurso figcaption { grid-column: 1 / -1; font-size: var(--fs-peq); color: var(--txt-2); max-width: var(--medida); }
+
 /* ─── dois caminhos ─────────────────────────────────────────
    O único cartão de cacau antes da oferta. O peso visual é o
    argumento: o caminho que pesa mais é o que se propõe.
