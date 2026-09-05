@@ -21,7 +21,8 @@
     "urls": "node scripts/urls.mjs",
     "csp": "node scripts/test-csp.mjs",
     "estados": "node scripts/test-estados.mjs",
-    "previa": "node scripts/preview.mjs"
+    "previa": "node scripts/preview.mjs",
+    "retratos": "node scripts/retratos.mjs"
   },
   "devDependencies": {
     "@fontsource-variable/bodoni-moda": "^5.3.0",

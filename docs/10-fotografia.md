@@ -279,7 +279,34 @@ Depois de gerar, confira nesta ordem — é aqui que a IA entrega o "quase":
 
 ---
 
-## 6. Entrega
+## 6. O tratamento, já pronto
+
+`npm run retratos` faz o que dá para automatizar, e só isso:
+
+1. **recorta o fundo**, quando a foto foi feita contra parede lisa —
+   preenchimento a partir das bordas para dentro, então nada no meio da
+   imagem some por ter cor parecida com a da parede;
+2. **assenta a pessoa sobre o campo da marca** daquele espaço — cacau na
+   abertura, linho nos outros três;
+3. **corta na proporção 4:5** com o ponto focal onde o olhar precisa cair;
+4. **iguala a temperatura ao papel cru** — a página inteira é quente, e foto
+   fria dentro dela lê como colada de outro lugar;
+5. **exporta AVIF e WebP** nas larguras que a página pede.
+
+Entrada em `src/img-originais/retratos/`, com os nomes da seção 7. Saída
+direto em `public/img/`.
+
+### O que ele não faz
+
+- **Não muda a cor da roupa.** Camisa azul-marinho continua azul-marinho.
+- **Não apaga elemento composto** — o cérebro de neon da foto de estúdio sai
+  na mão, não no script.
+- **Não recorta fundo com estante, móvel ou objeto.** Precisa de parede lisa.
+  Para esses, o script deixa a foto inteira e avisa.
+
+---
+
+## 7. Entrega
 
 Formato **JPG ou PNG**, sem tratamento de pele pesado, sem filtro, sem moldura.
 Colocar em `public/img/` com estes nomes:
@@ -292,6 +319,6 @@ aline-percurso-1.jpg   vertical, ≥ 1000 × 1250
 aline-percurso-2.jpg   vertical, ≥ 1000 × 1250, mesmo enquadramento da anterior
 ```
 
-`npm run imagens` gera as versões otimizadas e os tamanhos responsivos. Os
+`npm run retratos` gera as versões otimizadas e os tamanhos responsivos. Os
 espaços na página já estão reservados com a proporção final, então trocar o
 arquivo não mexe no layout nem na CLS.
