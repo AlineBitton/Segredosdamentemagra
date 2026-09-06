@@ -8,17 +8,35 @@
  * nem na borda nem no navegador. `scripts/test-lotes.mjs` prova a equivalência.
  */
 
+/**
+ * O evento tem três encontros, mas só dois são a imersão: a sexta é aula de
+ * abertura, bônus, e é nela que a garantia está ancorada — ela decide antes
+ * de o fim de semana começar.
+ */
 export const EVENTO = {
   nome: 'Imersão Segredos da Mente Magra',
-  datas: '25, 26 e 27 de setembro',
+  datas: '26 e 27 de setembro',
   ano: 2026,
   fuso: 'horário de Brasília',
-  horario: null,        // [[PRECISO]] o horário de início — ex.: '20h'
-  plataforma: 'O link de acesso é enviado por WhatsApp',
-  // Início do primeiro dia, em UTC absoluto (25/09/2026, 19h de Brasília).
-  // Serve só para a contagem regressiva da página de agradecimento; se o
-  // horário mudar, muda aqui e a página inteira acompanha.
+  plataforma: 'Google Meet, ao vivo',
+  totalHoras: '11h30',
+  encontros: [
+    { id: 'abertura', dia: 'Sexta, 25 de setembro', hora: '19h às 20h30',
+      etiqueta: 'Aula de abertura · bônus, para todos os ingressos',
+      titulo: 'A vontade voltar não significa que a caneta parou de funcionar',
+      texto: 'O que está acontecendo quando a vontade reaparece mesmo com o tratamento em dia — e por que a conclusão que você tirou disso provavelmente estava errada.' },
+    { id: 'sabado', dia: 'Sábado, 26 de setembro', hora: '10h às 17h',
+      etiqueta: 'Imersão · dia 1',
+      titulo: null,   // [[PRECISO]] tema e promessa do sábado
+      texto: 'O dia de aplicação. Você vai mapear as suas próprias pistas: onde começa, o que dispara, o que se repete. E vai sair com estratégias para a hora em que a vontade aparece.' },
+    { id: 'domingo', dia: 'Domingo, 27 de setembro', hora: '10h às 13h',
+      etiqueta: 'Imersão · dia 2',
+      titulo: null,   // [[PRECISO]] tema e promessa do domingo
+      texto: 'O caminho de volta. O que fazer quando a rotina virar, quando o dia pesar e quando você sair da linha — para que um dia fora não vire uma semana perdida.' },
+  ],
+  // Início da aula de abertura, em UTC absoluto (25/09/2026, 19h de Brasília).
   inicioISO: '2026-09-25T22:00:00.000Z',
+  fimAberturaISO: '2026-09-25T23:30:00.000Z',
 };
 
 /**
@@ -61,7 +79,7 @@ export const VIP = {
  *   55 (Brasil) + DDD (2) + numero do assinante (9, comecando por 9) = 13
  */
 export const SUPORTE = {
-  whatsapp: '5561998449585',
+  whatsapp: '5561998609818',
 };
 
 /** true se o numero tem cara de celular brasileiro valido. */
@@ -105,48 +123,67 @@ export const ENCERRADO = {
  * Troca de promessa. Só H1 e subtítulo mudam; o resto da página é idêntico.
  * `h1` aceita <em> para a ênfase tipográfica. Nada mais.
  */
+/**
+ * Variantes de hero. Trocadas na borda por ?p= ou utm_content, sem
+ * JavaScript e sem piscar — a página chega no navegador já com a versão
+ * certa, então o anúncio e a página falam a mesma língua.
+ *
+ * `padrao` e `data` são o teste A/B principal definido pela Aline:
+ *   A (padrao) fala com quem está usando a caneta agora.
+ *   B (data)   fala com quem já tem data para reduzir ou parar.
+ * Todo o resto da página é idêntico nas duas — só assim o resultado
+ * diz alguma coisa.
+ */
 export const PROMESSAS = {
   padrao: {
-    h1: 'O que fez a balança descer <em>não é</em> o que faz ela ficar.',
-    sub: 'Emagrecer, muita gente já conseguiu. Ficar é outra conversa — e é sobre ela que a gente vai passar três noites juntas.',
+    h1: 'Desvende os Segredos da Mente Magra',
+    sub: '2 dias ao vivo para descobrir como manter os resultados que a caneta emagrecedora trouxe — com mais foco e sabendo lidar com as vontades que aparecem depois do quarto dia de aplicação.',
   },
-  divisao: {
-    h1: 'A caneta está mudando o seu corpo. <em>Quem está trabalhando</em> para o seu cérebro acompanhar?',
-    sub: 'Ela faz o trabalho dela, e faz bem. Existe um segundo trabalho — e ele está sem dono. São 3 dias para assumir esse.',
-  },
-  '93': {
-    h1: 'Você está tentando resolver com <em>7%</em> o que é decidido em <em>93%</em>.',
-    sub: 'Não é falta de disciplina. É proporção. 3 dias para trabalhar onde a decisão realmente acontece.',
+  data: {
+    h1: 'Desvende os Segredos da Mente Magra',
+    linha2: 'O caminho para manter os resultados depois que a caneta sair',
+    sub: '2 dias ao vivo para chegar na última aplicação sabendo o que fazer — em vez de esperar pra ver o que acontece.',
   },
   bariatrica: {
-    h1: 'A cirurgia diminuiu o seu estômago. <em>Ela não mexeu no padrão.</em>',
-    sub: 'Em 3 dias, você vai entender por que o corpo volta ao ponto de partida mesmo depois de uma intervenção que funcionou.',
+    h1: 'A cirurgia mexeu no seu estômago. <em>Não mexeu no que te leva até a comida.</em>',
+    sub: '2 dias ao vivo para trabalhar a parte que nenhuma intervenção alcança — a que decide o tamanho do prato e aparece à noite, sem fome nenhuma junto.',
   },
   sanfona: {
-    h1: 'A balança desce. E seis meses depois, <em>volta</em>.',
-    sub: 'Não é falta de disciplina. É que o trabalho foi feito em uma ponta só. 3 dias para trabalhar as três.',
+    h1: 'Você já emagreceu antes. E recuperou. <em>Dessa vez você quer entender por quê.</em>',
+    sub: '2 dias ao vivo para mapear onde o seu automático começa — e sair com estratégias para a hora em que a vontade aparece.',
   },
   balanca: {
-    h1: 'Você sobe na balança <em>pra confirmar que ainda tá lá</em>.',
-    sub: 'Todo dia. Descalça. Antes de beber água. 3 dias para trocar a vigilância por outra coisa: saber o que fazer quando o número sobe.',
+    h1: 'A balança decide como o seu dia começa <em>antes de você tomar café</em>.',
+    sub: '2 dias ao vivo para trocar a vigilância por outra coisa: perceber antes, interromper mais cedo e saber voltar.',
   },
-  roupa: {
-    h1: 'Você tem três tamanhos no armário e <em>não consegue doar nenhum</em>.',
-    sub: 'O que você faz com a roupa que não serve mais diz mais sobre o seu processo do que a balança. 3 dias para entender por quê.',
-  },
-  '40mais': {
-    h1: 'Depois dos 40, o seu corpo mudou as regras. <em>E ninguém te avisou.</em>',
-    sub: '3 dias para parar de aplicar hoje um método que já não servia há dez anos.',
+  noite: {
+    h1: 'A vontade aparece à noite, <em>sem fome nenhuma junto</em>.',
+    sub: 'A ferramenta está fazendo o trabalho dela. Essa parte é outra — e é dela que a gente cuida em 2 dias ao vivo.',
   },
   edepois: {
-    h1: '<em>“E quando eu parar?”</em>',
-    sub: 'Você já levou essa pergunta para o consultório e voltou com ela inteira. A resposta não está na dose — está no que você construiu por baixo do resultado. 3 dias, e no VIP, 50 minutos só seus para olhar isso de perto.',
+    h1: '<em>“E se estiver voltando?”</em>',
+    sub: 'É o pensamento que você não fala em voz alta para ninguém. 2 dias ao vivo para chegar na última aplicação sabendo o que fazer.',
   },
 };
 
 /** Meta Pixel. Enquanto for null, nenhum script de rastreio entra na pagina. */
+/**
+ * Meta Pixel.
+ *
+ * O ID é público — ele aparece no HTML de qualquer página que use o pixel, e
+ * não dá acesso a nada. Por isso mora aqui.
+ *
+ * O token da Conversion API NÃO mora aqui e nunca deve entrar no repositório:
+ * ele é credencial de servidor, com permissão de escrita na conta de anúncios.
+ * Se um dia a CAPI for ligada, o token entra como secret da Cloudflare
+ * (`wrangler secret put META_CAPI_TOKEN`) e é lido pela função de borda em
+ * `env.META_CAPI_TOKEN` — nunca pelo navegador.
+ */
 export const META = {
-  pixelId: null,   // [[PRECISO]] ex.: '1234567890123456'
+  pixelId: '10008229355968163',
+  // Evento de compra usado nas campanhas. A página de venda dispara
+  // InitiateCheckout; a de agradecimento dispara este.
+  eventoCompra: 'Venda Imersão Código do Emagrecimento',
 };
 
 export const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];

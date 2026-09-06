@@ -77,7 +77,7 @@ ok(escolherPromessa(q('')).id === 'padrao', 'sem parâmetro → padrão');
 ok(escolherPromessa(q('p=edepois')).id === 'edepois', '?p=edepois → variante edepois');
 ok(escolherPromessa(q('p=EDEPOIS')).id === 'edepois', 'caixa alta é normalizada');
 ok(escolherPromessa(q('p=inexistente')).id === 'padrao', 'variante inválida cai no padrão');
-ok(escolherPromessa(q('utm_content=93')).id === '93', 'utm_content também seleciona');
+ok(escolherPromessa(q('utm_content=data')).id === 'data', 'utm_content também seleciona');
 
 console.log(`\n${falhas === 0 ? '✔ todos os testes passaram' : `✘ ${falhas} falha(s)`}\n`);
 process.exit(falhas === 0 ? 0 : 1);

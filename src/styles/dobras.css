@@ -12,12 +12,12 @@
    apenas tamanho, cor e entrelinha — repetir font-family em vinte e
    quatro seletores custava quase um quilobyte e escondia o sistema.
    ------------------------------------------------------------ */
-.logotipo, .logotipo__nome, .hero__promessa, .frase-gigante, .citacoes li,
-.card strong, .proporcao__item dt, .proporcao__fecho em, .triade h3,
-.triade .eco, .agregado dt, .depois-do-depois, .numeros dt, .caminho__num,
-.caminho h3, .plano__nome, .plano__preco, .plano__pitch em,
-.faq summary::after, .barra__preco, .encerrado__titulo, .contagem [data-cd],
-.legal h1, [data-sem-foto] .percurso figcaption {
+.logotipo, .logotipo__nome, .hero__promessa, .hero__linha2, .frase-gigante,
+.citacoes li, .triade h3, .depois-do-depois, .numeros dt, .assinatura,
+.agenda__dia, .agenda__titulo, .agenda__fecho, .bonus strong, .escada__preco,
+.plano__nome, .plano__preco, .plano__pitch em, .faq summary::after,
+.barra__preco, .encerrado__titulo, .contagem [data-cd], .legal h1,
+[data-sem-foto] .percurso figcaption {
   font-family: var(--display);
   font-weight: var(--p-regular);
 }
@@ -159,14 +159,6 @@
   font-size: var(--fs-lead); color: var(--txt);
 }
 
-/* ─── faixa de neutralidade ─────────────────────────────────
-   Linho com um fio de ameixa: a transição do escuro para o claro.
-   ------------------------------------------------------------ */
-.faixa { background: var(--linho); color: var(--sobre-claro); padding-block: var(--s-7); }
-.faixa .wrap { border-left: 2px solid var(--ameixa); padding-left: var(--s-5); }
-.faixa p { font-size: var(--fs-lead); color: var(--sobre-claro-2); }
-.faixa strong { color: var(--sobre-claro); font-weight: var(--p-regular); }
-
 /* ─── grades editoriais ─────────────────────────────────────
    Duas armações, e só. A “dobra” põe o texto de leitura ao lado de
    uma coluna de margem; o “trilho” deixa o título num corredor à
@@ -181,6 +173,9 @@
     column-gap: clamp(3rem, 5vw, 6.5rem);
   }
 }
+.dobra__a > * + * { margin-top: var(--s-5); }
+.guia__cabeca > * + * { margin-top: var(--s-3); }
+.btn--zap { background: var(--btn-bg); }
 .dobra__b { display: grid; gap: var(--s-7); align-content: start; }
 
 .trilho { display: grid; gap: var(--s-6); align-items: start; }
@@ -195,12 +190,72 @@
    O espaçamento interno é de quem está dentro — grade, lista ou pauta de
    parágrafos —, nunca uma regra genérica aqui: ela dobrava o vão do FAQ. */
 .trilho > .trilho__corpo { margin-top: 0; }
-.trilho__larga { margin-top: var(--s-8); }
-@media (min-width: 1000px) { .trilho__larga { grid-column: 1 / -1; } }
 
 /* Dois campos de papel cru em seguida perdem a divisa. Um fio de linho
    marca onde uma dobra termina e a outra começa. */
 .sup-clara + .sup-clara:not(.sem-topo) { border-top: 1px solid var(--linha); }
+
+/* ─── agenda dos encontros ──────────────────────────────────
+   A numeração aqui é do tempo e a ordem importa: é sequência de
+   verdade, com data e hora. Por isso a coluna da esquerda é o
+   quando, e não um marcador decorativo.
+   ------------------------------------------------------------ */
+.agenda { margin: var(--s-8) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--linha); }
+.agenda__item { display: grid; gap: var(--s-4); padding-block: var(--s-7); border-bottom: 1px solid var(--linha); }
+@media (min-width: 900px) {
+  .agenda__item { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); column-gap: clamp(3rem, 6vw, 7rem); align-items: start; }
+}
+.agenda__quando { display: grid; gap: var(--s-1); align-content: start; }
+/* 24px é a fronteira do texto grande na WCAG: abaixo dela o barro
+   precisaria de 4,5:1 e só tem 4,43:1. O dia é o “quando” da dobra e
+   merece o tamanho, então ele sobe em vez de trocar de cor. */
+.agenda__dia { font-size: 1.5rem; line-height: 1.3; color: var(--titulo); }
+.agenda__hora { font-family: var(--etiqueta); font-size: var(--fs-peq); font-weight: var(--p-medio); letter-spacing: .1em; color: var(--rotulo); }
+.agenda__oque > * + * { margin-top: var(--s-3); }
+.agenda__titulo { font-family: var(--display); font-weight: var(--p-regular); font-size: 1.5rem; line-height: 1.3; color: var(--enfase); max-width: 34ch; }
+.agenda__titulo--pendente { color: var(--txt-2); font-style: italic; }
+.agenda__fecho { font-family: var(--display); font-size: var(--fs-lead); color: var(--enfase); }
+
+/* ─── bônus ─────────────────────────────────────────────────── */
+.bonus { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s-6); }
+.bonus li { padding-left: var(--s-5); border-left: 2px solid var(--fio); }
+.bonus strong { display: block; font-family: var(--display); font-weight: var(--p-regular); font-size: 1.25rem; line-height: 1.3; color: var(--enfase); }
+.bonus__quando { display: block; margin-top: var(--s-1); font-family: var(--etiqueta); font-size: var(--fs-mini); font-weight: var(--p-medio); letter-spacing: .12em; color: var(--rotulo); }
+.bonus p { margin-top: var(--s-3); }
+
+/* ─── escada de lotes ───────────────────────────────────────
+   Aparece inteira, com data. Não é escassez fabricada: as datas
+   são reais, verificáveis, e a virada acontece sozinha na borda.
+   ------------------------------------------------------------ */
+.escada { margin-top: var(--s-8); }
+.escada__lista { margin: var(--s-4) 0 0; padding: 0; list-style: none; display: grid; gap: 1px; background: var(--linha); border: 1px solid var(--linha); }
+@media (min-width: 760px) { .escada__lista { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.escada__lista li { display: grid; gap: var(--s-1); padding: var(--s-5); background: var(--bg); }
+.escada__lista li[data-atual] { background: var(--bg-2); }
+.escada__preco { font-family: var(--display); font-size: 1.5rem; line-height: 1.3; color: var(--titulo); }
+.escada__lista li[data-atual] .escada__preco { color: var(--enfase); }
+.escada__quando { font-size: var(--fs-mini); color: var(--txt-2); }
+
+.hero__linha2 {
+  margin-top: var(--s-4); max-width: 24ch;
+  font-family: var(--display); font-size: clamp(1.125rem, .95rem + .8vw, 1.5rem);
+  line-height: 1.3; color: var(--barro-claro);
+}
+.hero__linha2:empty { display: none; }
+[data-sem-foto] .hero__linha2 { margin-inline: auto; }
+
+.assinatura {
+  margin-top: var(--s-6); padding-left: var(--s-5);
+  border-left: 2px solid var(--fio);
+  font-family: var(--display); font-style: italic;
+  font-size: var(--fs-lead); color: var(--enfase);
+}
+/* Alvo de toque de 24px (WCAG 2.5.8): o padrão vertical garante a
+   altura mesmo com o texto sendo de uma linha só. */
+.link-suporte {
+  display: inline-block; padding-block: var(--s-2);
+  text-decoration: underline; text-underline-offset: 4px; color: var(--rotulo);
+}
 
 /* ─── reconhecimento ────────────────────────────────────────── */
 .citacoes { margin: var(--s-7) 0 0; padding: 0; list-style: none; display: grid; gap: var(--s-6); }
@@ -238,35 +293,6 @@
 .excluir { margin-top: var(--s-6); padding: 0; list-style: none; display: grid; gap: var(--s-4); }
 .excluir li { position: relative; padding-left: var(--s-6); color: var(--txt-2); max-width: var(--medida); }
 .excluir li::before { content: '×'; position: absolute; left: 2px; top: 0; font-size: 1.1em; color: var(--fio); }
-
-/* ─── o que faz em 3 dias ───────────────────────────────────
-   Cinco linhas num pauta de fios, no mesmo trilho das outras
-   dobras. Grade de cartões deixaria a sexta célula vazia.
-   ------------------------------------------------------------ */
-.cards { margin-top: var(--s-8); padding: 0; list-style: none; border-top: 1px solid var(--linha); }
-.card { display: grid; gap: var(--s-3); padding-block: var(--s-6); border-bottom: 1px solid var(--linha); }
-@media (min-width: 900px) {
-  .card {
-    grid-template-columns: minmax(0, 27rem) minmax(0, 1fr);
-    column-gap: clamp(3rem, 6vw, 7rem);
-    align-items: baseline;
-  }
-}
-.card p { color: var(--txt-2); }
-.card strong {
-  font-style: normal;
-  font-size: 1.3em; line-height: 1.3; letter-spacing: -.01em;
-  color: var(--enfase);
-}
-
-/* ─── dobra emocional ───────────────────────────────────────
-   Retrato e texto lado a lado. A foto entra em campo de linho,
-   sem moldura e sem sombra — a marca não usa degradê.
-   ------------------------------------------------------------ */
-.emocional__grade { display: grid; gap: var(--s-8); align-items: center; }
-@media (min-width: 900px) { .emocional__grade { grid-template-columns: .82fr 1.18fr; gap: var(--s-9); } }
-.emocional__foto { margin: 0; overflow: hidden; background: var(--bg-2); aspect-ratio: 4/5; }
-.emocional__foto img { width: 100%; height: 100%; object-fit: cover; }
 
 /* ─── mecanismo ─────────────────────────────────────────────── */
 .mecanismo .bloco + .bloco { margin-top: var(--s-8); }
@@ -306,17 +332,6 @@
 .triade .eco { margin-top: var(--s-5); font-style: italic; font-size: var(--fs-peq); color: var(--txt-2); }
 
 /* ─── provas ────────────────────────────────────────────────── */
-.agregado {
-  display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--s-5);
-  margin: var(--s-8) 0 0; padding: var(--s-6) 0;
-  border-block: 1px solid var(--linha);
-}
-.agregado dt {
-  font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
-  font-weight: var(--p-regular); line-height: 1.3; letter-spacing: -.022em;
-  color: var(--titulo);
-}
-.agregado dd { margin: var(--s-2) 0 0; font-size: var(--fs-mini); line-height: 1.5; color: var(--txt-2); }
 .provas { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--s-3); margin-top: var(--s-8); padding: 0; list-style: none; }
 @media (min-width: 700px)  { .provas { grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--s-4); } }
 @media (min-width: 1020px) { .provas { grid-template-columns: repeat(4, minmax(0,1fr)); } }
@@ -329,7 +344,6 @@
   font-size: var(--fs-lead); color: var(--txt-2);
 }
 .depois-do-depois strong { font-style: normal; color: var(--enfase); font-weight: var(--p-regular); }
-.aviso-pendente { margin-top: var(--s-6); padding: var(--s-5); border: 1px dashed var(--linha); color: var(--txt-2); font-size: var(--fs-peq); }
 
 /* ─── quem é sua guia ───────────────────────────────────────── */
 .guia__grade { display: grid; gap: var(--s-8); }
@@ -350,32 +364,6 @@
 .percurso__quadro { display: grid; gap: var(--s-2); }
 .percurso img { width: 100%; aspect-ratio: 4/5; object-fit: cover; background: var(--bg-2); }
 .percurso figcaption { grid-column: 1 / -1; font-size: var(--fs-peq); color: var(--txt-2); max-width: var(--medida); }
-
-/* ─── dois caminhos ─────────────────────────────────────────
-   O único cartão de cacau antes da oferta. O peso visual é o
-   argumento: o caminho que pesa mais é o que se propõe.
-   ------------------------------------------------------------ */
-.caminhos { display: grid; gap: 1px; margin-top: var(--s-8); background: var(--linha); border: 1px solid var(--linha); }
-@media (min-width: 860px) { .caminhos { grid-template-columns: 1fr 1fr; } }
-.caminho { padding: var(--s-8) var(--s-7); }
-.caminho--sozinha { background: var(--bg); color: var(--txt-2); }
-.caminho--imersao { background: var(--cacau); color: var(--sobre-escuro); }
-.caminho__num {
-  display: block; margin-bottom: var(--s-4);
-  font-size: 1.5rem; line-height: 1.3;
-  font-variant-numeric: tabular-nums;
-  color: var(--enfase);
-}
-.caminho--imersao .caminho__num { color: var(--barro-claro); }
-.caminho h3 {
-  font-weight: var(--p-regular);
-  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); line-height: 1.3; letter-spacing: -.015em;
-  color: var(--titulo);
-}
-.caminho--imersao h3 { color: var(--barro-claro); }
-.caminho ul { margin-top: var(--s-6); padding: 0; list-style: none; display: grid; gap: var(--s-5); }
-.caminho li { position: relative; padding-left: var(--s-5); max-width: var(--medida); }
-.caminho li::before { content:''; position:absolute; left:0; top:.78em; width:10px; height:1px; background: currentColor; opacity:.6; }
 
 /* ─── oferta ────────────────────────────────────────────────
    Campo claro. O VIP é o único cartão escuro: mais peso, mais
@@ -536,17 +524,8 @@ body:not(:has(.barra)) { padding-bottom: 0; }
 .guia__corpo > * + * { margin-top: var(--s-4); }
 
 /* A numeração é do tempo, não decoração: esta dobra é uma sequência. */
-.linha-tempo { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s-6); }
-.linha-tempo li {
-  display: grid; gap: var(--s-2);
-  padding-left: var(--s-6); border-left: 2px solid var(--fio);
-}
 @media (min-width: 720px) {
   .linha-tempo li { grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); column-gap: var(--s-7); align-items: baseline; }
-}
-.linha-tempo__quando {
-  font-family: var(--etiqueta); font-size: var(--fs-peq);
-  font-weight: var(--p-medio); letter-spacing: .1em; color: var(--rotulo);
 }
 
 .upgrade { padding: clamp(2rem, 1.2rem + 3vw, 3.5rem); background: var(--bg); color: var(--txt); }

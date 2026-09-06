@@ -62,16 +62,17 @@ const cortes = await pg.evaluate(() => {
   return {
     total: Math.round(document.documentElement.scrollHeight),
     largura: Math.round(document.documentElement.scrollWidth),
-    emocional: topo(document.querySelector('.emocional')),
-    caminhos: topo(document.querySelector('.caminhos').closest('section')),
+    // Cortes em borda natural de dobra: começo da prova social e da oferta.
+    corte1: topo(secoes[3]),
+    corte2: topo(document.querySelector('#oferta')),
     n: secoes.length,
   };
 });
 
 const partes = [
-  ['final-01-abertura',  0,                  cortes.emocional],
-  ['final-02-mecanismo', cortes.emocional,   cortes.caminhos],
-  ['final-03-oferta',    cortes.caminhos,    cortes.total],
+  ['final-01-abertura', 0,             cortes.corte1],
+  ['final-02-provas',   cortes.corte1, cortes.corte2],
+  ['final-03-oferta',   cortes.corte2, cortes.total],
 ];
 
 for (const [nome, y, ate] of partes) {

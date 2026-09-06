@@ -24,7 +24,7 @@ import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
-  CHECKOUT, EVENTO, META, PROMESSAS, VIP,
+  CHECKOUT, EVENTO, LOTES, META, PROMESSAS, VIP,
   brl, checkoutComum, contadorTexto, linkWhatsApp, loteAtivo, prazoTexto, proximoLote,
 } from '../config/oferta.mjs';
 
@@ -56,16 +56,31 @@ const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
  * nao carrega script de terceiro nenhum, e a politica de privacidade continua
  * verdadeira. Assim que o ID entrar no config, o snippet aparece sozinho.
  */
-function pixelCabecalho() {
+function pixelCabecalho(extra = '') {
   if (!META.pixelId) return '';
   return `<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?` +
     `n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;` +
     `n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;` +
     `t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}` +
     `(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');` +
-    `fbq('init','${META.pixelId}');fbq('track','PageView');</script>` +
+    `fbq('init','${META.pixelId}');fbq('track','PageView');${extra}</script>` +
     `<noscript><img height="1" width="1" style="display:none" alt=""` +
     ` src="https://www.facebook.com/tr?id=${META.pixelId}&ev=PageView&noscript=1"></noscript>`;
+}
+
+/**
+ * Evento de compra na página de agradecimento.
+ *
+ * Dispara Purchase (o evento padrão que o Gerenciador entende) e, junto, o
+ * evento com o nome que as campanhas da Aline usam. Sem valor: a página não
+ * sabe qual ingresso foi comprado, e mandar um número errado é pior que não
+ * mandar nenhum — quem tem o valor certo é a Hubla, pela Conversion API.
+ */
+function pixelCompra() {
+  if (!META.pixelId) return '';
+  const nome = META.eventoCompra.replace(/'/g, "\\'");
+  return `fbq('track','Purchase',{currency:'BRL',content_category:'Imersao Segredos da Mente Magra'});` +
+    `fbq('trackCustom','${nome}');`;
 }
 
 async function main() {
@@ -118,6 +133,17 @@ async function main() {
   const proximo = proximoLote(agora);
   const padrao = PROMESSAS.padrao;
 
+  // Quando cada lote abre, em texto — o dia seguinte ao fim do anterior.
+  const abrePorLote = {};
+  LOTES.forEach((l, i) => {
+    if (i === 0) return;
+    const d = new Date(Date.parse(LOTES[i - 1].fim) + 1);
+    abrePorLote[l.id] = new Intl.DateTimeFormat('pt-BR', {
+      timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit',
+    }).format(d);
+  });
+  const PROVAS = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+
   const valores = {
     'lote-nome': lote.nome,
     'preco-comum': lote.centavos == null ? '—' : brl(lote.centavos),
@@ -136,13 +162,60 @@ async function main() {
     'zap-duvida': linkWhatsApp('Oi! Quero tirar uma dúvida sobre a Imersão Segredos da Mente Magra.'),
     'zap-proxima': linkWhatsApp('Oi! Quero saber da próxima turma da Imersão Segredos da Mente Magra.'),
     'evento-inicio': EVENTO.inicioISO,
-    'zap-entrar': linkWhatsApp('Oi! Acabei de garantir minha vaga na Imersão Segredos da Mente Magra e quero entrar no grupo.'),
-    'zap-nao-chegou': linkWhatsApp('Oi! Garantei minha vaga na Imersão e o e-mail de confirmação não chegou.'),
+    // Lembrete no Google Agenda, cobrindo os três encontros. O formato de
+    // data do Google é UTC compacto: 20260925T220000Z.
+    'agenda-google': (() => {
+      const z = (iso) => iso.replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+      const fim = '2026-09-27T16:00:00.000Z';   // domingo, 13h de Brasília
+      const q = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: 'Imersão Segredos da Mente Magra — com Aline Bitton',
+        dates: `${z(EVENTO.inicioISO)}/${z(fim)}`,
+        details: 'Sexta 25/09, 19h às 20h30 — aula de abertura.\nSábado 26/09, 10h às 17h.\nDomingo 27/09, 10h às 13h.\n\nO link do Google Meet chega no grupo do WhatsApp.',
+        location: 'Google Meet',
+      });
+      return `https://calendar.google.com/calendar/render?${q}`;
+    })(),
+    'zap-ticket': linkWhatsApp('Oi! Acabei de garantir minha vaga na Imersão Segredos da Mente Magra e quero receber o meu ticket para o evento.'),
+    'zap-nao-chegou': linkWhatsApp('Oi! Garantei minha vaga na Imersão e preciso de ajuda com a minha inscrição.'),
+    // blocos gerados: a agenda, a escada de lotes e a galeria de provas
+    'agenda': EVENTO.encontros.map((e, i) => `
+      <li class="agenda__item">
+        <div class="agenda__quando">
+          <span class="agenda__dia">${e.dia}</span>
+          <span class="agenda__hora">${e.hora}</span>
+        </div>
+        <div class="agenda__oque">
+          <p class="etiqueta">${e.etiqueta}</p>
+          ${e.titulo
+            ? `<h3 class="agenda__titulo">${e.titulo}</h3>`
+            : `<h3 class="agenda__titulo agenda__titulo--pendente">Tema a confirmar</h3>`}
+          <p>${e.texto}</p>
+        </div>
+      </li>`).join(''),
+    'escada': LOTES.map((l) => {
+      const abre = l.id === LOTES[0].id ? 'até 9 de setembro'
+        : `a partir de ${abrePorLote[l.id]}`;
+      const atual = l.id === lote.id;
+      return `<li${atual ? ' data-atual' : ''}><span class="escada__preco">${brl(l.centavos)}</span>` +
+             `<span class="escada__quando">${l.nome}, ${abre}</span></li>`;
+    }).join(''),
+    'provas': PROVAS.map((n) => `
+      <li class="prova">
+        <picture>
+          <source type="image/avif" srcset="/img/provas/${n}-400.avif">
+          <img src="/img/provas/${n}-400.webp" width="400" height="500"
+               loading="lazy" decoding="async" alt="Depoimento de aluna da Imersão Segredos da Mente Magra">
+        </picture>
+      </li>`).join(''),
     'ancora-vip': VIP.ancoraAvulsaCentavos && lote.centavos != null
       ? `<p class="plano__ancora" data-slot="ancora-vip">O Diagnóstico dos 5 Corpos, avulso, custa ${brl(VIP.ancoraAvulsaCentavos)}. Aqui ele entra por ${brl(VIP.centavos - lote.centavos)} a mais.</p>`
       : '',
     'promessa-h1': padrao.h1,
+    'promessa-linha2': padrao.linha2 || '',
     'promessa-sub': padrao.sub,
+    'evento-datas': EVENTO.datas,
+    'evento-total': EVENTO.totalHoras,
     // Enquanto os retratos não existem, a página se fecha sem eles: a capa
     // vira composição de tipo e as dobras viram coluna única. Nada de moldura
     // vazia — quem visita não precisa saber que falta foto.
@@ -162,7 +235,9 @@ async function main() {
     const levaJs = ehIndex || arquivo === 'obrigado.html';
 
     doc = doc
-      .replace('<!--CSS-->', `<style>${css}</style>${ehIndex ? pixelCabecalho() : ''}`)
+      .replace('<!--CSS-->', `<style>${css}</style>` +
+        (ehIndex ? pixelCabecalho()
+          : arquivo === 'obrigado.html' ? pixelCabecalho(pixelCompra()) : ''))
       .replace('<!--JS-->', levaJs && js ? `<script>${js}</script>` : '');
 
     doc = doc.replace(/\{\{([\w-]+)\}\}/g, (m, chave) => {
@@ -197,6 +272,12 @@ async function main() {
   const sha = (txt) => `'sha256-${createHash('sha256').update(txt, 'utf8').digest('base64')}'`;
   const hashesScript = [sha(js)];
   if (META.pixelId) {
+    for (const s of [pixelCabecalho(), pixelCabecalho(pixelCompra())]) {
+      const m = s.match(/<script>([\s\S]*?)<\/script>/);
+      if (m) hashesScript.push(`'sha256-${createHash('sha256').update(m[1]).digest('base64')}'`);
+    }
+  }
+  if (false) {
     const snippet = pixelCabecalho().match(/<script>([\s\S]*?)<\/script>/);
     if (snippet) hashesScript.push(sha(snippet[1]));
   }

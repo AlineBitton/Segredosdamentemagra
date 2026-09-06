@@ -25,37 +25,43 @@
 
 <main>
 
-  <!-- ══ 01 · ABERTURA ═══════════════════════════════════════
-       O logotipo do evento é o título desta página. Não existe
-       marca separada competindo com ele.                        -->
+  <!-- ══ 01 · HERO ═══════════════════════════════════════════
+       O logotipo do evento é o título desta página. A promessa é
+       trocada na borda por ?p= ou utm_content: A (padrao) fala com
+       quem usa a caneta agora, B (data) com quem já tem data para
+       parar. Todo o resto da página é idêntico nas duas.        -->
   <section class="hero">
     <div class="hero__grade">
 
       <div class="hero__texto">
-        <p class="etiqueta hero__data">Ao vivo · 25, 26 e 27 de setembro</p>
+        <p class="etiqueta hero__data">Imersão ao vivo · 26 e 27 de setembro</p>
 
         <h1 class="logotipo">
           <span class="logotipo__pre">Segredos da</span>
           <span class="logotipo__nome">Mente Magra</span>
         </h1>
 
+        <p class="hero__linha2" data-slot="promessa-linha2">{{promessa-linha2}}</p>
         <p class="hero__promessa" data-slot="promessa-sub">{{promessa-sub}}</p>
 
         <div class="hero__acao">
           <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
-            Garantir minha vaga
+            Quero minha vaga
           </a>
+          <p class="hero__assina">
+            Com <strong>Aline Bitton</strong>, terapeuta e fitoterapeuta, há dez
+            anos em neurociência do comportamento.
+          </p>
           <p class="hero__lote">
-            <span data-slot="lote-nome">{{lote-nome}}</span> ·
-            <strong data-slot="preco-comum">{{preco-comum}}</strong> ·
-            o valor sobe em
-            <time data-deadline="{{deadline}}"><b data-cd>{{contador}}</b></time>
+            <span data-slot="lote-nome">{{lote-nome}}</span>:
+            <strong data-slot="preco-comum">{{preco-comum}}</strong> até 9 de setembro.
+            Comece pela aula de abertura na sexta. Se não for pra você, devolvemos 100%.
             <span class="so-leitor" data-slot="prazo-extenso">{{prazo-extenso}}</span>
           </p>
 
           <div class="encerrado">
             <p class="encerrado__titulo">As inscrições para esta edição estão encerradas.</p>
-            <p class="mt-4">A imersão aconteceu nos dias 25, 26 e 27 de setembro. Se quiser saber da próxima antes de todo mundo, fale com a nossa equipe.</p>
+            <p class="mt-4">A imersão aconteceu nos dias 26 e 27 de setembro. Se quiser saber da próxima antes de todo mundo, fale com a nossa equipe.</p>
             <div class="cta encerrado__cta">
               <a class="btn btn--zap" href="{{zap-proxima}}" rel="noopener" target="_blank">Quero saber da próxima turma</a>
             </div>
@@ -63,596 +69,216 @@
         </div>
       </div>
 
-      <!-- Retrato de quadro inteiro, sangrando na direita. Sem recorte e
-           sem texto por cima, como o guia da marca manda. -->
       <figure class="hero__retrato">
         <div class="pendente">
           <span class="pendente__t">Retrato de abertura</span>
-          <span class="pendente__d">A foto da Aline sentada à mesa, com a estante ao fundo, ocupa este campo inteiro — sangrando no topo e na direita, recorte a 22% da altura para o olhar dela ficar na linha do título.</span>
+          <span class="pendente__d">A foto da Aline sentada, camisa de linho papel cru, olhando na câmera — sangrando no topo e na direita, recorte a 22% da altura para o olhar dela ficar na linha do título.</span>
         </div>
       </figure>
 
     </div>
   </section>
 
-  <!-- ══ 02 · FAIXA DE NEUTRALIDADE ═════════════════════════════
-       A única frase da página que essa mulher nunca viu escrita por
-       outra pessoa. O mercado inteiro ataca quem usa; ela esconde da
-       própria mãe. Reconhecimento antes de argumento.            -->
-  <section class="faixa sup-linho" aria-label="Sobre uso de medicação">
-    <div class="wrap">
-      <p>
-        <strong>Aqui ninguém vai te pedir para parar nada.</strong>
-        Se você usa medicação, esta imersão trabalha exatamente o que a medicação
-        não faz — e não disputa com o seu médico.
-      </p>
-    </div>
-  </section>
-
-  <!-- ══ 03 · ESTADO ATUAL ══════════════════════════════════════ -->
+  <!-- ══ 02 · IDENTIFICAÇÃO ═════════════════════════════════
+       As cinco cenas vão na coluna de margem. Reconhecimento
+       antes de argumento — e nenhuma delas culpa a ferramenta. -->
   <section class="sec sup-clara" data-barra-gatilho>
     <div class="wrap dobra reveal">
       <div class="dobra__a">
-        <h2 class="h2">Você não parou no meio do caminho.<br>Você chegou — e não consegue ficar.</h2>
+        <h2 class="h2">Você fez tudo igual. E alguma coisa mudou mesmo assim.</h2>
 
         <p class="lead mt-5">
-          A balança desceu. Com a caneta, com a cirurgia, com a dieta que você
-          seguiu à risca. Descer, você já provou que sabe.
-        </p>
-        <p class="mt-4">
-          E aí veio a parte que ninguém te contou: você passou a viver
-          <strong>em estado de vigília</strong>.
+          A aplicação no dia certo. A comida menor do que já foi. A rotina que
+          você organizou com esforço real.
         </p>
 
         <div class="destaque">
-          <p><strong>Mas sabe o pior?</strong></p>
-          <p>É que te venderam a ideia de que bastava “força de vontade”.</p>
+          <p>A ferramenta está fazendo o trabalho dela. Isso não está em dúvida aqui.</p>
           <p>
-            E enquanto você se cobra por não ter tido o suficiente, o que está
-            acontecendo é outra coisa — e não tem nada a ver com vontade.
+            O que acontece é que existem duas mudanças correndo ao mesmo tempo,
+            e elas não andam na mesma velocidade. O corpo mudou em meses. As
+            referências que você construiu ao longo de trinta anos continuam
+            exatamente onde estavam.
           </p>
-          <p><strong>Não é falta de disciplina. Você é a mulher que resolve tudo, menos isso.</strong></p>
-          <p>É que ninguém nunca te mostrou onde o padrão nasce.</p>
+          <p><strong>O corpo mudou antes de a cabeça acompanhar.</strong></p>
+          <p>
+            E essa parte — a que aparece à noite, a que decide o tamanho do
+            prato, a que transforma um domingo em veredito — fica sem dono. O
+            médico cuida da dose. A nutricionista cuida do prato.
+          </p>
+          <p><strong>Essa parte ninguém pegou.</strong></p>
         </div>
 
-        <div class="cta">
-          <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
-            Quero entender o que está acontecendo
-          </a>
-        </div>
-      </div>
-
-      <!-- Coluna de margem: a pergunta que ela carrega, e as cinco cenas em
-           que ela vai se reconhecer. Reconhecimento antes de argumento. -->
-      <aside class="dobra__b">
-        <p class="frase-gigante">“E quando eu parar?”</p>
-
-        <ul class="citacoes">
-          <li>Você sobe na balança todo dia pra confirmar que ainda tá lá.</li>
-          <li>Você tem três tamanhos de roupa no armário e não consegue doar nenhum.</li>
-          <li>Você está usando M e, na loja, vai logo no G.</li>
-          <li>Você recebe elogio e não consegue acreditar no elogio.</li>
-          <li>E carrega uma pergunta que já levou para todo lugar — e voltou com ela inteira.</li>
-        </ul>
-      </aside>
-    </div>
-  </section>
-
-  <!-- ══ 04 · QUEBRA DE OBJEÇÕES ════════════════════════════════ -->
-  <section class="sec sup-clara">
-    <div class="wrap trilho reveal">
-      <div class="trilho__cabeca">
-        <h2 class="h2">E a verdade é que…</h2>
-      </div>
-      <div class="trilho__corpo">
-        <p class="lead">
-          Você não precisa de mais uma dieta, de mais “dicas” emagrecedoras,
-          nem de se esforçar mais.
-        </p>
-        <p class="mt-5">
-          <strong>E você também não precisa parar nada do que está funcionando.</strong>
-        </p>
-        <p class="mt-4">
-          O que você precisa é que alguém trabalhe a parte que ficou sem dono:
-          o que dispara a sensação, o padrão que vira comportamento, e a resposta
-          automática que o seu sistema nervoso dá <em>antes</em> de você decidir
-          qualquer coisa.
-        </p>
-        <p class="mt-4">
-          <strong>É essa a função da Imersão Segredos da Mente Magra.</strong>
-        </p>
-
-        <p class="h3 mt-7">Vou te mostrar ao vivo, como:</p>
-        <ul class="lista-marcada">
-          <li>Aplicar os Segredos da Mente Magra na sua vida diária.</li>
-          <li>Enxergar qual das três pontas — <strong>pensar, sentir, agir</strong> — está segurando o seu resultado agora.</li>
-          <li>Saber o que fazer quando o número sobe, em vez de refazer a semana inteira na cabeça.</li>
-        </ul>
+        <p class="mt-6">É ela que a gente vai trabalhar nos dias 26 e 27.</p>
 
         <div class="cta">
           <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
             Quero minha vaga
           </a>
-      </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ 05 · O QUE VOCÊ FAZ EM 3 DIAS ══════════════════════════ -->
-  <section class="sec sup-clara sem-topo">
-    <div class="wrap reveal">
-      <h2 class="h2">O que você irá fazer em apenas 3 dias de Imersão</h2>
-
-      <ul class="cards">
-        <li class="card">
-          <strong>Descobrir como nutrir o corpo físico</strong>
-          <p>De forma realmente eficiente.</p>
-        </li>
-        <li class="card">
-          <strong>Construir novos padrões emocionais</strong>
-          <p>Os que te ajudam a se manter no foco.</p>
-        </li>
-        <li class="card">
-          <strong>Lidar com a ansiedade que te leva a “beliscar”</strong>
-          <p>E com a compulsão que te leva a exagerar — no ponto onde o impulso nasce, antes de virar decisão.</p>
-        </li>
-        <li class="card">
-          <strong>Unir o que você pensa, o que você sente e o que você faz</strong>
-          <p>No destrave da balança.</p>
-        </li>
-        <li class="card">
-          <strong>Aplicar os Segredos da Mente Magra</strong>
-          <p>No seu dia a dia, de forma prática.</p>
-        </li>
-      </ul>
-
-      <div class="cta">
-        <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
-          Garantir minha vaga
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ 06 · DOBRA EMOCIONAL ═══════════════════════════════════ -->
-  <section class="sec emocional sup-linho">
-    <div class="wrap emocional__grade reveal">
-      <figure class="emocional__foto">
-        <img src="/img/placeholder-retrato.svg" width="800" height="1000"
-             alt="Aline Bitton" loading="lazy" decoding="async">
-      </figure>
-
-      <div>
-        <h2 class="h2">Emagrecer acontece enquanto a vida acontece.</h2>
-        <p class="lead mt-5">
-          Enquanto o trabalho cobra. Enquanto a casa cobra. Enquanto a semana
-          passa por cima de você.
-        </p>
-        <p class="mt-4">
-          E sem unir corpo e mente, o emagrecimento real não chega. Ele até
-          começa — mas não fica.
-        </p>
-        <p class="mt-5">
-          <strong>Como eu sei disso? Porque eu vivi na pele.</strong>
-        </p>
-        <p class="mt-4">
-          Eu fiz bariátrica. E voltei aos 102 quilos pela segunda vez — com a
-          cirurgia já feita, fazendo tudo o que tinham me mandado fazer.
-        </p>
-        <p class="mt-4">
-          Não é teoria que eu li. É o caminho que eu fiz depois disso, quando
-          entendi que o estômago tinha diminuído e o padrão não. E que eu
-          refiz com mais de mil e quinhentas mulheres, até virar método.
-        </p>
-        <p class="mt-5">
-          <strong>Hoje eu saio da linha igual todo mundo. A diferença é que
-          eu sei voltar.</strong>
-        </p>
-
-        <div class="cta">
-          <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
-            Quero viver esses 3 dias
-          </a>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ══ 07 · MECANISMO ═════════════════════════════════════════
-       Coração argumentativo. Se ela ler só esta dobra e sair, tem
-       que sair sabendo por que o corpo volta.                    -->
-  <section class="sec mecanismo sup-clara">
-    <div class="wrap trilho reveal">
-      <div class="trilho__cabeca">
-        <h2 class="h2">Fazer a balança descer depende disso</h2>
-      </div>
-
-      <div class="trilho__corpo">
-        <div class="bloco">
-          <p class="lead">
-            Você já fez a balança descer. Com a caneta, com a cirurgia, com a
-            dieta mais rígida que você já seguiu.
-          </p>
-          <p class="mt-4">
-            <strong>Descer você sabe.</strong> O que ninguém te explicou é por que ela volta.
-          </p>
-      </div>
-
-      <div class="bloco">
-        <p>O recurso externo age <strong>na superfície</strong>.</p>
-        <p class="mt-4">
-          Ele muda a fome. Muda o volume do estômago. Muda a quantidade no prato.
-          E faz isso bem — o número desce, e o número é real. Ninguém aqui vai
-          tirar esse mérito dele.
-        </p>
-        <p class="mt-4">
-          <strong>Só que ele não toca no que dispara a sensação.</strong>
-          Nem no padrão de pensamento que vira comportamento.
-        </p>
-        <p class="mt-4">
-          Esse é um segundo trabalho. E ele nunca foi da ferramenta.
-        </p>
-      </div>
-
-      <div class="bloco">
-        <p>Esses padrões estão <strong>registrados no seu sistema nervoso</strong>.</p>
-        <p class="mt-4">
-          E o sistema nervoso não negocia: diante da mesma sensação, ele repete
-          a solução que sempre funcionou. Por instinto. Sem te pedir licença.
-        </p>
-        <p class="mt-4">
-          Por isso o corpo volta — <strong>mesmo quando o método funcionou.</strong>
-        </p>
-      </div>
-      </div>
-
-      <!-- A proporção 93/7 é o argumento inteiro em dois números. Fica na
-           largura toda, com a leitura ao lado. -->
-      <div class="trilho__larga">
-      <div class="proporcao__grade">
-      <dl class="proporcao">
-        <div class="proporcao__item">
-          <dt>93%</dt>
-          <dd>do processo acontece no inconsciente</dd>
-        </div>
-        <div class="proporcao__item">
-          <dt>7%</dt>
-          <dd>é o que você decide “racionalmente”</dd>
-        </div>
-      </dl>
-      <p class="proporcao__fecho">
-        Você vem tentando resolver com 7% uma coisa que é decidida em 93%.<br>
-        <strong>Não é falta de disciplina. É proporção.</strong>
-      </p>
-      </div>
-
-      <div class="bloco">
-        <p class="lead">
-          <strong>Emagrecer é uma tríade que dança entre pensar, sentir e agir.</strong>
-        </p>
-        <p class="mt-3">
-          Mexer em uma ponta faz a balança descer. Mexer nas três é o que faz ela ficar.
-        </p>
-
-        <ul class="triade">
-          <li>
-            <h3>Pensar</h3>
-            <p>O que você acredita sobre o seu corpo antes de qualquer decisão.</p>
-            <p class="eco">“Se eu parar, em seis meses eu sou a de antes.”</p>
-          </li>
-          <li>
-            <h3>Sentir</h3>
-            <p>O que acontece quando bate uma sensação que você não sabe atravessar.</p>
-            <p class="eco">“Sentir é perigoso — tem que resolver agora.”</p>
-          </li>
-          <li>
-            <h3>Agir</h3>
-            <p>O que o seu corpo faz automaticamente, antes de você escolher.</p>
-            <p class="eco">A mão que abre a geladeira sem você ter decidido.</p>
-          </li>
+      <aside class="dobra__b">
+        <p class="frase-gigante">E ainda assim:</p>
+        <ul class="citacoes">
+          <li>A vontade aparece à noite, sem fome nenhuma junto.</li>
+          <li>O prato continua saindo cheio como sempre saiu, mesmo o estômago se satisfazendo com metade.</li>
+          <li>Um fim de semana fora da rotina vira “estraguei tudo”.</li>
+          <li>A balança decide como o dia vai começar antes de você tomar café.</li>
+          <li>E aparece o pensamento que você não fala em voz alta para ninguém: <em>e se estiver voltando?</em></li>
         </ul>
-      </div>
-
-      <div class="bloco">
-        <p class="lead">
-          É por isso que desce e volta. Não porque você falhou.<br>
-          Porque o trabalho foi feito em uma ponta só.
-        </p>
-        <div class="cta">
-          <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
-            Quero trabalhar as três pontas
-          </a>
-        </div>
-      </div>
-      </div>
+      </aside>
     </div>
   </section>
 
-
-  <!-- ══ 08 · PARA QUEM É ═══════════════════════════════════════ -->
-  <section class="sec sup-clara">
-    <div class="wrap trilho reveal">
-      <div class="trilho__cabeca">
-        <h2 class="h2">Essa imersão é para mulheres que já passaram dos 40 e…</h2>
-      </div>
-      <ul class="publico trilho__corpo">
-        <li>…já usaram ou usam caneta — e a pergunta <em>“e quando eu parar?”</em> nunca foi respondida.</li>
-        <li>…fizeram bariátrica e descobriram que o estômago diminuiu, mas o padrão não.</li>
-        <li>…seguiram dietas restritivas à risca, chegaram no número, e viram voltar.</li>
-        <li>…sabem exatamente o que fazer — e mesmo assim não sustentam.</li>
-        <li>…sobem na balança todo dia e não conseguem parar, mesmo odiando isso.</li>
-        <li>…têm três tamanhos de roupa no armário e não conseguem doar nenhum.</li>
-        <li>…recebem elogio e não conseguem acreditar no elogio.</li>
-        <li>…já investiram em bons profissionais e sentem que <strong>ninguém olhou o conjunto</strong>.</li>
-        <li>…não querem mais uma dieta. Querem entender o que está acontecendo.</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ══ 09 · PARA QUEM NÃO É ═══════════════════════════════════
-       Único bloco frio e sem CTA da página, de propósito.       -->
+  <!-- ══ 03 · PROVA ═════════════════════════════════════════
+       [[CONFERIR: a Aline pediu depoimentos que falem de
+       CAPACIDADE — "eu soube o que fazer", "não virou uma semana
+       perdida" — e não de número. As imagens atuais trazem selo de
+       quilos, que contraria a instrução nova. Trocar por prints de
+       WhatsApp e DM, mínimo 6, ideal 12.]]                     -->
   <section class="sec sup-linho">
-    <div class="wrap trilho reveal">
-      <div class="trilho__cabeca">
-        <h2 class="h2">Para quem esta imersão não é</h2>
-      </div>
-      <ul class="excluir trilho__corpo">
-        <li>Pessoas que desejam dicas rasas para resultados momentâneos.</li>
-        <li>Quem busca “loucuras” que colocam o corpo e a saúde em risco.</li>
-        <li>Quem busca uma “receita milagrosa” para emagrecer 20 kg em 1 semana.</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ══ 10 · PROVAS ════════════════════════════════════════════
-       Imagens vindas do Canva da Aline (design DAG7xjC6Sus), otimizadas
-       por `npm run imagens`. Os numeros ja vem gravados nas fotos, entao
-       o card nao repete: a informacao nova esta na linha agregada acima.
-       A pagina 14 do Canva e um print de conversa sem antes/depois e ficou
-       de fora para nao quebrar o padrao do grid.                        -->
-  <section class="sec sup-clara">
     <div class="wrap reveal">
-      <h2 class="h2">Conheça algumas mulheres que já emagreceram com Aline Bitton</h2>
-
-      <dl class="agregado">
-        <div><dt>14</dt><dd>resultados reais</dd></div>
-        <div><dt>40&ndash;74</dt><dd>anos de idade</dd></div>
-        <div><dt>13&ndash;47</dt><dd>quilos eliminados</dd></div>
-      </dl>
+      <h2 class="h2">Histórias de transformação que vão muito além de fotos de antes e depois.</h2>
 
       <ul class="provas">
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/01-400.avif">
-            <img src="/img/provas/01-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="@pr_ines, 58 anos — antes e depois do método Segredos da Mente Magra, 25 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/02-400.avif">
-            <img src="/img/provas/02-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="@emicavalieri44, 55 anos — antes e depois do método Segredos da Mente Magra, 47 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/03-400.avif">
-            <img src="/img/provas/03-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="@isabelabracher, 50 anos — antes e depois do método Segredos da Mente Magra, 18 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/04-400.avif">
-            <img src="/img/provas/04-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 74 anos — antes e depois do método Segredos da Mente Magra, 18 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/05-400.avif">
-            <img src="/img/provas/05-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 46 anos — antes e depois do método Segredos da Mente Magra, 23 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/06-400.avif">
-            <img src="/img/provas/06-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 40 anos — antes e depois do método Segredos da Mente Magra, 13 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/07-400.avif">
-            <img src="/img/provas/07-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 68 anos — antes e depois do método Segredos da Mente Magra, 42 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/08-400.avif">
-            <img src="/img/provas/08-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 63 anos — antes e depois do método Segredos da Mente Magra, 23 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/09-400.avif">
-            <img src="/img/provas/09-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 64 anos — antes e depois do método Segredos da Mente Magra, 27 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/10-400.avif">
-            <img src="/img/provas/10-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 44 anos — antes e depois do método Segredos da Mente Magra, 22 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/11-400.avif">
-            <img src="/img/provas/11-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 56 anos — antes e depois do método Segredos da Mente Magra, 27 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/12-400.avif">
-            <img src="/img/provas/12-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 61 anos — antes e depois do método Segredos da Mente Magra, 30 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/13-400.avif">
-            <img src="/img/provas/13-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 44 anos — antes e depois do método Segredos da Mente Magra, 22 kg eliminados">
-          </picture>
-        </li>
-        <li class="prova">
-          <picture>
-            <source type="image/avif" srcset="/img/provas/15-400.avif">
-            <img src="/img/provas/15-400.webp" width="400" height="500"
-                 loading="lazy" decoding="async" alt="Aluna de 42 anos — antes e depois do método Segredos da Mente Magra, 15 kg eliminados">
-          </picture>
-        </li>
+        {{provas}}
       </ul>
 
       <p class="depois-do-depois">
         Você já viu muitos antes e depois. A pergunta que você faz — e que
         ninguém responde — é o que aconteceu <strong>depois do depois</strong>.
-        É essa a conversa dos 3 dias.
       </p>
 
       <div class="cta">
-        <a class="btn btn--bloco" href="#oferta">Quero esse resultado para mim</a>
+        <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+          Quero minha vaga
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ══ 11 · QUEM É SUA GUIA ═══════════════════════════════════
-       Sem CTA: esta dobra existe para transferir autoridade, e um
-       botão aqui interrompe a construção.                        -->
+  <!-- ══ 04 · PARA QUEM É ═══════════════════════════════════ -->
+  <section class="sec sup-clara">
+    <div class="wrap trilho reveal">
+      <div class="trilho__cabeca">
+        <h2 class="h2">Esta imersão é para você se:</h2>
+      </div>
+      <ul class="publico trilho__corpo">
+        <li>Você está usando a caneta e o resultado está vindo — mas a vontade de comer continua aparecendo e você não sabe o que fazer com ela.</li>
+        <li>Você já tem data para reduzir ou parar, por decisão médica ou porque o custo não cabe mais, e não sabe o que acontece depois.</li>
+        <li>Você já emagreceu antes — com dieta, com cirurgia, com o que fosse — e recuperou. E dessa vez quer entender por que volta.</li>
+        <li>Você percebe que a comida ocupa menos espaço, mas alguma coisa migrou: o sono, a compra, o apertar o maxilar, a irritação.</li>
+        <li>Você sabe exatamente o que fazer. Na hora, parece que todo esse saber some.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 05 · PARA QUEM NÃO É ═══════════════════════════════
+       Único bloco frio e sem CTA da página, de propósito.     -->
   <section class="sec sup-linho">
-    <div class="wrap guia__grade reveal">
-      <figure class="guia__foto">
-        <img src="/img/placeholder-retrato.svg" width="800" height="1000"
-             alt="Aline Bitton" loading="lazy" decoding="async">
-      </figure>
-      <div class="guia__texto">
-        <div class="guia__cabeca">
-          <p class="etiqueta">Quem vai te conduzir</p>
-          <h2 class="h2 mt-3">Aline Bitton</h2>
-        </div>
-        <div class="guia__corpo">
-
-        <!-- História, não currículo: o que credencia a Aline é ter sido
-             a mulher desta página. A bariátrica que não bastou é o dado
-             mais importante daqui — é a prova de que ela conhece o ponto
-             exato onde o recurso externo para de funcionar.
-             [[CONFERIR: os números vieram de material público da própria
-             Aline. Ela precisa confirmar antes de publicar.]] -->
-        <p class="lead mt-5">
-          Terapeuta, ex-obesa. Fez bariátrica — e voltou aos 102 quilos pela
-          segunda vez.
-        </p>
-        <p class="mt-4">
-          Foi ali, com a cirurgia já feita e a balança subindo de novo, que
-          ficou claro o que nenhum recurso tinha resolvido: o estômago tinha
-          diminuído, o padrão não. Ela foi atrás da parte que ninguém tinha
-          olhado — neurociência, PNL sistêmica, hipnose, saúde vibracional
-          quântica e nutrição comportamental — e virou especialista nos nós
-          que o inconsciente cria a partir de um sistema de proteção
-          desatualizado.
-        </p>
-        <p class="mt-4">
-          <strong>Eliminou 62 quilos e mantém o peso estável.</strong> Daí
-          nasceram o movimento #EfeitoBorboleta e a mentoria cíclica Afinando
-          Corpo &amp; Mente, que já passou de mil e quinhentas mulheres.
-        </p>
-        <p class="mt-5 assinatura">
-          “O meu emagrecimento não é o meu método. Ele é o resultado dele.”
-        </p>
-
-        <!-- credenciais em números, não em adjetivos. O terceiro número é o
-             que mais importa para esta persona: a cirurgia não bastou. -->
-        <dl class="numeros">
-          <div><dt>10 anos</dt><dd>em neurociência do comportamento</dd></div>
-          <div><dt>1.500+</dt><dd>mulheres orientadas</dd></div>
-          <div><dt>62 kg</dt><dd>eliminados e mantidos</dd></div>
-        </dl>
-
-        <!-- O percurso dela em dois quadros do MESMO enquadramento (busto,
-             mesmo ângulo, mesma distância). Fotos reais: prova de corpo
-             feita por IA é prova fabricada, e esta é a mulher que detecta.
-             O enquadramento de busto é o que lê a 165px no celular — a foto
-             de corpo inteiro puxando a calça não lê.
-             [[PRECISO: as duas fotos e os dois anos]] -->
-        <figure class="percurso">
-          <div class="percurso__quadro">
-            <img src="/img/placeholder-retrato.svg" width="800" height="1000"
-                 alt="Aline Bitton antes do processo" loading="lazy" decoding="async">
-            <span class="etiqueta">—</span>
-          </div>
-          <div class="percurso__quadro">
-            <img src="/img/placeholder-retrato.svg" width="800" height="1000"
-                 alt="Aline Bitton hoje" loading="lazy" decoding="async">
-            <span class="etiqueta">hoje</span>
-          </div>
-          <figcaption>
-            <!-- Em primeira pessoa, e sobre capacidade — não sobre quilo.
-                 O que essa mulher nunca viu é alguém que soube ficar. -->
-            “Hoje eu saio da linha igual todo mundo. A diferença é que eu
-            sei voltar.”
-          </figcaption>
-        </figure>
-        </div>
+    <div class="wrap trilho reveal">
+      <div class="trilho__cabeca">
+        <h2 class="h2">Não é para você se:</h2>
       </div>
+      <ul class="excluir trilho__corpo">
+        <li>Você está procurando uma dieta nova ou um cardápio.</li>
+        <li>Você quer um método que emagreça sem que você precise olhar para nada.</li>
+        <li>Você espera resultado em dois dias sem aplicar nada depois.</li>
+      </ul>
     </div>
   </section>
 
-  <!-- ══ 12 · DOIS CAMINHOS ═════════════════════════════════════ -->
-  <section class="sec sup-linho sem-topo">
+  <!-- ══ 06 · O QUE ACONTECE ════════════════════════════════
+       Aqui a numeração é do tempo e a ordem importa: é uma
+       sequência de verdade, com data e hora.                  -->
+  <section class="sec sup-clara">
     <div class="wrap reveal">
-      <h2 class="h2">Agora você pode seguir por dois caminhos</h2>
+      <h2 class="h2">Começa na sexta, com a aula de abertura. E a imersão acontece no fim de semana.</h2>
 
-      <div class="caminhos">
-        <div class="caminho caminho--sozinha">
-          <span class="caminho__num">1</span>
-          <h3>Tentar sozinha</h3>
-          <ul>
-            <li>Permanecer como uma tentante no processo, onde hora a balança desce, hora a balança sobe.</li>
-            <li>Investir tempo e energia de vida em “receitas” superficiais.</li>
-            <li>Ver outras mulheres com os resultados que você também deseja pra sua vida e ficar apenas nos bastidores do “um dia serei eu…”.</li>
-            <li>Conviver com a culpa e a vergonha de hora estou de “dieta”, hora estou no “exagero”.</li>
-          </ul>
-        </div>
+      <ol class="agenda">
+        {{agenda}}
+      </ol>
 
-        <div class="caminho caminho--imersao">
-          <span class="caminho__num">2</span>
-          <h3>Com a Imersão</h3>
-          <ul>
-            <li>Investir menos do que um iFood e ter a certeza de que esse conhecimento é a ponte entre você e o corpo que deseja.</li>
-            <li>Levar apenas 3 dias para aprender a trabalhar as três pontas — pensar, sentir e agir — de forma prática e eficiente.</li>
-            <li>Começar a ter prazer em si mesma, com o seu corpo.</li>
-            <li>Ter o que precisa para realmente viver um processo de emagrecimento que transforma o corpo e a mente.</li>
-          </ul>
-        </div>
+      <div class="destaque mt-8">
+        <p class="etiqueta">Você sai com</p>
+        <p class="agenda__fecho">Perceber antes. Interromper mais cedo. Saber voltar.</p>
+        <p>
+          Não é um evento de motivação. Você sai com o seu mapa preenchido, com
+          a sua letra, e com estratégias que dá para usar na mesma noite.
+        </p>
       </div>
 
       <div class="cta">
-        <a class="btn btn--bloco" href="#oferta">Quero o caminho 2</a>
+        <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+          Quero minha vaga
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ══ 13 · A OFERTA ══════════════════════════════════════════
-       Núcleo da página. Exatamente dois preços na tela: o Comum do
-       lote vigente e o VIP. Nunca os quatro lotes, nunca preço
-       riscado de lote futuro — isso é escassez falsa e ela detecta. -->
+  <!-- ══ 07 · BÔNUS ═════════════════════════════════════════ -->
+  <section class="sec sup-linho">
+    <div class="wrap trilho reveal">
+      <div class="trilho__cabeca">
+        <h2 class="h2">Além dos 2 dias de imersão, você recebe:</h2>
+      </div>
+      <div class="trilho__corpo">
+        <ul class="bonus">
+          <li>
+            <strong>Aula de abertura ao vivo</strong>
+            <span class="bonus__quando">sexta, 25/09, 19h</span>
+            <p>“A vontade voltar não significa que a caneta parou de funcionar”.
+              1h30 ao vivo, antes da imersão começar. Para você chegar no sábado
+              já sabendo o que está acontecendo.</p>
+          </li>
+          <li>
+            <strong>Protocolo dos 20 minutos</strong>
+            <span class="bonus__quando">acesso imediato, hoje</span>
+            <p>O que fazer quando a vontade aperta esta noite. Com o corpo, com a
+              cabeça e com as mãos, enquanto passa. Você recebe no momento da
+              inscrição, não em setembro.</p>
+          </li>
+          <li>
+            <strong>Mapa dos meus gatilhos</strong>
+            <p>A folha que você preenche durante a imersão. Hora, situação, o que
+              veio antes. É o que transforma o que você viveu em evidência sobre
+              você mesma.</p>
+          </li>
+          <li>
+            <strong>14 áudios para os momentos em que a vontade aperta</strong>
+            <p>Um para cada situação: fim de tarde, depois da briga, domingo à
+              noite, viagem, véspera de aplicação.</p>
+          </li>
+          <li>
+            <strong>Guia fitoterápico de apoio</strong>
+            <p>Sono, digestão e o corpo em fase de mudança. A erva não substitui a
+              ferramenta nem faz o trabalho da mente: ela cuida do corpo enquanto
+              as duas coisas acontecem. Se você faz acompanhamento médico, leve o
+              guia à sua consulta antes de usar.</p>
+          </li>
+        </ul>
+
+        <div class="destaque mt-8">
+          <p class="etiqueta">Exclusivo do ingresso VIP</p>
+          <ul class="lista-marcada">
+            <li><strong>Diagnóstico Completo</strong> — encontro ao vivo com a Aline. Você traz a cena da sua semana e ela lê ao vivo o que está por trás. Quem não fala assiste às outras e se reconhece.</li>
+            <li><strong>Replay dos 2 dias de imersão.</strong> Só quem é VIP assiste depois.</li>
+            <li><strong>Prioridade nas perguntas</strong> durante a imersão.</li>
+          </ul>
+        </div>
+
+        <div class="cta">
+          <a class="btn btn--bloco" href="#oferta">Ver os ingressos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 08 · OFERTA ════════════════════════════════════════
+       A escada de lotes aparece inteira aqui, com data. Não é
+       escassez fabricada: as datas são reais e verificáveis, e a
+       virada acontece sozinha na borda.                       -->
   <section class="sec oferta sup-clara" id="oferta">
     <div class="wrap">
       <div class="oferta__topo reveal">
@@ -660,9 +286,9 @@
           <span data-slot="lote-nome">{{lote-nome}}</span> · termina em
           <b data-cd>{{contador}}</b>
         </p>
-        <h2 class="h2 mt-3">Escolha como você quer viver esses 3 dias</h2>
+        <h2 class="h2 mt-3">Escolha o seu ingresso</h2>
         <p class="lead mt-4">
-          Os dois ingressos dão acesso completo aos 3 dias ao vivo.
+          Os dois dão acesso aos 2 dias de imersão e à aula de abertura na sexta.
           A diferença é o que acontece <strong>depois</strong>.
         </p>
       </div>
@@ -677,90 +303,73 @@
       </div>
 
       <div class="planos">
-        <!-- ── Comum ── -->
         <article class="plano sup-linho reveal">
           <h3 class="plano__nome">Ingresso Comum</h3>
           <p class="plano__preco">
             <span data-slot="preco-comum">{{preco-comum}}</span>
-            <small>à vista ou parcelado</small>
+            <small><span data-slot="lote-nome">{{lote-nome}}</span>, até 9 de setembro</small>
           </p>
+
           <ul class="plano__inclui">
-            <li>Os 3 dias de imersão ao vivo — 25, 26 e 27 de setembro</li>
-            <li>Aplicação prática em todos os dias</li>
-            <li>Link de acesso enviado por WhatsApp</li>
-            <li>Garantia incondicional já no 1º dia</li>
+            <li data-destaque>2 dias de imersão ao vivo, 10h no total</li>
+            <li data-destaque>Aula de abertura ao vivo na sexta</li>
+            <li>Grupo exclusivo do evento</li>
+            <li>Protocolo dos 20 minutos, com acesso imediato</li>
+            <li>Mapa dos meus gatilhos</li>
+            <li>14 áudios para os momentos em que a vontade aperta</li>
+            <li>Guia fitoterápico de apoio</li>
           </ul>
-          <!-- [[CONFIRMAR: existe replay de curta duracao para o Comum? Se
-               existir, dizer aqui. Se nao, acrescentar "depois dos 3 dias o
-               acesso encerra" — mas so com a sua confirmacao.]] -->
-          <p class="plano__nao">
-            Não inclui o Diagnóstico Completo nem o Passe de 1 ano
-            para rever a imersão.
-          </p>
+
+          <p class="plano__nao">Não inclui o Diagnóstico Completo nem o replay dos 2 dias.</p>
+
           <div class="cta">
-            <a class="btn" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+            <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
               Quero o ingresso Comum
             </a>
           </div>
         </article>
 
-        <!-- ── VIP ── -->
         <article class="plano plano--vip sup-ameixa reveal">
           <span class="badge">Recomendado</span>
           <h3 class="plano__nome">VIP · Diagnóstico Completo</h3>
           <p class="plano__preco">
             <span data-slot="preco-vip">{{preco-vip}}</span>
-            <small>o mesmo em qualquer lote</small>
+            <small>preço único, não muda de lote</small>
           </p>
-          {{ancora-vip}}
 
           <div class="plano__pitch">
             <p>Você já pagou endócrino. Já pagou nutricionista. Talvez personal, talvez terapia.</p>
             <p><strong>Cada um leu uma fatia de você. Nenhum leu o conjunto.</strong></p>
-            <p>
-              O Diagnóstico Completo é uma hora quase inteira em que alguém
-              olha o conjunto — e te devolve o mapa todo, não a sua fatia.
-            </p>
           </div>
 
           <ul class="plano__inclui">
             <li>Tudo o que está no ingresso Comum</li>
-            <li data-destaque>
-              <strong>Diagnóstico Completo</strong> — 50 minutos ao vivo, só seu,
-              com a Aline, por Google Meet, depois da imersão. O que você pensa, o que
-              você sente e o que você faz, lidos juntos, no seu caso.
-            </li>
-            <li data-destaque>
-              <strong>Passe de 1 ano</strong> — reveja a imersão inteira quando quiser,
-              por 12 meses.
-            </li>
+            <li data-destaque><strong>Diagnóstico Completo</strong> — encontro ao vivo com a Aline. Você traz a cena da sua semana e ela lê ao vivo o que está por trás.</li>
+            <li data-destaque><strong>Replay dos 2 dias</strong> — só quem é VIP assiste depois.</li>
+            <li data-destaque><strong>Prioridade nas perguntas</strong> durante a imersão.</li>
           </ul>
 
-          <div class="plano__pitch mt-5">
-            <p><em>“E quando eu parar?”</em></p>
-            <p>
-              Essa pergunta você já levou para o consultório e voltou com ela inteira.
-              Não porque o seu médico errou — porque a resposta não está na dose.
-              Está no que você construiu por baixo do resultado.
-            </p>
-            <p><strong>É disso que a gente trata nos 50 minutos.</strong></p>
-          </div>
-
           <div class="cta">
-            <a class="btn" href="{{checkout-vip}}" data-checkout="vip" rel="noopener">
-              Quero o VIP
+            <a class="btn btn--bloco" href="{{checkout-vip}}" data-checkout="vip" rel="noopener">
+              Quero o ingresso VIP
             </a>
           </div>
         </article>
       </div>
 
-      <!-- Reversão de risco onde a decisão acontece. A garantia já existe
-           numa dobra adiante, mas ninguém rola de volta para conferir. -->
+      <!-- A escada inteira, com data. Ela vê que o preço sobe sozinho. -->
+      <div class="escada reveal">
+        <p class="etiqueta">Os próximos lotes</p>
+        <ol class="escada__lista">
+          {{escada}}
+        </ol>
+      </div>
+
       <div class="selo-garantia">
         <p>
-          <strong>Você entra sem risco.</strong> Participe do primeiro dia
-          inteiro. Se sentir que não é para você, fala com a nossa equipe e
-          devolvemos 100% do valor do ingresso.
+          <strong>Você entra sem risco.</strong> Participe da aula de abertura
+          inteira, na sexta, antes de a imersão começar. Se achar que não é para
+          você, fala com a nossa equipe e devolvemos 100% do valor do ingresso.
         </p>
       </div>
 
@@ -772,188 +381,291 @@
     </div>
   </section>
 
-  <!-- ══ 14 · POR QUE CUSTA TÃO BARATO ══════════════════════════ -->
-  <section class="sec sup-clara">
-    <div class="wrap trilho reveal">
-      <div class="trilho__cabeca">
-        <h2 class="h2">Por que custa tão barato?</h2>
-      </div>
-      <div class="trilho__corpo">
-        <p class="lead">
-          Eu poderia cobrar muito mais por 3 dias de imersão comigo — com as
-          estruturas prontas que você vai receber para trabalhar as três pontas
-          que decidem o seu resultado. Esse conhecimento já descortinou centenas
-          de mulheres que eram tentantes no processo de emagrecimento.
-        </p>
-        <p class="mt-5"><strong>Mas escolhi entregar isso por um valor simbólico.</strong></p>
-        <p class="mt-4">
-          Porque quero que você tenha a oportunidade de sentir o poder do meu
-          método na prática:
-        </p>
-
-        <ul class="lista-marcada">
-          <li>Teremos aplicação prática durante a imersão.</li>
-          <li>Você vai perceber no corpo e na mente um resultado imediato.</li>
-          <li>Você vai entender por que minhas alunas atingem suas metas de forma leve e realmente eficiente.</li>
-        </ul>
-
-        <p class="mt-6">
-          Você vai descobrir o que jamais deveria ser segredo: como tornar a mente
-          uma aliada no processo.
-        </p>
-
-        <!-- Avisar do pitch ANTES de ela descobrir sozinha compra credibilidade,
-             e credibilidade é a variável que decide o VIP. Esconder custa mais. -->
-        <div class="destaque">
-          <p>
-            E sim: no final da imersão, eu vou abrir um convite para continuar
-            caminhando comigo em mentorias e programas avançados.
-          </p>
-          <p>
-            Porque o conhecimento desses 3 dias é o primeiro passo que você vai dar
-            para criar as conexões neurais que unem corpo e mente em um processo
-            realmente leve e transformador — que transforma o “improvável” em uma
-            realidade materializada. Quilos a menos na balança.
-          </p>
-      </div>
-
-      <p class="mt-6">
-        E se você escolher o VIP, o que você está pagando não é o evento.
-        <strong>É a hora que eu vou passar olhando só o seu caso.</strong>
-      </p>
-
-      <div class="cta">
-        <a class="btn btn--bloco" href="#oferta">Quero garantir minha vaga</a>
-      </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ 15 · GARANTIA ══════════════════════════════════════════ -->
+  <!-- ══ 09 · POR QUE CUSTA TÃO POUCO ═══════════════════════ -->
   <section class="sec sup-linho">
     <div class="wrap trilho reveal">
       <div class="trilho__cabeca">
-        <h2 class="h2">Garantia Incondicional de Satisfação</h2>
+        <h2 class="h2">Por que custa tão pouco</h2>
       </div>
-      <div class="garantia__caixa trilho__corpo">
+      <div class="trilho__corpo">
         <p class="lead">
-          Confiamos tanto no nosso método que vamos te dar uma garantia
-          incondicional de satisfação.
+          São 11h30 comigo, ao vivo, com aplicação prática. Eu poderia cobrar bem
+          mais por isso.
         </p>
-        <p>
-          Sim, isso mesmo: se você vivenciar o nosso primeiro dia de imersão e
-          achar que não é pra você — sentir que não se identificou, que não vale
-          a pena ficar — basta acionar a nossa equipe e devolvemos
-          <strong>100% do valor do seu ingresso</strong>.
+        <p class="mt-4">
+          Escolhi não cobrar porque quero que você sinta como esse trabalho
+          funciona antes de decidir qualquer outra coisa.
         </p>
-        <p>
-          Caso contrário, uma coisa é certa: aplicando tudo, em poucos dias você
-          já colherá os frutos do seu investimento.
-        </p>
+        <div class="destaque">
+          <p>
+            E sim: no fim do domingo eu vou abrir um convite para continuar
+            comigo. Prefiro te avisar agora do que te surpreender no dia.
+          </p>
+          <p>
+            <strong>Se você vier só pelo fim de semana, sai com o mapa
+            preenchido e com o que aplicar. Isso já é seu.</strong>
+          </p>
+        </div>
         <div class="cta">
-          <a class="btn btn--bloco" href="#oferta">Quero entrar sem risco</a>
+          <a class="btn btn--bloco" href="#oferta">Ver os ingressos</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══ 16 · FAQ ═══════════════════════════════════════════════ -->
+  <!-- ══ 10 · QUEBRA DE OBJEÇÃO ═════════════════════════════ -->
   <section class="sec sup-clara">
     <div class="wrap trilho reveal">
       <div class="trilho__cabeca">
-        <h2 class="h2">Dúvidas frequentes</h2>
+        <h2 class="h2">“Eu já paguei por coisa demais que não funcionou.”</h2>
+      </div>
+      <div class="trilho__corpo">
+        <p class="lead">
+          Faz sentido você desconfiar. Se você chegou até aqui, já investiu em
+          dieta, em consulta, em academia, em aplicativo, e provavelmente na
+          própria caneta — que é o mais caro de todos.
+        </p>
+        <p class="mt-4">
+          E funcionou. Quase tudo funcionou, enquanto você estava segurando.
+        </p>
+        <p class="mt-4">
+          O que nunca te entregaram foi a parte que faz o resultado parar de pé
+          sem você segurar todo dia. Não porque escondam de você, mas porque não
+          é o trabalho do médico nem da nutricionista.
+          <strong>É um trabalho que ninguém reivindicou.</strong>
+        </p>
+        <p class="mt-4">
+          É esse que a gente faz nos dias 26 e 27. E antes disso, na sexta, você
+          participa da aula de abertura. Se achar que não é isso, devolvemos 100%
+          do valor.
+        </p>
+        <div class="cta">
+          <a class="btn btn--bloco" href="#oferta">Ver os ingressos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 11 · GARANTIA ══════════════════════════════════════
+       Ancorada na sexta: ela decide antes de o fim de semana
+       começar. É a versão mais generosa e a mais barata.      -->
+  <section class="sec sup-linho">
+    <div class="wrap trilho reveal">
+      <div class="trilho__cabeca">
+        <h2 class="h2">Garantia incondicional: decida depois da aula de abertura</h2>
+      </div>
+      <div class="garantia__caixa trilho__corpo">
+        <p class="lead">
+          Participe da aula de abertura inteira, na sexta, antes de a imersão
+          começar.
+        </p>
+        <p>
+          Se você achar que não é pra você, que não se identificou, que não vale
+          o seu tempo — basta falar com a nossa equipe e devolvemos
+          <strong>100% do valor do ingresso</strong>.
+        </p>
+        <p>Sem justificativa, sem formulário, sem negociação.</p>
+        <p>
+          <strong>Você conhece o trabalho antes de o fim de semana começar. O
+          risco é meu.</strong>
+        </p>
+        <div class="cta">
+          <a class="btn btn--bloco" href="#oferta">Ver os ingressos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 12 · QUEM CONDUZ ═══════════════════════════════════
+       Sem CTA no meio: esta dobra existe para transferir
+       autoridade, e um botão aqui interrompe a construção.    -->
+  <section class="sec sup-clara">
+    <div class="wrap guia__grade reveal">
+      <figure class="guia__foto">
+        <img src="/img/placeholder-retrato.svg" width="800" height="1000"
+             alt="Aline Bitton" loading="lazy" decoding="async">
+      </figure>
+      <div class="guia__texto">
+        <div class="guia__cabeca">
+          <p class="etiqueta">Quem conduz</p>
+          <h2 class="h2 mt-3">Eu sou metade do tamanho que já fui. E não foi na primeira vez que cheguei aqui.</h2>
+        </div>
+        <div class="guia__corpo">
+          <p class="lead">Eu fiz uma cirurgia bariátrica quando pesava 125 quilos.</p>
+          <p>
+            Eliminei 40. Saí dos três dígitos. E tudo indicava que a minha guerra
+            tinha finalmente acabado.
+          </p>
+          <p>
+            A cirurgia era o recurso que ia mudar a minha história com a balança,
+            com o guarda-roupa e com o espelho. Eu não queria só um corpo menor.
+            Eu queria uma vida leve, em paz, com liberdade — e acreditei que ela
+            vinha junto com o peso.
+          </p>
+          <p><strong>Não veio.</strong></p>
+          <p>
+            Eu fui engordando sem perceber. Não teve uma decisão, não teve um dia
+            em que eu desisti. Teve o automático da rotina, dia após dia, até que
+            eu acordei e a balança marcava 102 quilos.
+          </p>
+          <p>
+            A primeira coisa que eu pensei foi: eu estraguei tudo. Comigo nem
+            cirurgia resolve. Levou tempo até eu entender que a conclusão estava
+            errada.
+          </p>
+          <p>
+            A cirurgia fez o que a cirurgia faz. Ela mexeu no meu estômago. E não
+            mexeu em uma única das coisas que me levavam até a comida — o que eu
+            fazia quando o dia pesava, o que eu pensava depois de sair da linha, a
+            forma como eu me enxergava, e tudo aquilo que eu repetia sem escolher.
+          </p>
+          <p>
+            <strong>Ninguém tinha me dito que existia outro trabalho.</strong> Eu
+            descobri quando não sobrou mais nenhuma cirurgia para fazer.
+          </p>
+          <p>
+            Foi aí que eu parei de procurar mais uma forma de emagrecer e comecei
+            a estudar como cérebro e mente participavam daquilo que eu repetia.
+            Usei em mim primeiro. Depois levei para o meu trabalho, com mais de
+            2 mil mulheres.
+          </p>
+          <p><strong>Hoje eu peso 62,5 quilos. Mantenho há dez anos.</strong></p>
+          <p>
+            E a vida leve que eu esperava que viesse com o peso não veio com ele.
+            Veio com esse trabalho.
+          </p>
+          <p class="assinatura">
+            “O meu emagrecimento não é o meu método. É o resultado dele.”
+          </p>
+          <p class="miudo">
+            Aline Bitton — terapeuta e fitoterapeuta. Dez anos de trabalho com
+            neurociência do comportamento, PNL sistêmica, hipnose e nutrição
+            comportamental.
+          </p>
+
+          <dl class="numeros">
+            <div><dt>125 → 62,5</dt><dd>quilos, e mantém há dez anos</dd></div>
+            <div><dt>2 mil+</dt><dd>mulheres no trabalho dela</dd></div>
+            <div><dt>10 anos</dt><dd>em neurociência do comportamento</dd></div>
+          </dl>
+
+          <!-- [[PRECISO: as duas fotos do percurso. Mesmo enquadramento de
+               busto nos dois quadros — é o que lê a 165px no celular. ]] -->
+          <figure class="percurso">
+            <div class="percurso__quadro">
+              <img src="/img/placeholder-retrato.svg" width="800" height="1000"
+                   alt="Aline Bitton antes" loading="lazy" decoding="async">
+              <span class="etiqueta">antes</span>
+            </div>
+            <div class="percurso__quadro">
+              <img src="/img/placeholder-retrato.svg" width="800" height="1000"
+                   alt="Aline Bitton hoje" loading="lazy" decoding="async">
+              <span class="etiqueta">hoje</span>
+            </div>
+            <figcaption>E não foi na primeira vez que cheguei aqui.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 13 · PERGUNTAS FREQUENTES ══════════════════════════ -->
+  <section class="sec sup-linho">
+    <div class="wrap trilho reveal">
+      <div class="trilho__cabeca">
+        <h2 class="h2">Perguntas frequentes</h2>
       </div>
 
       <div class="faq trilho__corpo">
         <details open>
-          <summary>“Eu já tentei de tudo para emagrecer. O que pode ser diferente em apenas 3 dias?”</summary>
+          <summary>A aula de sexta faz parte da imersão?</summary>
           <div class="faq__corpo">
-            <p>Essa é uma dúvida muito honesta — e muito comum.</p>
-            <p>O que geralmente não funciona não é a dieta ou o esforço: é tentar resolver só no corpo físico.</p>
-            <p>Na Imersão, você vai entender por que o sobe e desce da balança acontece quando só uma ponta é trabalhada, e como o emagrecimento real só se sustenta quando pensar, sentir e agir andam juntos.</p>
-            <p>Em 3 dias você não emagrece tudo o que precisa — mas você entende o jogo de verdade. E quando a mente entende, o corpo para de acionar o modo luta e fuga do instinto de sobrevivência.</p>
+            <p>Ela é um bônus ao vivo que acontece antes. A imersão é sábado e domingo.</p>
+            <p>Mas comece pela sexta: é lá que você entende o que está acontecendo, e é depois dela que você decide se fica.</p>
           </div>
         </details>
 
         <details>
-          <summary>“Tenho medo de me frustrar de novo. E se for só mais um evento?”</summary>
+          <summary>Eu preciso estar usando a caneta para participar?</summary>
           <div class="faq__corpo">
-            <p>Esse medo faz sentido. Quem já tentou muitas vezes cria uma proteção: não se envolver demais, por medo de se comprometer e fracassar de novo.</p>
-            <p>A Imersão não é sobre empolgação passageira. É sobre clareza e direção, com profundidade, método e técnica prática.</p>
-            <p>Você vai sair entendendo:</p>
-            <ul>
-              <li>por que você sabe o que fazer, mas não consegue sustentar;</li>
-              <li>onde nasce a autossabotagem;</li>
-              <li>e o que, sem perceber, mantém o seu corpo no mesmo lugar.</li>
-            </ul>
-            <p>Não é um evento para te empurrar. É um espaço para te devolver o controle, com gentileza.</p>
+            <p>Não. A imersão trata do que acontece com cérebro e mente durante uma mudança de peso — funciona para quem usa, para quem parou, para quem fez cirurgia e para quem nunca usou nada.</p>
           </div>
         </details>
 
         <details>
-          <summary>“Isso é terapia? Vou ter que mexer em coisas que não quero?”</summary>
+          <summary>Vou ter que parar a medicação?</summary>
           <div class="faq__corpo">
-            <p>Não. A Imersão não é terapia, nem exposição emocional.</p>
-            <p>Mas olharemos para a emoção como parte do processo — e principalmente, para como romper padrões.</p>
-            <p>Tudo é conduzido de forma prática, segura e respeitosa. Você só olha para o que estiver pronta para olhar — e mesmo assim, com leveza.</p>
-            <p>Aqui a proposta não é reviver dores, mas entender os mecanismos invisíveis que fazem você comer, desistir ou se cobrar além do limite. Sem rótulos. Sem julgamento.</p>
+            <p>Não. Essa decisão é sua e do seu médico, e a imersão não interfere nisso.</p>
+            <p>O que a gente trabalha é a parte que continua sendo sua, com ou sem ferramenta.</p>
           </div>
         </details>
 
         <details>
-          <summary>“Meu problema é comida. Isso realmente tem a ver com emoção?”</summary>
+          <summary>E se eu não puder assistir ao vivo?</summary>
           <div class="faq__corpo">
-            <p>Quase sempre sim — mas não do jeito que te contaram.</p>
-            <p>Na Imersão você vai perceber que comer não é o problema: é a solução que o seu corpo encontrou para lidar com algo que não foi acolhido.</p>
-            <p>Quando você entende isso, a relação com a comida muda. Não pela força — mas porque a necessidade diminui.</p>
-            <p>E isso acontece quando as três pontas — pensar, sentir e agir — começam a ser trabalhadas juntas.</p>
+            <p>O replay dos dois dias de imersão é exclusivo do ingresso VIP. No ingresso comum, o acesso é ao vivo.</p>
           </div>
         </details>
 
         <details>
-          <summary>“Eu não tenho disciplina. Isso vai funcionar para mim?”</summary>
+          <summary>Onde acontece?</summary>
           <div class="faq__corpo">
-            <p>A maioria das mulheres que chegam aqui acredita que falta disciplina ou foco. Na prática, o que existe é excesso de exigência e pouca técnica para lidar com a mente e as emoções.</p>
-            <p>A Imersão mostra que:</p>
-            <ul>
-              <li>disciplina não se sustenta sem segurança;</li>
-              <li>foco não se perde — ele se redireciona, de forma intencional ou inconsciente; depois da imersão você terá as duas referências;</li>
-              <li>constância vem quando o corpo não está em estado de defesa.</li>
-            </ul>
-            <p><strong>Você não precisa ser mais forte. Precisa parar de lutar contra si mesma.</strong></p>
+            <p>No Google Meet. Você recebe o link no grupo do evento.</p>
           </div>
         </details>
 
         <details>
-          <summary>“Eu uso caneta / fiz bariátrica. Essa imersão é para mim?”</summary>
+          <summary>Quanto tempo dura?</summary>
           <div class="faq__corpo">
-            <p>É — e talvez mais do que para qualquer outra pessoa.</p>
-            <p>O recurso que você usou está fazendo o trabalho dele, e fazendo bem. A caneta silenciou a fome e te deu algo que você nunca teve antes: espaço na cabeça. A cirurgia mudou o volume. Os dois mexeram na superfície, que é exatamente onde eles atuam.</p>
-            <p>Só que existe um segundo trabalho — o que dispara a sensação e o padrão que vira comportamento — e esse nunca foi trabalho deles.</p>
-            <p>Esse espaço na cabeça que você tem agora é a melhor condição que já existiu na sua vida para fazer esse segundo trabalho.</p>
-            <p><strong>Aqui ninguém vai te pedir para parar nada</strong>, e nada do que a gente faz disputa com o seu médico. A gente cuida da parte que ficou sem dono.</p>
+            <p>Sexta, aula de abertura, das 19h às 20h30. Sábado das 10h às 17h. Domingo das 10h às 13h.</p>
+            <p>São 11h30 ao vivo no total.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Isso é terapia?</summary>
+          <div class="faq__corpo">
+            <p>Não. É uma imersão prática, em grupo, com aplicação.</p>
+            <p>Você olha para o que estiver pronta para olhar, sem exposição e sem obrigação de falar.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Já tentei de tudo. O que muda em dois dias?</summary>
+          <div class="faq__corpo">
+            <p>Em dois dias você não resolve tudo. Você entende por que volta, mapeia onde o seu automático começa e sai com estratégias para usar na hora.</p>
+            <p>Isso é diferente de mais uma tentativa.</p>
           </div>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- ══ 17 · SUPORTE ═══════════════════════════════════════════ -->
+  <!-- ══ 14 · FECHAMENTO ════════════════════════════════════ -->
   <section class="sec suporte sup-escura">
     <div class="wrap-estreito reveal">
-      <h2 class="h3">Ainda tem dúvidas?</h2>
-      <p class="mt-4 centrado">Fale com o nosso time. A gente responde de verdade.</p>
+      <p class="etiqueta">26 e 27 de setembro</p>
+      <h2 class="h2 mt-3">Com aula de abertura na sexta, dia 25.</h2>
+      <p class="lead mt-5 centrado">
+        O <span data-slot="lote-nome">{{lote-nome}}</span> de
+        <strong data-slot="preco-comum">{{preco-comum}}</strong> vai até 9 de
+        setembro. <span data-slot="proximo-aviso">{{proximo-aviso}}</span>
+      </p>
       <div class="cta">
-        <!-- [[PRECISO: número do WhatsApp do suporte]] -->
-        <a class="btn btn--zap btn--bloco"
-           href="{{zap-duvida}}"
-           rel="noopener" target="_blank">
-          Falar com o suporte
+        <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+          Quero minha vaga
         </a>
+        <p class="miudo mt-4 centrado">
+          Participe da aula de abertura. Se não for pra você, devolvemos 100%.
+        </p>
       </div>
+      <p class="mt-8 centrado">
+        <a class="link-suporte" href="{{zap-duvida}}" rel="noopener" target="_blank">
+          Falar com a nossa equipe antes de comprar
+        </a>
+      </p>
     </div>
   </section>
-
 
 </main>
 
