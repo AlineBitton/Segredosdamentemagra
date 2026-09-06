@@ -14,7 +14,8 @@ const DIST = path.join(RAIZ, 'dist');
 const MIME = { '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.webp': 'image/webp',
   '.avif': 'image/avif', '.jpg': 'image/jpeg', '.png': 'image/png' };
 
-let html = await readFile(path.join(DIST, 'index.html'), 'utf8');
+const PAGINA = process.env.SMM_PAGINA || 'index.html';
+let html = await readFile(path.join(DIST, PAGINA), 'utf8');
 
 // O visualizador pode não suportar AVIF; para a revisão, fica só o WebP.
 html = html.replace(/<source[^>]*type="image\/avif"[^>]*>/g, '');
@@ -40,11 +41,14 @@ for (const rel of alvos) {
 }
 
 // aviso discreto de que isto é uma prévia, não o site publicado
+// O selo usa a paleta da marca: ameixa com papel cru. O dourado antigo
+// era de outro sistema de cor e aparecia por cima da prévia inteira.
 html = html.replace('</body>', `<div style="position:fixed;left:12px;bottom:12px;z-index:200;
-  background:#C9A227;color:#14100C;font:700 12px/1 system-ui,sans-serif;
-  padding:8px 12px;border-radius:999px;letter-spacing:.04em">PRÉVIA PARA APROVAÇÃO</div></body>`);
+  background:#5E3A46;color:#F2EDE5;font:500 12px/1 system-ui,sans-serif;
+  padding:8px 12px;border-radius:999px;letter-spacing:.06em">prévia para aprovação</div></body>`);
 
-const saida = path.join(RAIZ, 'segredos-da-mente-magra-previa.html');
+const nome = PAGINA.replace(/\.html$/, '');
+const saida = path.join(RAIZ, `previa-${nome}.html`);
 await writeFile(saida, html);
 const { size } = await stat(saida);
 console.log(`\n  ${trocados} arquivos embutidos`);
