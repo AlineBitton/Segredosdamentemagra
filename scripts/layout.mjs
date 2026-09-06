@@ -37,7 +37,7 @@ const nav = await chromium.launch({
 });
 const ctx = await nav.newContext({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
 const pg = await ctx.newPage();
-const alvo = process.env.SMM_PAGINA || '/smm/';
+const alvo = process.env.SMM_PAGINA || '/';
 await pg.goto('http://127.0.0.1:4327' + alvo, { waitUntil: 'networkidle' });
 await pg.evaluate(() => {
   document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visivel'));

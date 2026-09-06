@@ -101,6 +101,9 @@
 
 .hero__retrato { position: relative; background: var(--cacau-2); min-height: 58vh; }
 @media (min-width: 980px) { .hero__retrato { min-height: 0; } }
+/* picture é inline por padrão, e aí a altura de 100% do img resolve
+   contra ele em vez de contra a figure — a foto ficava curta. */
+.hero__retrato picture, .guia__foto picture, .percurso__quadro picture { display: block; height: 100%; }
 .hero__retrato img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
 
 /* espaço reservado para foto ainda não recebida — marcado de propósito:
@@ -348,7 +351,7 @@
 .guia__grade { display: grid; gap: var(--s-8); }
 @media (min-width: 940px) { .guia__grade { grid-template-columns: .8fr 1.2fr; align-items: center; } }
 .guia__foto { position: relative; overflow: hidden; background: var(--bg-2); aspect-ratio: 4/5; }
-.guia__foto img { width: 100%; height: 100%; object-fit: cover; }
+.guia__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 .numeros { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--s-5); margin-top: var(--s-7); padding-top: var(--s-6); border-top: 1px solid var(--linha); list-style: none; }
 .numeros dt {
   font-weight: var(--p-regular);
