@@ -306,7 +306,41 @@ direto em `public/img/`.
 
 ---
 
-## 7. Entrega
+## 7. As fotos que existem, e onde cada uma vai
+
+A sessão de setembro resolveu os quatro espaços. As três camisas de linho
+saíram nas cores da paleta, o fundo é liso onde precisa ser, e as mãos estão
+à vista em todas. O mapeamento é este:
+
+| foto | espaço | por que essa |
+|---|---|---|
+| linho **papel cru**, fundo cinza liso, sentada, mãos cruzadas | **abertura** | papel cru contra o campo de cacau é o maior contraste possível. Fundo liso permite o recorte, e o olhar está na câmera |
+| linho **ameixa**, mesa de madeira, mãos pousadas, olhar na câmera | **quem conduz** | frontal, mãos abertas e visíveis, expressão calma sem sorriso largo. É a foto de credibilidade |
+| linho **cacau**, sofá, falando, mão em gesto, olhar fora de câmera | **agradecimento** | conversa, não venda. Depois de pagar, o registro certo é o de alguém falando com ela, não vendendo para ela |
+| regata branca, **calça larga**, sala | **percurso** | o antes e o depois estão dentro da mesma foto: o corpo de hoje dentro da roupa de antes. Não precisa de díptico |
+
+A de camisa azul-marinho no escritório fica fora: o azul não está na cartela e
+a estante colorida disputa atenção.
+
+### Entrega
+
+Formato **JPG**, sem tratamento de pele pesado, sem filtro. Em `src/img-originais/retratos/`:
+
+```
+aline-abertura.jpg     linho papel cru, fundo cinza    ≥ 1400 × 1900
+aline-mentora.jpg      linho ameixa, mesa de madeira   ≥ 1200 × 1500
+aline-obrigado.jpg     linho cacau, sofá, falando      ≥ 1200 × 1500
+aline-percurso.jpg     calça larga, sala               ≥ 1000 × 1250
+```
+
+Depois é `npm run retratos`: o script recorta o fundo onde ele é liso, assenta
+a Aline sobre o campo da marca de cada espaço, corta em 4:5 no ponto focal e
+exporta AVIF e WebP. O layout com retrato volta sozinho — o build detecta os
+arquivos e tira o `data-sem-foto`.
+
+---
+
+## 8. Entrega
 
 Formato **JPG ou PNG**, sem tratamento de pele pesado, sem filtro, sem moldura.
 Colocar em `public/img/` com estes nomes:

@@ -26,11 +26,14 @@ const CAMPO = { papel: '#F2EDE5', linho: '#E7DED0', cacau: '#3A322C', ameixa: '#
 
 /** Os quatro espaços, com a proporção e o ponto focal de cada um. */
 const ESPACOS = {
-  'aline-abertura':  { campo: 'cacau', prop: 4 / 5, focoY: 0.30, larguras: [700, 1400], recorta: true },
-  'aline-emocional': { campo: 'linho', prop: 4 / 5, focoY: 0.38, larguras: [600, 1200], recorta: true },
-  'aline-mentora':   { campo: 'linho', prop: 4 / 5, focoY: 0.36, larguras: [600, 1200], recorta: true },
-  'aline-percurso-1':{ campo: 'linho', prop: 4 / 5, focoY: 0.32, larguras: [420, 840],  recorta: true },
-  'aline-percurso-2':{ campo: 'linho', prop: 4 / 5, focoY: 0.32, larguras: [420, 840],  recorta: true },
+  // camisa de linho papel cru contra fundo cinza liso → campo de cacau
+  'aline-abertura': { campo: 'cacau', prop: 4 / 5, focoY: 0.30, larguras: [700, 1400], recorta: true },
+  // camisa de linho ameixa na mesa de madeira, mãos à vista
+  'aline-mentora':  { campo: 'papel', prop: 4 / 5, focoY: 0.34, larguras: [600, 1200], recorta: false },
+  // camisa de linho cacau no sofá, falando — página de agradecimento
+  'aline-obrigado': { campo: 'papel', prop: 4 / 5, focoY: 0.34, larguras: [600, 1200], recorta: false },
+  // a calça larga: o antes e o depois dentro da mesma foto
+  'aline-percurso': { campo: 'papel', prop: 4 / 5, focoY: 0.26, larguras: [440, 880],  recorta: false },
 };
 
 const hex = (h) => ({

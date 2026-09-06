@@ -213,7 +213,6 @@
 .agenda__hora { font-family: var(--etiqueta); font-size: var(--fs-peq); font-weight: var(--p-medio); letter-spacing: .1em; color: var(--rotulo); }
 .agenda__oque > * + * { margin-top: var(--s-3); }
 .agenda__titulo { font-family: var(--display); font-weight: var(--p-regular); font-size: 1.5rem; line-height: 1.3; color: var(--enfase); max-width: 34ch; }
-.agenda__titulo--pendente { color: var(--txt-2); font-style: italic; }
 .agenda__fecho { font-family: var(--display); font-size: var(--fs-lead); color: var(--enfase); }
 
 /* ─── bônus ─────────────────────────────────────────────────── */
@@ -360,7 +359,7 @@
 
 /* O percurso da Aline em dois quadros. Enquadramento de busto e não de
    corpo inteiro: a 165px de celular, um rosto lê e uma silhueta não. */
-.percurso { margin: var(--s-7) 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); max-width: 27rem; }
+.percurso { margin: var(--s-7) 0 0; display: grid; gap: var(--s-4); max-width: 22rem; }
 .percurso__quadro { display: grid; gap: var(--s-2); }
 .percurso img { width: 100%; aspect-ratio: 4/5; object-fit: cover; background: var(--bg-2); }
 .percurso figcaption { grid-column: 1 / -1; font-size: var(--fs-peq); color: var(--txt-2); max-width: var(--medida); }

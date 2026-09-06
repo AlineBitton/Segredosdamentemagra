@@ -187,9 +187,7 @@ async function main() {
         </div>
         <div class="agenda__oque">
           <p class="etiqueta">${e.etiqueta}</p>
-          ${e.titulo
-            ? `<h3 class="agenda__titulo">${e.titulo}</h3>`
-            : `<h3 class="agenda__titulo agenda__titulo--pendente">Tema a confirmar</h3>`}
+          ${e.titulo ? `<h3 class="agenda__titulo">${e.titulo}</h3>` : ''}
           <p>${e.texto}</p>
         </div>
       </li>`).join(''),
