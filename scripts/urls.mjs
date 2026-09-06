@@ -8,7 +8,7 @@
  */
 import { PROMESSAS } from '../config/oferta.mjs';
 
-const SITE = 'https://afinandocorpoemente.com.br';
+const SITE = 'https://smm.afinandocorpoemente.com.br';
 const publico = process.argv[2] || 'frio';
 const campanha = process.argv[3] || 'smm-set26';
 

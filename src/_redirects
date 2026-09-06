@@ -1,2 +1,1 @@
-# www -> apex (301, permanente). O "!" força a regra mesmo com o arquivo existindo.
-https://www.afinandocorpoemente.com.br/* https://afinandocorpoemente.com.br/:splat 301!
+# Um subdomínio não tem www. Nada a redirecionar aqui por enquanto.

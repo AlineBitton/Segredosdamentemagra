@@ -28,7 +28,7 @@ for (const c of CASOS) {
     cwd: RAIZ, env: { ...process.env, SMM_AGORA: c.data }, stdio: 'pipe',
   });
   // a página mora em dist/smm/; dist/index.html é só o redirecionamento
-  const base = process.env.SMM_BASE ?? '/smm';
+  const base = process.env.SMM_BASE ?? '';
   const html = readFileSync(path.join(RAIZ, 'dist' + base, 'index.html'), 'utf8');
   const slot = (n) => (html.match(new RegExp(`data-slot="${n}"[^>]*>([^<]*)`)) || [])[1] || '';
   // procurar "data-encerrado" no documento inteiro acha o seletor dentro do

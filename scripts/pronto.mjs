@@ -12,7 +12,7 @@ import { CHECKOUT, EVENTO, LOTES, META, SUPORTE, VIP, whatsappValido } from '../
 
 const RAIZ = path.resolve(import.meta.dirname, '..');
 // a página mora sob /smm; dist/index.html é só o redirecionamento da raiz
-const DIST = path.join(RAIZ, 'dist' + (process.env.SMM_BASE ?? '/smm'));
+const DIST = path.join(RAIZ, 'dist' + (process.env.SMM_BASE ?? ''));
 
 const erros = [];
 const avisos = [];
@@ -53,11 +53,10 @@ for (const f of arquivos) {
 for (const f of ['index.html', 'obrigado.html', 'termos.html', 'privacidade.html',
                  'img/og.jpg', 'img/favicon.svg',
                  'fonts/fraunces-var.woff2', 'fonts/inter-var.woff2']) {
-  if (!existsSync(path.join(DIST, f))) erro(`falta ${f} no dist/smm/`, 'rode npm run build');
+  if (!existsSync(path.join(DIST, f))) erro(`falta ${f} no dist/`, 'rode npm run build');
 }
-// na raiz de dist/: servidos pelo domínio, não pelo caminho
-for (const f of ['robots.txt', 'sitemap.xml', '_headers', 'index.html']) {
-  if (!existsSync(path.join(RAIZ, 'dist', f))) erro(`falta ${f} na raiz do dist/`, 'rode npm run build');
+for (const f of ['robots.txt', 'sitemap.xml', '_headers']) {
+  if (!existsSync(path.join(RAIZ, 'dist', f))) erro(`falta ${f} no dist/`, 'rode npm run build');
 }
 
 /* ── configuração da oferta ───────────────────────────────────── */

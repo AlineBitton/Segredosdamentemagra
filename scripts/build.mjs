@@ -47,17 +47,17 @@ const ORCAMENTO = {
   dobra1: 120 * 1024,     // html comprimido + as duas fontes
 };
 
-const SITE = 'https://afinandocorpoemente.com.br';
+const SITE = 'https://smm.afinandocorpoemente.com.br';
 /**
- * A página mora em /smm, e não na raiz do domínio.
+ * A página mora na raiz do próprio subdomínio, então BASE é vazio.
  *
- * Em vez de reescrever caminho no servidor, o site inteiro é gerado dentro
- * de dist/smm/ e todo caminho absoluto sai com o prefixo. Assim o mesmo
- * dist funciona nos dois modelos de publicação: servindo o domínio inteiro
- * pelo Pages, ou com um Worker interceptando /smm — porque em nenhum dos
- * dois há caminho para traduzir. E a raiz vira um redirecionamento.
+ * O mecanismo continua aqui porque custa nada e resolve o caso de um dia a
+ * página precisar morar num subcaminho: `SMM_BASE=/smm npm run build` gera
+ * tudo dentro de dist/smm/ com os caminhos absolutos prefixados, sem
+ * nenhuma tradução de caminho no servidor — que é de onde vem link
+ * quebrado quando um site mora fora da raiz.
  */
-const BASE = process.env.SMM_BASE ?? '/smm';
+const BASE = process.env.SMM_BASE ?? '';
 const SAIDA = 'dist' + BASE;
 
 /** Prefixa todo caminho absoluto do documento com a base. */

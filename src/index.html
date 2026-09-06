@@ -5,17 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Imersão Segredos da Mente Magra · 25, 26 e 27 de setembro · Aline Bitton</title>
 <meta name="description" content="3 dias ao vivo para entender por que a balança desce e volta — e o que precisa acontecer para a mudança passar a ser sua. Com Aline Bitton. A partir de {{preco-comum}}.">
-<link rel="canonical" href="https://afinandocorpoemente.com.br/">
+<link rel="canonical" href="https://smm.afinandocorpoemente.com.br/">
 <meta name="theme-color" content="#0C0F0E">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Aline Bitton · Afinando Corpo e Mente">
 <meta property="og:title" content="Imersão Segredos da Mente Magra · 25, 26 e 27 de setembro">
 <meta property="og:description" content="3 dias ao vivo para entender por que a balança desce e volta — e o que precisa acontecer para a mudança passar a ser sua. A partir de {{preco-comum}}.">
-<meta property="og:image" content="https://afinandocorpoemente.com.br/img/og.jpg">
+<meta property="og:image" content="https://smm.afinandocorpoemente.com.br/img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
+<!-- O retrato de abertura é o elemento de maior pintura no celular. Sem o
+     preload ele só é descoberto depois de o CSS embutido ser lido, e o LCP
+     passava de 2s. -->
+<link rel="preload" as="image" type="image/avif" fetchpriority="high"
+      href="/img/aline-abertura-700.avif"
+      imagesrcset="/img/aline-abertura-420.avif 420w, /img/aline-abertura-700.avif 700w, /img/aline-abertura-1400.avif 1400w"
+      imagesizes="(min-width: 980px) 47vw, 100vw">
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <!--CSS-->
 </head>
@@ -71,8 +78,8 @@
 
       <figure class="hero__retrato">
         <picture>
-          <source type="image/avif" srcset="/img/aline-abertura-700.avif 700w, /img/aline-abertura-1400.avif 1400w" sizes="(min-width: 980px) 47vw, 100vw">
-          <source type="image/webp" srcset="/img/aline-abertura-700.webp 700w, /img/aline-abertura-1400.webp 1400w" sizes="(min-width: 980px) 47vw, 100vw">
+          <source type="image/avif" srcset="/img/aline-abertura-420.avif 420w, /img/aline-abertura-700.avif 700w, /img/aline-abertura-1400.avif 1400w" sizes="(min-width: 980px) 47vw, 100vw">
+          <source type="image/webp" srcset="/img/aline-abertura-420.webp 420w, /img/aline-abertura-700.webp 700w, /img/aline-abertura-1400.webp 1400w" sizes="(min-width: 980px) 47vw, 100vw">
           <img src="/img/aline-abertura-1400.webp" width="1400" height="1750"
                alt="Aline Bitton, sentada, camisa de linho papel cru" fetchpriority="high" decoding="async">
         </picture>

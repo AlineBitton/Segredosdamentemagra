@@ -30,7 +30,7 @@ const ESPACOS = {
   // Sem recorte: o cinza do estúdio é próximo demais do linho papel cru e do
   // tom de pele, e o preenchimento por semelhança comia o rosto. O fundo
   // cinza já é neutro e assenta bem contra o campo de cacau.
-  'aline-abertura': { campo: 'cacau', prop: 4 / 5, focoY: 0.30, larguras: [700, 1400], recorta: false },
+  'aline-abertura': { campo: 'cacau', prop: 4 / 5, focoY: 0.30, larguras: [420, 700, 1400], recorta: false },
   // camisa de linho ameixa na mesa de madeira, mãos à vista
   'aline-mentora':  { campo: 'papel', prop: 4 / 5, focoY: 0.34, larguras: [600, 1200], recorta: false },
   // camisa de linho cacau no sofá, falando — página de agradecimento

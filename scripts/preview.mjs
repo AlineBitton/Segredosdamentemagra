@@ -16,11 +16,19 @@ const MIME = { '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.webp': 'image/
 
 const PAGINA = process.env.SMM_PAGINA || 'index.html';
 // o site mora em dist/smm/; a raiz do dist é só o redirecionamento
-const BASE = process.env.SMM_BASE ?? '/smm';
+const BASE = process.env.SMM_BASE ?? '';
 let html = await readFile(path.join(DIST + BASE, PAGINA), 'utf8');
 
 // O visualizador pode não suportar AVIF; para a revisão, fica só o WebP.
 html = html.replace(/<source[^>]*type="image\/avif"[^>]*>/g, '');
+
+// srcset e data URI não convivem: o `data:image/webp;base64,` tem uma
+// vírgula, e vírgula é o que separa candidatos no srcset. O navegador lê
+// metade de uma URL como um candidato inteiro e não carrega imagem nenhuma.
+// Na prévia, cada figura fica com um src só — a maior largura.
+html = html.replace(/<source\b[^>]*>/g, '');
+html = html.replace(/\ssrcset="[^"]*"/g, '').replace(/\ssizes="[^"]*"/g, '');
+html = html.replace(/<link rel="preload" as="image"[^>]*>/g, '');
 
 const cache = new Map();
 async function dataUri(rel) {

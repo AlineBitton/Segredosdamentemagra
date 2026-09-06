@@ -1,12 +1,11 @@
 # Publicação
 
-A página fica em **afinandocorpoemente.com.br/smm**.
+A página fica em **smm.afinandocorpoemente.com.br**.
 
-O site inteiro é gerado dentro de `dist/smm/`, e todo caminho absoluto sai com
-o prefixo — `/smm/img/...`, `/smm/fonts/...`, `/smm/obrigado`. Isso importa: em
-nenhum dos dois modelos de publicação abaixo existe caminho para traduzir no
-servidor, o que é a fonte mais comum de link quebrado quando um site mora num
-subcaminho. `dist/index.html` é só um redirecionamento da raiz para `/smm/`.
+Um subdomínio próprio, e não um subcaminho do site principal. A diferença
+importa: assim a página não depende de nada que já esteja rodando na raiz, não
+precisa de Worker de rota, e se um dia o site principal mudar de hospedagem
+esta página não é afetada. É um registro de DNS e nada mais.
 
 ---
 
@@ -15,72 +14,59 @@ subcaminho. `dist/index.html` é só um redirecionamento da raiz para `/smm/`.
 Ligar o domínio exige entrar na sua conta da Cloudflare. Eu não tenho acesso a
 ela e não devo ter — é a conta que controla o DNS de todos os seus domínios.
 
-**A boa notícia é que a GoDaddy não precisa ser tocada.** O seu DNS já está na
-Cloudflare, e é lá que tudo acontece. A GoDaddy só guarda o registro do
-domínio; os nameservers já apontam para a Cloudflare.
+**A GoDaddy não precisa ser tocada.** O seu DNS já está na Cloudflare, e é lá
+que tudo acontece. A GoDaddy só guarda o registro do domínio; os nameservers já
+apontam para a Cloudflare.
 
-Você não precisa me passar arquivo nenhum: o repositório já é a fonte. Você
+**Você não precisa me passar arquivo nenhum.** O repositório é a fonte. Você
 conecta o repositório ao Cloudflare Pages uma vez, e a partir daí todo push
 publica sozinho.
 
 ---
 
-## Caminho 1 — o domínio ainda não serve outro site
+## Passo a passo
 
-Este é o mais simples. Cinco minutos, sem Worker, sem código extra.
+**1. Cloudflare → Workers & Pages → Create → Pages → Connect to Git**
 
-1. **Cloudflare → Workers & Pages → Create → Pages → Connect to Git**
-2. Escolha o repositório `AlineBitton/Segredosdamentemagra`
-3. Configurações de build:
-   - **Framework preset:** None
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-   - **Branch:** `claude/segredos-mente-magra-landing-f2dwfw` (ou `main`, depois do merge)
-4. **Deploy**. Sai um endereço `xxx.pages.dev` — abra e confira em `/smm/`.
-5. **Custom domains → Set up a custom domain →** `afinandocorpoemente.com.br`
+Autorize o GitHub e escolha `AlineBitton/Segredosdamentemagra`.
 
-A Cloudflare cria o registro de DNS sozinha, porque a zona já é dela.
+**2. Configurações de build**
 
-Pronto: **afinandocorpoemente.com.br/smm** no ar, e quem cair na raiz é
-redirecionado para lá.
+| campo | valor |
+|---|---|
+| Framework preset | None |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Branch | `claude/segredos-mente-magra-landing-f2dwfw` |
 
----
+**3. Save and Deploy**
 
-## Caminho 2 — o domínio já serve outro site
+Sai um endereço `xxx.pages.dev`. Abra e confira antes de seguir — a página
+inteira já funciona por ele.
 
-Se a raiz já tem WordPress ou qualquer outra coisa que precisa continuar
-funcionando, `/smm` entra na frente por um Worker.
+**4. Custom domains → Set up a custom domain**
 
-1. Faça o deploy do Pages como no Caminho 1, mas **pare no passo 4** — não
-   ligue o domínio ao Pages.
-2. **Workers & Pages → Create → Worker.** Cole `worker/smm.js` do repositório.
-3. **Settings → Variables and Secrets → Add:**
-   - `ORIGEM` = `https://xxx.pages.dev` (o endereço que o Pages te deu)
-4. **Settings → Triggers → Routes → Add route:**
-   - Route: `afinandocorpoemente.com.br/smm*`
-   - Zone: `afinandocorpoemente.com.br`
-5. O registro de DNS da raiz precisa estar **proxied** (nuvem laranja). Sem
-   isso o pedido não passa pela Cloudflare e a rota nunca dispara.
+Digite `smm.afinandocorpoemente.com.br`.
 
-O Worker repassa o caminho sem traduzir. É de propósito: o Pages tem `/smm/`
-exatamente onde o navegador pede.
+A Cloudflare cria o registro de CNAME sozinha, porque a zona já é dela. O
+certificado sai em alguns minutos.
+
+Pronto.
 
 ---
 
-## Alternativa que eu recomendaria
+## Se um dia a página precisar morar num subcaminho
 
-**smm.afinandocorpoemente.com.br**, em vez de `/smm`.
-
-É um registro de CNAME e nada mais: sem Worker, sem prefixo de caminho, sem
-risco de conflito com o site que já existe. Se um dia a raiz mudar de
-hospedagem, a página não é afetada.
-
-O `/smm` funciona e está implementado. Mas se a decisão ainda estiver aberta, o
-subdomínio é menos peça móvel. Para mudar, é uma linha:
+O mecanismo está no build e é uma variável:
 
 ```
-SMM_BASE='' npm run build
+SMM_BASE=/smm npm run build
 ```
+
+Isso gera o site inteiro dentro de `dist/smm/`, com todo caminho absoluto
+prefixado — sem nenhuma tradução de caminho no servidor, que é de onde vem link
+quebrado quando um site mora fora da raiz. `SITE`, em `scripts/build.mjs`,
+precisa acompanhar.
 
 ---
 
@@ -96,7 +82,7 @@ wrangler secret put META_CAPI_TOKEN
 A função de borda lê em `env.META_CAPI_TOKEN`. O navegador nunca vê.
 
 O Pixel (`10008229355968163`) já está nas duas páginas, sem plugin: hash na
-CSP, `PageView` na venda e `Purchase` mais o evento nomeado das campanhas na de
+CSP, `PageView` na venda, e `Purchase` mais o evento nomeado das campanhas na de
 agradecimento.
 
 ---
@@ -107,25 +93,26 @@ agradecimento.
 npm run verificar
 ```
 
-Roda os testes de lote, a paleta, os cinco estados do ciclo, o orçamento de
-peso, a CSP, a acessibilidade, a auditoria de leitura no navegador, o teste
-responsivo em sete larguras e a checagem de pré-voo. Se algum reprovar, o
-comando falha e a publicação não deve acontecer.
+Roda, em ordem: os testes do motor de lotes, a conformidade da paleta, os cinco
+estados do ciclo de venda, o orçamento de peso, a CSP com a página de pé no
+navegador, a acessibilidade, a auditoria de leitura — que mede cada texto
+contra o fundo realmente pintado atrás dele —, o teste responsivo em sete
+larguras e a checagem de pré-voo. Se qualquer um reprovar, o comando falha.
 
 ```
 npm run medir
 ```
 
-Roda o Lighthouse em mobile e desktop e grava os relatórios em
-`docs/medicao/`.
+Lighthouse em mobile e desktop, com os relatórios em `docs/medicao/`.
 
 ---
 
 ## Depois de publicar
 
-- Confira `afinandocorpoemente.com.br/smm` e `/smm/obrigado`
-- Confira a raiz: tem que redirecionar para `/smm/`
+- Abra `smm.afinandocorpoemente.com.br` e `smm.afinandocorpoemente.com.br/obrigado`
 - No Gerenciador de Eventos do Meta, confirme o `PageView` chegando
 - Faça uma compra de teste e confirme o `Purchase` na página de agradecimento
-- Configure a Hub.la para redirecionar a compra para
-  `afinandocorpoemente.com.br/smm/obrigado`
+- Na Hub.la, configure o redirecionamento pós-compra dos cinco checkouts para
+  `https://smm.afinandocorpoemente.com.br/obrigado`
+- Nos anúncios, use `?p=data` para servir a variante B do hero — a que fala com
+  quem já tem data para parar a caneta. Sem o parâmetro, entra a versão A.
