@@ -17,7 +17,9 @@ const TIPOS = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'te
 
 const srv = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-  if (rel === '/obrigado') rel = '/obrigado.html';
+  // a página mora sob /smm: a raiz redireciona, então os testes entram direto
+  if (rel === '/' || rel === '') rel = '/smm/';
+  if (rel === '/smm/obrigado') rel = '/smm/obrigado.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const f = path.join(DIST, rel);
   if (!f.startsWith(DIST) || !existsSync(f)) return void res.writeHead(404).end('404');
@@ -35,7 +37,7 @@ const LARGURAS = [
   [1024, 'tablet paisagem'],
   [1440, 'desktop'],
 ];
-const PAGINAS = [['/', 'venda'], ['/obrigado', 'agradecimento']];
+const PAGINAS = [['/smm/', 'venda'], ['/smm/obrigado', 'agradecimento']];
 
 const nav = await chromium.launch({
   executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox'],

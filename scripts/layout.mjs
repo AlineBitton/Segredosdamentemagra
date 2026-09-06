@@ -19,6 +19,9 @@ const TIPOS = {
 
 const servidor = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  // a página mora sob /smm: a raiz redireciona, então os testes entram direto
+  if (rel === '/' || rel === '') rel = '/smm/';
+  if (rel === '/smm/obrigado') rel = '/smm/obrigado.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const arquivo = path.join(DIST, rel);
   if (!arquivo.startsWith(DIST) || !existsSync(arquivo)) return void res.writeHead(404).end('nao encontrado');
@@ -34,7 +37,7 @@ const nav = await chromium.launch({
 });
 const ctx = await nav.newContext({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
 const pg = await ctx.newPage();
-const alvo = process.env.SMM_PAGINA || '/';
+const alvo = process.env.SMM_PAGINA || '/smm/';
 await pg.goto('http://127.0.0.1:4327' + alvo, { waitUntil: 'networkidle' });
 await pg.evaluate(() => {
   document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visivel'));

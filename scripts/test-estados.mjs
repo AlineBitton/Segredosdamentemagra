@@ -27,7 +27,9 @@ for (const c of CASOS) {
   execFileSync('node', ['scripts/build.mjs'], {
     cwd: RAIZ, env: { ...process.env, SMM_AGORA: c.data }, stdio: 'pipe',
   });
-  const html = readFileSync(path.join(RAIZ, 'dist/index.html'), 'utf8');
+  // a página mora em dist/smm/; dist/index.html é só o redirecionamento
+  const base = process.env.SMM_BASE ?? '/smm';
+  const html = readFileSync(path.join(RAIZ, 'dist' + base, 'index.html'), 'utf8');
   const slot = (n) => (html.match(new RegExp(`data-slot="${n}"[^>]*>([^<]*)`)) || [])[1] || '';
   // procurar "data-encerrado" no documento inteiro acha o seletor dentro do
   // CSS embutido; o que importa e o atributo na tag <html>

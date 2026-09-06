@@ -1,209 +1,131 @@
-# Documento 05 — Publicação
+# Publicação
 
-> Do repositório ao domínio no ar. Cada passo tem uma verificação:
-> se ela falhar, não siga para o próximo.
+A página fica em **afinandocorpoemente.com.br/smm**.
+
+O site inteiro é gerado dentro de `dist/smm/`, e todo caminho absoluto sai com
+o prefixo — `/smm/img/...`, `/smm/fonts/...`, `/smm/obrigado`. Isso importa: em
+nenhum dos dois modelos de publicação abaixo existe caminho para traduzir no
+servidor, o que é a fonte mais comum de link quebrado quando um site mora num
+subcaminho. `dist/index.html` é só um redirecionamento da raiz para `/smm/`.
 
 ---
 
-## Antes de começar
+## O que eu não consigo fazer, e por quê
 
-```bash
+Ligar o domínio exige entrar na sua conta da Cloudflare. Eu não tenho acesso a
+ela e não devo ter — é a conta que controla o DNS de todos os seus domínios.
+
+**A boa notícia é que a GoDaddy não precisa ser tocada.** O seu DNS já está na
+Cloudflare, e é lá que tudo acontece. A GoDaddy só guarda o registro do
+domínio; os nameservers já apontam para a Cloudflare.
+
+Você não precisa me passar arquivo nenhum: o repositório já é a fonte. Você
+conecta o repositório ao Cloudflare Pages uma vez, e a partir daí todo push
+publica sozinho.
+
+---
+
+## Caminho 1 — o domínio ainda não serve outro site
+
+Este é o mais simples. Cinco minutos, sem Worker, sem código extra.
+
+1. **Cloudflare → Workers & Pages → Create → Pages → Connect to Git**
+2. Escolha o repositório `AlineBitton/Segredosdamentemagra`
+3. Configurações de build:
+   - **Framework preset:** None
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+   - **Branch:** `claude/segredos-mente-magra-landing-f2dwfw` (ou `main`, depois do merge)
+4. **Deploy**. Sai um endereço `xxx.pages.dev` — abra e confira em `/smm/`.
+5. **Custom domains → Set up a custom domain →** `afinandocorpoemente.com.br`
+
+A Cloudflare cria o registro de DNS sozinha, porque a zona já é dela.
+
+Pronto: **afinandocorpoemente.com.br/smm** no ar, e quem cair na raiz é
+redirecionado para lá.
+
+---
+
+## Caminho 2 — o domínio já serve outro site
+
+Se a raiz já tem WordPress ou qualquer outra coisa que precisa continuar
+funcionando, `/smm` entra na frente por um Worker.
+
+1. Faça o deploy do Pages como no Caminho 1, mas **pare no passo 4** — não
+   ligue o domínio ao Pages.
+2. **Workers & Pages → Create → Worker.** Cole `worker/smm.js` do repositório.
+3. **Settings → Variables and Secrets → Add:**
+   - `ORIGEM` = `https://xxx.pages.dev` (o endereço que o Pages te deu)
+4. **Settings → Triggers → Routes → Add route:**
+   - Route: `afinandocorpoemente.com.br/smm*`
+   - Zone: `afinandocorpoemente.com.br`
+5. O registro de DNS da raiz precisa estar **proxied** (nuvem laranja). Sem
+   isso o pedido não passa pela Cloudflare e a rota nunca dispara.
+
+O Worker repassa o caminho sem traduzir. É de propósito: o Pages tem `/smm/`
+exatamente onde o navegador pede.
+
+---
+
+## Alternativa que eu recomendaria
+
+**smm.afinandocorpoemente.com.br**, em vez de `/smm`.
+
+É um registro de CNAME e nada mais: sem Worker, sem prefixo de caminho, sem
+risco de conflito com o site que já existe. Se um dia a raiz mudar de
+hospedagem, a página não é afetada.
+
+O `/smm` funciona e está implementado. Mas se a decisão ainda estiver aberta, o
+subdomínio é menos peça móvel. Para mudar, é uma linha:
+
+```
+SMM_BASE='' npm run build
+```
+
+---
+
+## A Conversion API
+
+O token da CAPI **não está no repositório**, e não deve entrar. Quando for
+ligar:
+
+```
+wrangler secret put META_CAPI_TOKEN
+```
+
+A função de borda lê em `env.META_CAPI_TOKEN`. O navegador nunca vê.
+
+O Pixel (`10008229355968163`) já está nas duas páginas, sem plugin: hash na
+CSP, `PageView` na venda e `Purchase` mais o evento nomeado das campanhas na de
+agradecimento.
+
+---
+
+## Antes de apontar o domínio
+
+```
 npm run verificar
 ```
 
-Roda os testes do motor de lotes, a auditoria de contraste, o build com o
-orçamento de peso e a **checagem de pré-voo** — que reprova se algum dado
-pendente ainda estiver visível na página. Hoje ela aponta 7 bloqueios:
+Roda os testes de lote, a paleta, os cinco estados do ciclo, o orçamento de
+peso, a CSP, a acessibilidade, a auditoria de leitura no navegador, o teste
+responsivo em sete larguras e a checagem de pré-voo. Se algum reprovar, o
+comando falha e a publicação não deve acontecer.
 
-| | Pendência | Onde resolver |
-|---|---|---|
-| 1 | Número do WhatsApp (está `55DDDNUMERO`) | `src/index.html` |
-| 2 | CNPJ e endereço | `src/privacidade.html`, `src/termos.html` |
-| 3 | Horário dos 3 dias | `config/oferta.mjs` → `EVENTO.horario` |
-| 4 | Plataforma do evento | `config/oferta.mjs` → `EVENTO.plataforma` |
-| 5 | **Os 4 links de checkout do Comum** | `config/oferta.mjs` → `CHECKOUT.comumPorLote` |
-
-O item 5 é o mais sério. Como a hub.la não muda o preço sozinha, publicar com
-um link único significa que, a partir de 10 de setembro, a página anuncia R$47
-e o checkout cobra R$27 — ou o contrário. É devolução, suporte e desconfiança.
-
----
-
-## Etapa 1 · Cloudflare recebe o domínio
-
-1. Cloudflare → **Add a site** → `afinandocorpoemente.com.br` → plano **Free**.
-2. A Cloudflare varre o DNS atual e importa o que encontrar.
-   **Confira registro a registro antes de seguir**, especialmente:
-   - **MX** — se um se perder, o e-mail do domínio para de funcionar;
-   - **TXT** de SPF, DKIM e DMARC — se sumirem, seus e-mails começam a cair em spam;
-   - subdomínios que já existam.
-3. Anote os dois nameservers que a Cloudflare fornece
-   (formato `algo.ns.cloudflare.com`).
-
-> ⚠️ **Se já existe um site nesse domínio**, decida agora onde a imersão vai
-> morar. Publicar na raiz substitui o que está lá. Ver Etapa 3.
-
-**Verificação:** a lista de DNS na Cloudflare bate com a da GoDaddy, linha a linha.
-
----
-
-## Etapa 2 · GoDaddy aponta para a Cloudflare
-
-1. GoDaddy → **Meus Produtos** → o domínio → **DNS** → **Nameservers** → **Alterar**.
-2. Escolher **"Usar meus próprios nameservers"**.
-3. Colar os dois da Cloudflare. Salvar.
-
-Propagação: normalmente menos de 1 hora, até 24 no pior caso.
-
-**Verificação:**
-```bash
-dig +short NS afinandocorpoemente.com.br
 ```
-Precisa devolver os dois nameservers da Cloudflare. Enquanto devolver os da
-GoDaddy, ainda não propagou — espere, não mexa.
-
----
-
-## Etapa 3 · Cloudflare Pages
-
-1. Cloudflare → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
-2. Repositório: `AlineBitton/Segredosdamentemagra`.
-   Branch de produção: `claude/segredos-mente-magra-landing-f2dwfw`
-   (ou `main`, depois do merge).
-3. Configuração de build:
-
-   | Campo | Valor |
-   |---|---|
-   | Framework preset | None |
-   | Build command | `npm run build` |
-   | Build output directory | `dist` |
-   | Node version | `22` |
-
-4. **Deploy**. O primeiro sai em `*.pages.dev`.
-
-**Verificação — teste no `.pages.dev` antes de apontar o domínio:**
-
-```bash
-# preço e lote vindos da borda
-curl -sI https://<seu-projeto>.pages.dev | grep -i x-lote
-
-# troca de promessa
-curl -s "https://<seu-projeto>.pages.dev/?p=edepois" | grep -o '<h1[^>]*>[^<]*'
-
-# UTM chegando na hub.la
-curl -s "https://<seu-projeto>.pages.dev/?utm_source=meta&utm_medium=cpc" \
-  | grep -o 'href="https://hub.la[^"]*"' | head -1
+npm run medir
 ```
 
-Se o `x-lote` não aparecer, a função de borda não subiu — confira se a pasta
-`functions/` foi para o repositório.
-
----
-
-## Etapa 4 · Domínio no Pages
-
-1. No projeto → **Custom domains** → **Set up a custom domain**.
-2. Adicionar `afinandocorpoemente.com.br` **e** `www.afinandocorpoemente.com.br`.
-   A Cloudflare cria os registros sozinha.
-3. **SSL/TLS** → modo **Full (strict)**.
-4. **SSL/TLS → Edge Certificates**: ligar **Always Use HTTPS** e
-   **Automatic HTTPS Rewrites**.
-5. O `www` redireciona para o apex pelo `src/_redirects`, que já está no repositório.
-
-### Se o domínio já tiver um site
-
-Três caminhos, em ordem de preferência:
-
-| | Onde a imersão vive | Como |
-|---|---|---|
-| **A** | `afinandocorpoemente.com.br/segredosdamentemagra` | No Pages, custom domain com path. Preserva o site atual. |
-| **B** | `imersao.afinandocorpoemente.com.br` | Subdomínio próprio. Mais simples de reverter. |
-| **C** | Raiz do domínio | Só se o domínio estiver livre. |
-
-Escolhido A ou B, ajustar `SITE` em `scripts/build.mjs` e a `<link rel="canonical">`
-em `src/index.html` — senão o SEO e o `og:image` apontam para o lugar errado.
-
----
-
-## Etapa 5 · Verificação pós-deploy
-
-Percorra esta lista no domínio real, **do celular**, não só do computador.
-
-### Funcional
-- [ ] A página abre em `https://afinandocorpoemente.com.br` com cadeado.
-- [ ] `www.` redireciona para o apex.
-- [ ] O preço do hero, o da barra fixa e o do bloco de oferta são **o mesmo**.
-- [ ] O contador está andando, nos **três** lugares (hero, topo da oferta, rodapé da oferta).
-- [ ] Clicar em "Quero o ingresso Comum" leva ao checkout **com o preço do lote vigente**.
-- [ ] Clicar em "Quero o VIP" leva ao `pay.hub.la` com **R$197**.
-- [ ] O botão do WhatsApp abre a conversa certa.
-- [ ] `/termos` e `/privacidade` abrem.
-- [ ] O acordeão do FAQ abre e fecha pelo teclado (Tab + Enter).
-
-### Campanha
-- [ ] Abrir `?p=edepois` — o título vira **"E quando eu parar?"**.
-- [ ] Abrir `?p=93` — o título vira **"Você está tentando resolver com 7%…"**.
-- [ ] Abrir com `?utm_source=meta&utm_medium=cpc&utm_campaign=teste` e conferir,
-      clicando com o botão direito no CTA, que a URL da hub.la carrega os UTMs
-      **e o `sck`**.
-- [ ] Colar o link no WhatsApp e ver se o cartão aparece com a imagem e o preço.
-
-### Na virada de lote — **anote isto na agenda**
-Nas noites de **09, 15 e 22 de setembro**, pouco depois da meia-noite:
-- [ ] Recarregar a página e confirmar que o preço subiu.
-- [ ] Clicar no CTA e confirmar que **o checkout cobra o novo valor**.
-
-Se página e checkout divergirem, o problema está no `CHECKOUT.comumPorLote` —
-e é para tirar a campanha do ar até corrigir.
+Roda o Lighthouse em mobile e desktop e grava os relatórios em
+`docs/medicao/`.
 
 ---
 
 ## Depois de publicar
 
-### Trocar dados sem mexer em código
-Quase tudo mora em `config/oferta.mjs`: preços, datas, links, variantes de
-promessa, Pixel. Alterou lá, `git push`, a Cloudflare reconstrói sozinha.
-
-### Trocar as fotos
-Coloque os arquivos em `src/img-originais/provas/` e rode:
-```bash
-npm run imagens && npm run og && npm run build
-```
-
-### Criar uma variante de promessa nova
-Um objeto novo em `PROMESSAS`, dentro de `config/oferta.mjs`. O anúncio passa a
-usar `?p=<nome>`. Não precisa tocar no HTML.
-
-### Conferir a performance de novo
-```bash
-npm run medir
-```
-Com o `npm run dev` **desligado** — ver doc 04.
-
----
-
-## Etapa 6 · O fim do ciclo
-
-A página tem **cinco estados**, e todos já estão prontos e testados
-(`npm run estados`):
-
-| Data | Estado | O que a página mostra |
-|---|---|---|
-| até 09/09 | Lote Especial | R$27 · "Depois, o Comum passa para R$47." |
-| 10 a 15/09 | 2º Lote | R$47 · "Depois, o Comum passa para R$67." |
-| 16 a 22/09 | 3º Lote | R$67 · "Depois, o Comum passa para R$97." |
-| 23 a 25/09 | Último Lote | R$97 · **"Este é o último lote — as inscrições encerram no dia 25."** |
-| a partir de 26/09 | **Encerrado** | Sem preço, sem contador, sem botão de compra. No lugar: *"As inscrições para esta edição estão encerradas"* e um botão de WhatsApp para a próxima turma. |
-
-A virada para o estado encerrado é **automática**, decidida pelo relógio da
-Cloudflare. Você não precisa fazer nada no dia 26 — e, principalmente, a página
-não fica vendendo um evento que já aconteceu enquanto ninguém percebe.
-
-### Para revisar antes de acontecer
-
-```bash
-SMM_AGORA="2026-09-26 10:00" npm run build && npm run render
-```
-
-Isso constrói a página como ela ficará naquela data e gera as capturas.
-Nada é publicado — é só para você olhar.
+- Confira `afinandocorpoemente.com.br/smm` e `/smm/obrigado`
+- Confira a raiz: tem que redirecionar para `/smm/`
+- No Gerenciador de Eventos do Meta, confirme o `PageView` chegando
+- Faça uma compra de teste e confirme o `Purchase` na página de agradecimento
+- Configure a Hub.la para redirecionar a compra para
+  `afinandocorpoemente.com.br/smm/obrigado`

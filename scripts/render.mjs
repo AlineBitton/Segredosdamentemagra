@@ -15,6 +15,9 @@ const TIPOS = {
 
 const servidor = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  // a página mora sob /smm: a raiz redireciona, então os testes entram direto
+  if (rel === '/' || rel === '') rel = '/smm/';
+  if (rel === '/smm/obrigado') rel = '/smm/obrigado.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const arquivo = path.join(DIST, rel);
   if (!arquivo.startsWith(DIST) || !existsSync(arquivo)) {
@@ -43,7 +46,7 @@ for (const a of alvos) {
   pg.on('console', (m) => m.type() === 'error' && erros.push(m.text()));
   pg.on('pageerror', (e) => erros.push(String(e)));
 
-  await pg.goto('http://127.0.0.1:4321/', { waitUntil: 'networkidle' });
+  await pg.goto('http://127.0.0.1:4321/smm/', { waitUntil: 'networkidle' });
   // Rolar a pagina inteira para acordar as imagens lazy era lento demais
   // (a pagina tem mais de 20 mil pixels de altura). Trocar loading=lazy por
   // eager e deixar o networkidle resolver faz o mesmo em uma fracao do tempo.

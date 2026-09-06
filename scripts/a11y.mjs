@@ -18,6 +18,9 @@ const TIPOS = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 
   '.jpg': 'image/jpeg', '.txt': 'text/plain', '.xml': 'application/xml' };
 const srv = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  // a página mora sob /smm: a raiz redireciona, então os testes entram direto
+  if (rel === '/' || rel === '') rel = '/smm/';
+  if (rel === '/smm/obrigado') rel = '/smm/obrigado.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const f = path.join(DIST, rel);
   if (!f.startsWith(DIST) || !existsSync(f)) { res.writeHead(404).end(); return; }

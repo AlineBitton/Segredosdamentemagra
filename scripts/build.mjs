@@ -24,7 +24,7 @@ import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
-  CHECKOUT, EVENTO, LOTES, META, PROMESSAS, VIP,
+  CHECKOUT, EVENTO, FICHA, LOTES, META, PROMESSAS, VIP,
   brl, checkoutComum, contadorTexto, linkWhatsApp, loteAtivo, prazoTexto, proximoLote,
 } from '../config/oferta.mjs';
 
@@ -48,6 +48,26 @@ const ORCAMENTO = {
 };
 
 const SITE = 'https://afinandocorpoemente.com.br';
+/**
+ * A página mora em /smm, e não na raiz do domínio.
+ *
+ * Em vez de reescrever caminho no servidor, o site inteiro é gerado dentro
+ * de dist/smm/ e todo caminho absoluto sai com o prefixo. Assim o mesmo
+ * dist funciona nos dois modelos de publicação: servindo o domínio inteiro
+ * pelo Pages, ou com um Worker interceptando /smm — porque em nenhum dos
+ * dois há caminho para traduzir. E a raiz vira um redirecionamento.
+ */
+const BASE = process.env.SMM_BASE ?? '/smm';
+const SAIDA = 'dist' + BASE;
+
+/** Prefixa todo caminho absoluto do documento com a base. */
+function comBase(doc) {
+  if (!BASE) return doc;
+  return doc
+    .replace(/(\s(?:href|src)=")\/(?!\/)/g, `$1${BASE}/`)
+    .replace(/(\ssrcset=")\/(?!\/)/g, `$1${BASE}/`)
+    .replace(/(url\()\/(?!\/)/g, `$1${BASE}/`);
+}
 
 const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
 
@@ -85,7 +105,7 @@ function pixelCompra() {
 
 async function main() {
   await rm(p('dist'), { recursive: true, force: true });
-  await mkdir(p('dist'), { recursive: true });
+  await mkdir(p(SAIDA), { recursive: true });
 
   /* ---------- CSS ---------- */
   const cssBruto = (
@@ -176,6 +196,9 @@ async function main() {
       });
       return `https://calendar.google.com/calendar/render?${q}`;
     })(),
+    'ficha-url': FICHA.url,
+    'ficha-perguntas': String(FICHA.perguntas),
+    'ficha-minutos': String(FICHA.minutos),
     'zap-ticket': linkWhatsApp('Oi! Acabei de garantir minha vaga na Imersão Segredos da Mente Magra e quero receber o meu ticket para o evento.'),
     'zap-nao-chegou': linkWhatsApp('Oi! Garantei minha vaga na Imersão e preciso de ajuda com a minha inscrição.'),
     // blocos gerados: a agenda, a escada de lotes e a galeria de provas
@@ -243,23 +266,33 @@ async function main() {
       return valores[chave];
     });
 
-    doc = minificarHtml(doc);
-    await writeFile(p('dist', arquivo), doc);
+    doc = comBase(minificarHtml(doc));
+    await writeFile(p(SAIDA, arquivo), doc);
     if (ehIndex) html = doc;
   }
 
   /* ---------- robots e sitemap ---------- */
   const hoje = new Date().toISOString().slice(0, 10);
   await writeFile(p('dist/robots.txt'),
-    `User-agent: *\nAllow: /\nDisallow: /termos\nDisallow: /privacidade\n\nSitemap: ${SITE}/sitemap.xml\n`);
+    `User-agent: *\nAllow: /\nDisallow: ${BASE}/termos\nDisallow: ${BASE}/privacidade\n\n` +
+    `Sitemap: ${SITE}/sitemap.xml\n`);
   await writeFile(p('dist/sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-    `  <url><loc>${SITE}/</loc><lastmod>${hoje}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n` +
+    `  <url><loc>${SITE}${BASE}/</loc><lastmod>${hoje}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n` +
     `</urlset>\n`);
 
+  // Quem chegar na raiz do projeto vai para a página.
+  if (BASE) {
+    await writeFile(p('dist/index.html'),
+      `<!doctype html><meta charset="utf-8"><title>Imersão Segredos da Mente Magra</title>` +
+      `<meta http-equiv="refresh" content="0; url=${BASE}/">` +
+      `<link rel="canonical" href="${SITE}${BASE}/">` +
+      `<p>Redirecionando para <a href="${BASE}/">a página da imersão</a>.</p>\n`);
+    await writeFile(p('dist/_redirects'), `/  ${BASE}/  302\n`);
+  }
+
   /* ---------- estáticos ---------- */
-  if (existsSync(p('public'))) await cp(p('public'), p('dist'), { recursive: true });
-  if (existsSync(p('src/_redirects'))) await cp(p('src/_redirects'), p('dist/_redirects'));
+  if (existsSync(p('public'))) await cp(p('public'), p(SAIDA), { recursive: true });
 
   /* ---------- cabeçalhos, com CSP por hash ----------
      A página embute CSS e JS. A saída fácil seria 'unsafe-inline', que
@@ -297,7 +330,9 @@ async function main() {
     ? await readFile(p('src/_headers'), 'utf8')
     : '';
   await writeFile(p('dist/_headers'),
-    cabecalhosBase.trimEnd() + `\n  Content-Security-Policy: ${csp}\n` +
+    // todo caminho do _headers também mora sob a base
+    cabecalhosBase.trimEnd().replace(/^\/(?=\S)/gm, `${BASE}/`) +
+    `\n  Content-Security-Policy: ${csp}\n` +
     '  Strict-Transport-Security: max-age=31536000; includeSubDomains\n' +
     '  Cross-Origin-Opener-Policy: same-origin\n');
 
@@ -322,7 +357,7 @@ async function main() {
   console.log(`  ..    ${'index.html gzip'.padEnd(22)} ${kb(htmlGz).padStart(9)}`);
   linha('index.html brotli', htmlBr, ORCAMENTO.htmlBr);
 
-  const fontes = await pesoDe(p('dist/fonts'));
+  const fontes = await pesoDe(p(SAIDA, 'fonts'));
   console.log(`  ..    ${'fontes (woff2)'.padEnd(22)} ${kb(fontes).padStart(9)}`);
   const total = htmlBr + fontes;
   console.log('  ' + '-'.repeat(58));

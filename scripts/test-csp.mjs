@@ -30,6 +30,9 @@ for (const linha of bruto.split('\n')) {
 
 const srv = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  // a página mora sob /smm: a raiz redireciona, então os testes entram direto
+  if (rel === '/' || rel === '') rel = '/smm/';
+  if (rel === '/smm/obrigado') rel = '/smm/obrigado.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const f = path.join(DIST, rel);
   if (!f.startsWith(DIST) || !existsSync(f)) { res.writeHead(404).end(); return; }
@@ -50,7 +53,7 @@ const violacoes = [];
 pg.on('console', (m) => { if (/Content Security Policy|Refused to/i.test(m.text())) violacoes.push(m.text()); });
 pg.on('pageerror', (e) => violacoes.push('erro de pagina: ' + e.message));
 
-await pg.goto('http://127.0.0.1:4326/', { waitUntil: 'networkidle' });
+await pg.goto('http://127.0.0.1:4326/smm/', { waitUntil: 'networkidle' });
 await pg.waitForTimeout(1200);
 
 const vivo = await pg.evaluate(() => ({

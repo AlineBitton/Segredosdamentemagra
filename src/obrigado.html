@@ -59,11 +59,49 @@
   </div>
 </section>
 
-<!-- ══ 03 · A AGENDA ══════════════════════════════════════════
+<!-- ══ 03 · A FICHA ═══════════════════════════════════════════
+     Vem logo depois do ticket, e antes da agenda. Quem escreve a
+     própria cena já começou a imersão — e a Aline chega na sexta com
+     casos reais, nas palavras delas, para ler em voz alta.
+     O formulário abre em aba nova em vez de vir embutido: um iframe
+     do Google traz a interface do Google para dentro da página, pesa
+     mais que a página inteira e não é responsivo do jeito que o
+     resto aqui é.                                                -->
+<section class="sec sup-linho">
+  <div class="wrap trilho">
+    <div class="trilho__cabeca">
+      <h2 class="h2">Agora me conta de você</h2>
+    </div>
+    <div class="trilho__corpo">
+      <p class="lead">
+        Não é cadastro. É o que me deixa entrar na sexta já sabendo com quem
+        eu estou falando — e o que faz a imersão ir direto ao ponto no seu
+        caso.
+      </p>
+      <p class="mt-4">
+        Você vai me contar a última vez que a vontade apareceu forte: que dia
+        era, que horas eram, o que tinha acontecido antes. Essa cena é a
+        primeira linha do seu Mapa dos Gatilhos — você chega no sábado com a
+        folha já começada.
+      </p>
+      <div class="cta">
+        <a class="btn btn--bloco" href="{{ficha-url}}" rel="noopener" target="_blank">
+          Preencher a minha ficha
+        </a>
+        <p class="miudo mt-4">
+          {{ficha-perguntas}} perguntas, menos de {{ficha-minutos}} minutos.
+          Ninguém além da Aline lê.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 04 · A AGENDA ══════════════════════════════════════════
      Três encontros com data e hora, e o botão que joga tudo no
      calendário dela de uma vez. Compromisso agendado é o que faz
      comparecer — e comparecimento é o que decide a venda do fim. -->
-<section class="sec sup-linho">
+<section class="sec sup-clara">
   <div class="wrap">
     <h2 class="h2">Marque os três encontros agora</h2>
     <p class="lead mt-4">
@@ -86,10 +124,10 @@
   </div>
 </section>
 
-<!-- ══ 04 · O QUE FAZER ANTES ═════════════════════════════════
+<!-- ══ 05 · O QUE FAZER ANTES ═════════════════════════════════
      Compromisso pequeno logo depois da compra reduz arrependimento
      e aumenta comparecimento.                                   -->
-<section class="sec sup-clara">
+<section class="sec sup-linho">
   <div class="wrap trilho">
     <div class="trilho__cabeca">
       <h2 class="h2">Três coisas que valem a pena fazer hoje</h2>
@@ -102,10 +140,10 @@
   </div>
 </section>
 
-<!-- ══ 05 · O QUE VOCÊ VAI VIVER ══════════════════════════════
+<!-- ══ 06 · O QUE VOCÊ VAI VIVER ══════════════════════════════
      Expectativa concreta. Depois de pagar, ela precisa conseguir
      imaginar a cena — é isso que a faz aparecer na sexta.       -->
-<section class="sec sup-linho">
+<section class="sec sup-clara">
   <div class="wrap">
     <h2 class="h2">O que você vai sair sabendo fazer</h2>
     <ul class="triade mt-8">
@@ -132,14 +170,18 @@
   </div>
 </section>
 
-<!-- ══ 06 · A MENTORA ═════════════════════════════════════════
+<!-- ══ 07 · A MENTORA ═════════════════════════════════════════
      Depois de pagar, a dúvida muda de "vale a pena?" para "em quem
      eu acabei de confiar?".                                     -->
-<section class="sec sup-clara">
+<section class="sec sup-linho">
   <div class="wrap guia__grade">
     <figure class="guia__foto">
-      <img src="/img/placeholder-retrato.svg" width="800" height="1000"
-           alt="Aline Bitton" loading="lazy" decoding="async">
+      <picture>
+        <source type="image/avif" srcset="/img/aline-obrigado-600.avif 600w, /img/aline-obrigado-1200.avif 1200w" sizes="(min-width: 940px) 34vw, 100vw">
+        <source type="image/webp" srcset="/img/aline-obrigado-600.webp 600w, /img/aline-obrigado-1200.webp 1200w" sizes="(min-width: 940px) 34vw, 100vw">
+        <img src="/img/aline-obrigado-1200.webp" width="1200" height="1500"
+             alt="Aline Bitton, camisa de linho cacau, falando" loading="lazy" decoding="async">
+      </picture>
     </figure>
     <div class="guia__texto">
       <div class="guia__cabeca">
@@ -170,12 +212,12 @@
   </div>
 </section>
 
-<!-- ══ 07 · O UPGRADE ═════════════════════════════════════════
+<!-- ══ 08 · O UPGRADE ═════════════════════════════════════════
      Vem por último, e não antes: antes ele competia com a única
      ação que não pode falhar, que é pedir o ticket.
      [[PRECISO: link de upgrade Comum → VIP, se a Hubla gerar um.
         Sem ele, este botão vai para o checkout do VIP.]]       -->
-<section class="sec sup-linho">
+<section class="sec sup-clara">
   <div class="wrap">
     <div class="upgrade sup-ameixa">
       <p class="etiqueta">Só para quem entrou no Comum</p>
@@ -202,7 +244,7 @@
   </div>
 </section>
 
-<!-- ══ 08 · SUPORTE ═══════════════════════════════════════════ -->
+<!-- ══ 09 · SUPORTE ═══════════════════════════════════════════ -->
 <section class="sec suporte sup-escura">
   <div class="wrap-estreito">
     <h2 class="h3">Alguma coisa não saiu como devia?</h2>

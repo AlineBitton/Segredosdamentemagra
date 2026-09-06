@@ -21,6 +21,9 @@ const TIPOS = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'te
 
 const srv = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  // a página mora sob /smm: a raiz redireciona, então os testes entram direto
+  if (rel === '/' || rel === '') rel = '/smm/';
+  if (rel === '/smm/obrigado') rel = '/smm/obrigado.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const f = path.join(DIST, rel);
   if (!f.startsWith(DIST) || !existsSync(f)) return void res.writeHead(404).end('404');
@@ -34,7 +37,7 @@ const nav = await chromium.launch({
 });
 const ctx = await nav.newContext({ viewport: { width: 1440, height: 1000 } });
 const pg = await ctx.newPage();
-await pg.goto('http://127.0.0.1:4329/', { waitUntil: 'networkidle' });
+await pg.goto('http://127.0.0.1:4329/smm/', { waitUntil: 'networkidle' });
 await pg.evaluate(() => document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visivel')));
 await pg.waitForTimeout(400);
 

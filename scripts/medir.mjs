@@ -17,6 +17,9 @@ const TIPOS = {
 
 const servidor = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  // a página mora sob /smm: a raiz redireciona, então os testes entram direto
+  if (rel === '/' || rel === '') rel = '/smm/';
+  if (rel === '/smm/obrigado') rel = '/smm/obrigado.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const arq = path.join(DIST, rel);
   if (!arq.startsWith(DIST) || !existsSync(arq)) { res.writeHead(404).end(); return; }

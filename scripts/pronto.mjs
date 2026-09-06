@@ -11,7 +11,8 @@ import path from 'node:path';
 import { CHECKOUT, EVENTO, LOTES, META, SUPORTE, VIP, whatsappValido } from '../config/oferta.mjs';
 
 const RAIZ = path.resolve(import.meta.dirname, '..');
-const DIST = path.join(RAIZ, 'dist');
+// a página mora sob /smm; dist/index.html é só o redirecionamento da raiz
+const DIST = path.join(RAIZ, 'dist' + (process.env.SMM_BASE ?? '/smm'));
 
 const erros = [];
 const avisos = [];
@@ -48,16 +49,21 @@ for (const f of arquivos) {
 }
 
 /* ── arquivos que precisam existir ────────────────────────────── */
-for (const f of ['index.html', 'termos.html', 'privacidade.html', 'robots.txt',
-                 'sitemap.xml', '_headers', 'img/og.jpg', 'img/favicon.svg',
+// dentro de dist/smm/
+for (const f of ['index.html', 'obrigado.html', 'termos.html', 'privacidade.html',
+                 'img/og.jpg', 'img/favicon.svg',
                  'fonts/fraunces-var.woff2', 'fonts/inter-var.woff2']) {
-  if (!existsSync(path.join(DIST, f))) erro(`falta ${f} no dist/`, 'rode npm run build');
+  if (!existsSync(path.join(DIST, f))) erro(`falta ${f} no dist/smm/`, 'rode npm run build');
+}
+// na raiz de dist/: servidos pelo domínio, não pelo caminho
+for (const f of ['robots.txt', 'sitemap.xml', '_headers', 'index.html']) {
+  if (!existsSync(path.join(RAIZ, 'dist', f))) erro(`falta ${f} na raiz do dist/`, 'rode npm run build');
 }
 
 /* ── configuração da oferta ───────────────────────────────────── */
 // o horario nao impede publicar (o acesso e combinado por WhatsApp), mas a
 // pagina converte melhor dizendo a que horas comeca
-if (!EVENTO.horario) aviso('horario de inicio nao definido',
+if (!EVENTO.encontros?.every((e) => e.hora)) aviso('horario de algum encontro nao definido',
   'a pagina nao diz a que horas os 3 dias comecam — e a pergunta que mais chega no suporte');
 if (!EVENTO.plataforma) erro('EVENTO.plataforma nao definida', 'preencha em config/oferta.mjs');
 

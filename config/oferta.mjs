@@ -78,6 +78,17 @@ export const VIP = {
  * Formato: so digitos, em padrao internacional.
  *   55 (Brasil) + DDD (2) + numero do assinante (9, comecando por 9) = 13
  */
+/**
+ * Ficha de participante. Vem depois do ticket na página de agradecimento:
+ * quem escreve a própria cena já começou a imersão, e é isso que faz
+ * comparecer na sexta.
+ */
+export const FICHA = {
+  url: 'https://docs.google.com/forms/d/e/1FAIpQLScIUPp-A0MKjY_g-cqidQ71fL3u4Nj8OkSdUbuVSaxONOnVRQ/viewform',
+  perguntas: 13,
+  minutos: 4,
+};
+
 export const SUPORTE = {
   whatsapp: '5561998609818',
 };
