@@ -78,10 +78,12 @@ export const onRequest = async (context) => {
         if (encerrado) el.setAttribute('data-encerrado', '');
       },
     })
-    // H1 é o único slot que aceita marcação (o <em> da ênfase)
-    .on('[data-slot="promessa-h1"]', {
+    // a linha do gancho é o único slot que aceita marcação (o <em> da
+    // ênfase). Vazia na variante A, onde o logotipo fala sozinho: o
+    // :empty do CSS recolhe o parágrafo sem deixar buraco.
+    .on('[data-slot="promessa-linha2"]', {
       element(el) {
-        el.setInnerContent(promessa.h1, { html: true });
+        el.setInnerContent(promessa.linha2 || '', { html: true });
       },
     })
     // demais slots: texto puro, escapado pelo próprio HTMLRewriter

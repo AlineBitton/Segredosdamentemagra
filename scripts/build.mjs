@@ -232,7 +232,6 @@ async function main() {
     'ancora-vip': VIP.ancoraAvulsaCentavos && lote.centavos != null
       ? `<p class="plano__ancora" data-slot="ancora-vip">O Diagnóstico dos 5 Corpos, avulso, custa ${brl(VIP.ancoraAvulsaCentavos)}. Aqui ele entra por ${brl(VIP.centavos - lote.centavos)} a mais.</p>`
       : '',
-    'promessa-h1': padrao.h1,
     'promessa-linha2': padrao.linha2 || '',
     'promessa-sub': padrao.sub,
     'evento-datas': EVENTO.datas,

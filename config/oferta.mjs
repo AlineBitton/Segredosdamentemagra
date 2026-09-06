@@ -144,35 +144,38 @@ export const ENCERRADO = {
  *   B (data)   fala com quem já tem data para reduzir ou parar.
  * Todo o resto da página é idêntico nas duas — só assim o resultado
  * diz alguma coisa.
+ *
+ * O H1 é sempre o logotipo: "Segredos da Mente Magra" é o nome do evento e
+ * não muda por anúncio. O gancho da variante entra em `linha2`, a linha de
+ * serifa logo abaixo, e aceita <em> para a ênfase. `padrao` não tem linha2 —
+ * ali o logotipo fala sozinho e o CSS recolhe o parágrafo vazio.
  */
 export const PROMESSAS = {
   padrao: {
-    h1: 'Desvende os Segredos da Mente Magra',
     sub: '2 dias ao vivo para descobrir como manter os resultados que a caneta emagrecedora trouxe — com mais foco e sabendo lidar com as vontades que aparecem depois do quarto dia de aplicação.',
   },
   data: {
-    h1: 'Desvende os Segredos da Mente Magra',
     linha2: 'O caminho para manter os resultados depois que a caneta sair',
     sub: '2 dias ao vivo para chegar na última aplicação sabendo o que fazer — em vez de esperar pra ver o que acontece.',
   },
   bariatrica: {
-    h1: 'A cirurgia mexeu no seu estômago. <em>Não mexeu no que te leva até a comida.</em>',
+    linha2: 'A cirurgia mexeu no seu estômago. <em>Não mexeu no que te leva até a comida.</em>',
     sub: '2 dias ao vivo para trabalhar a parte que nenhuma intervenção alcança — a que decide o tamanho do prato e aparece à noite, sem fome nenhuma junto.',
   },
   sanfona: {
-    h1: 'Você já emagreceu antes. E recuperou. <em>Dessa vez você quer entender por quê.</em>',
+    linha2: 'Você já emagreceu antes. E recuperou. <em>Dessa vez você quer entender por quê.</em>',
     sub: '2 dias ao vivo para mapear onde o seu automático começa — e sair com estratégias para a hora em que a vontade aparece.',
   },
   balanca: {
-    h1: 'A balança decide como o seu dia começa <em>antes de você tomar café</em>.',
+    linha2: 'A balança decide como o seu dia começa <em>antes de você tomar café</em>.',
     sub: '2 dias ao vivo para trocar a vigilância por outra coisa: perceber antes, interromper mais cedo e saber voltar.',
   },
   noite: {
-    h1: 'A vontade aparece à noite, <em>sem fome nenhuma junto</em>.',
+    linha2: 'A vontade aparece à noite, <em>sem fome nenhuma junto</em>.',
     sub: 'A ferramenta está fazendo o trabalho dela. Essa parte é outra — e é dela que a gente cuida em 2 dias ao vivo.',
   },
   edepois: {
-    h1: '<em>“E se estiver voltando?”</em>',
+    linha2: '<em>“E se estiver voltando?”</em>',
     sub: 'É o pensamento que você não fala em voz alta para ninguém. 2 dias ao vivo para chegar na última aplicação sabendo o que fazer.',
   },
 };

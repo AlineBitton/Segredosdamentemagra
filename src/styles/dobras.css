@@ -243,6 +243,7 @@
   font-family: var(--display); font-size: clamp(1.125rem, .95rem + .8vw, 1.5rem);
   line-height: 1.3; color: var(--barro-claro);
 }
+.hero__linha2 em { font-style: italic; color: var(--enfase); }
 .hero__linha2:empty { display: none; }
 [data-sem-foto] .hero__linha2 { margin-inline: auto; }
 

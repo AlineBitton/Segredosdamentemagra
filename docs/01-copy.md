@@ -795,51 +795,55 @@ Link: `https://wa.me/55DDDNUMERO?text=Oi!%20Quero%20tirar%20uma%20d%C3%BAvida%20
 
 # TROCA DE PROMESSA — variantes de headline por anúncio
 
-Servidas na borda via `?p=`. Só o H1 e a subheadline mudam; o resto é idêntico.
+Servidas na borda via `?p=` (ou `utm_content`). O H1 **não muda**: é o logotipo
+"Segredos da Mente Magra", nome do evento. O que a variante troca são as duas
+linhas abaixo dele — o gancho em serifa (`linha2`, aceita `<em>` para a ênfase)
+e o subtítulo. Todo o resto da página é idêntico.
 
-### `p=` *(vazio — padrão)*
-> **O que fez a balança descer não é o que faz ela ficar.**
-> Em 3 dias, você vai entender por que o corpo volta ao ponto de partida mesmo
-> quando o método funcionou — e o que precisa acontecer para a mudança passar a ser sua.
+Parâmetro desconhecido cai no padrão sem erro. A lista abaixo é a lista inteira:
+o que não está aqui não existe, e um anúncio apontando para `?p=qualquer-coisa`
+serve a variante A calada. Fonte da verdade: `PROMESSAS` em `config/oferta.mjs`.
 
-### `p=divisao` — ★ o ângulo nº 1 do mapa
-> **A caneta está mudando o seu corpo. Quem está trabalhando para o seu cérebro acompanhar?**
-> Ela faz o trabalho dela, e faz bem. Existe um segundo trabalho — e ele está sem dono.
+### `p=` *(vazio — padrão)* — variante A do teste
+> *(sem gancho — o logotipo fala sozinho)*
+> 2 dias ao vivo para descobrir como manter os resultados que a caneta
+> emagrecedora trouxe — com mais foco e sabendo lidar com as vontades que
+> aparecem depois do quarto dia de aplicação.
 
-### `p=93`
-> **Você está tentando resolver com 7% o que é decidido em 93%.**
-> Não é falta de disciplina. É proporção. 3 dias para trabalhar onde a decisão
-> realmente acontece.
+Fala com quem está usando a caneta **agora**.
+
+### `p=data` — variante B do teste
+> **O caminho para manter os resultados depois que a caneta sair**
+> 2 dias ao vivo para chegar na última aplicação sabendo o que fazer — em vez
+> de esperar pra ver o que acontece.
+
+Fala com quem já tem data para reduzir ou parar. A e B são o teste principal
+definido pela Aline: rodar as duas com o mesmo público e o mesmo orçamento.
 
 ### `p=bariatrica`
-> **A cirurgia diminuiu o seu estômago. Ela não mexeu no padrão.**
-> 3 dias para entender por que o corpo volta ao ponto de partida mesmo depois
-> de uma intervenção que funcionou.
+> **A cirurgia mexeu no seu estômago. *Não mexeu no que te leva até a comida.***
+> 2 dias ao vivo para trabalhar a parte que nenhuma intervenção alcança — a que
+> decide o tamanho do prato e aparece à noite, sem fome nenhuma junto.
 
 ### `p=sanfona`
-> **A balança desce. E seis meses depois, volta.**
-> Não é falta de disciplina. É que o trabalho foi feito em uma ponta só.
-> 3 dias para trabalhar as três.
+> **Você já emagreceu antes. E recuperou. *Dessa vez você quer entender por quê.***
+> 2 dias ao vivo para mapear onde o seu automático começa — e sair com
+> estratégias para a hora em que a vontade aparece.
 
 ### `p=balanca`
-> **Você sobe na balança pra confirmar que ainda tá lá.**
-> Todo dia. Descalça. Antes de beber água.
-> 3 dias para trocar a vigilância por outra coisa: saber o que fazer quando o número sobe.
+> **A balança decide como o seu dia começa *antes de você tomar café*.**
+> 2 dias ao vivo para trocar a vigilância por outra coisa: perceber antes,
+> interromper mais cedo e saber voltar.
 
-### `p=roupa`
-> **Você tem três tamanhos no armário e não consegue doar nenhum.**
-> O que você faz com a roupa que não serve mais diz mais sobre o seu processo
-> do que a balança. 3 dias para entender por quê.
+### `p=noite`
+> **A vontade aparece à noite, *sem fome nenhuma junto*.**
+> A ferramenta está fazendo o trabalho dela. Essa parte é outra — e é dela que a
+> gente cuida em 2 dias ao vivo.
 
-### `p=40mais`
-> **Depois dos 40, o seu corpo mudou as regras. E ninguém te avisou.**
-> 3 dias para parar de aplicar hoje um método que já não servia há dez anos.
-
-### `p=edepois` — ★ a variante que vende o VIP
-> **"E quando eu parar?"**
-> Você já levou essa pergunta para o consultório e voltou com ela inteira.
-> A resposta não está na dose. Está no que você construiu por baixo do resultado.
-> 3 dias — e, no VIP, 50 minutos só seus para olhar isso de perto.
+### `p=edepois`
+> ***"E se estiver voltando?"***
+> É o pensamento que você não fala em voz alta para ninguém. 2 dias ao vivo para
+> chegar na última aplicação sabendo o que fazer.
 
 ---
 
@@ -849,6 +853,7 @@ Servidas na borda via `?p=`. Só o H1 e a subheadline mudam; o resto é idêntic
 > `p=bariatrica` e `p=sanfona` chegam perto da borda: as duas descrevem
 > **mecanismo no passado** ("o trabalho foi feito em uma ponta só"), nunca
 > **profecia sobre o futuro dela**. Manter nesse tempo verbal.
+
 
 # MICROCOPY E METADADOS
 

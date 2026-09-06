@@ -27,7 +27,6 @@ for (const c of CASOS) {
   execFileSync('node', ['scripts/build.mjs'], {
     cwd: RAIZ, env: { ...process.env, SMM_AGORA: c.data }, stdio: 'pipe',
   });
-  // a página mora em dist/smm/; dist/index.html é só o redirecionamento
   const base = process.env.SMM_BASE ?? '';
   const html = readFileSync(path.join(RAIZ, 'dist' + base, 'index.html'), 'utf8');
   const slot = (n) => (html.match(new RegExp(`data-slot="${n}"[^>]*>([^<]*)`)) || [])[1] || '';
@@ -61,5 +60,30 @@ for (const c of CASOS) {
 
 // restaura o build com o relogio real
 execFileSync('node', ['scripts/build.mjs'], { cwd: RAIZ, stdio: 'pipe' });
+
+/*
+ * Todo data-slot precisa existir nos dois lados.
+ *
+ * O build preenche o slot com o valor da hora do build; a funcao de borda
+ * repreenche com o valor da hora da visita. Se a borda nao conhece um slot,
+ * ele nao quebra nem aparece vazio — ele congela, calado, no que era verdade
+ * no dia do deploy. Foi assim que a variante B do teste A/B ficou sem a linha
+ * de gancho: o slot existia no HTML, o build preenchia, e a borda ignorava.
+ */
+console.log('\n── slots: build e borda falam do mesmo conjunto ─────────');
+const htmlFinal = readFileSync(path.join(RAIZ, 'dist', 'index.html'), 'utf8');
+const borda = readFileSync(path.join(RAIZ, 'functions', '_middleware.js'), 'utf8');
+
+const naPagina = new Set([...htmlFinal.matchAll(/data-slot="([^"]+)"/g)].map((m) => m[1]));
+const naBorda = new Set([
+  ...borda.matchAll(/^\s*'([a-z0-9-]+)':/gm),          // chaves do mapa `textos`
+  ...borda.matchAll(/textos\['([a-z0-9-]+)'\]/g),       // as adicionadas depois
+  ...borda.matchAll(/\[data-slot="([^"]+)"\]/g),        // as com marcacao propria
+].map((m) => m[1]));
+
+for (const nome of [...naPagina].sort()) {
+  ok(naBorda.has(nome), `a borda repreenche "${nome}"`,
+     'o slot existe na pagina e ninguem o atualiza na visita');
+}
 console.log(`\n  ${falhas === 0 ? '✔ os 5 estados do ciclo estao coerentes' : `✘ ${falhas} falha(s)`}\n`);
 process.exit(falhas ? 1 : 0);

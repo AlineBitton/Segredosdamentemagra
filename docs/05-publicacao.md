@@ -22,6 +22,9 @@ apontam para a Cloudflare.
 conecta o repositório ao Cloudflare Pages uma vez, e a partir daí todo push
 publica sozinho.
 
+Se preferir subir sem Git, existe o caminho do zip — mais abaixo, em
+*Upload direto*. Ele publica igual, mas cada mudança futura vira um zip novo.
+
 ---
 
 ## Passo a passo
@@ -52,6 +55,41 @@ A Cloudflare cria o registro de CNAME sozinha, porque a zona já é dela. O
 certificado sai em alguns minutos.
 
 Pronto.
+
+---
+
+## Upload direto — o caminho sem Git
+
+Serve para subir agora e decidir o Git depois. Publica exatamente a mesma
+página; o que muda é que a Cloudflare não reconstrói nada sozinha: cada
+alteração exige gerar e arrastar um zip novo.
+
+```
+npm run pacote
+```
+
+Sai `pacote/segredos-mente-magra-cloudflare.zip` (1,4 MB, 65 arquivos).
+
+**Cloudflare → Workers & Pages → Create → Pages → Upload assets** — dê um nome
+ao projeto, arraste o zip, *Deploy site*. Depois siga o passo 4 do passo a
+passo acima para ligar o domínio: o restante é idêntico.
+
+### O que o `npm run pacote` faz a mais que o `npm run build`
+
+No deploy conectado ao Git, a Cloudflare lê a pasta `functions/` e compila
+sozinha a função de borda. **No upload direto ela não faz isso** — subiria só
+o HTML estático.
+
+Isso não seria um detalhe. É a função de borda que decide o lote pelo relógio
+da Cloudflare. Sem ela, o site fica congelado no lote vigente na hora do build:
+no dia 10 a página ainda diria R$ 27 e a hub.la cobraria R$ 47. Fricção,
+suporte e estorno.
+
+Então o `npm run pacote` compila `functions/_middleware.js` num `_worker.js`
+único na raiz do site — o *modo avançado* do Pages. Ele intercepta tudo e
+devolve os arquivos estáticos por `env.ASSETS.fetch()`, que continua aplicando
+o `_headers`: CSP, cache das fontes, cache das imagens. Verificado servindo o
+zip descompactado com `wrangler pages dev`.
 
 ---
 

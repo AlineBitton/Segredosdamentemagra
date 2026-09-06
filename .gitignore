@@ -1,5 +1,7 @@
 node_modules/
 dist/
+# zip de upload direto, regeneravel com npm run pacote
+pacote/
 .wrangler/
 .DS_Store
 *.log
