@@ -42,7 +42,8 @@ const ORCAMENTO = {
   cssCru: 25 * 1024,     // subiu de 22 com as grades editoriais do redesign
   jsCru: 5 * 1024,
   htmlCru: 64 * 1024,
-  htmlBr: 14 * 1024,      // o que a Cloudflare entrega de fato
+  htmlBr: 16 * 1024,      // o que a Cloudflare entrega de fato
+                          // (subiu de 14 quando a biografia real entrou)
   dobra1: 120 * 1024,     // html comprimido + as duas fontes
 };
 
@@ -134,11 +135,17 @@ async function main() {
     'checkout-vip': CHECKOUT.vip,
     'zap-duvida': linkWhatsApp('Oi! Quero tirar uma dúvida sobre a Imersão Segredos da Mente Magra.'),
     'zap-proxima': linkWhatsApp('Oi! Quero saber da próxima turma da Imersão Segredos da Mente Magra.'),
+    'zap-entrar': linkWhatsApp('Oi! Acabei de garantir minha vaga na Imersão Segredos da Mente Magra e quero entrar no grupo.'),
+    'zap-nao-chegou': linkWhatsApp('Oi! Garantei minha vaga na Imersão e o e-mail de confirmação não chegou.'),
     'ancora-vip': VIP.ancoraAvulsaCentavos && lote.centavos != null
       ? `<p class="plano__ancora" data-slot="ancora-vip">O Diagnóstico dos 5 Corpos, avulso, custa ${brl(VIP.ancoraAvulsaCentavos)}. Aqui ele entra por ${brl(VIP.centavos - lote.centavos)} a mais.</p>`
       : '',
     'promessa-h1': padrao.h1,
     'promessa-sub': padrao.sub,
+    // Enquanto os retratos não existem, a página se fecha sem eles: a capa
+    // vira composição de tipo e as dobras viram coluna única. Nada de moldura
+    // vazia — quem visita não precisa saber que falta foto.
+    'sem-foto-attr': existsSync(p('public/img/aline-mentora-1200.webp')) ? '' : ' data-sem-foto',
   };
 
   /* ---------- HTML ---------- */

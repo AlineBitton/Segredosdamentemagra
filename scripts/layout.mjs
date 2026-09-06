@@ -34,7 +34,8 @@ const nav = await chromium.launch({
 });
 const ctx = await nav.newContext({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
 const pg = await ctx.newPage();
-await pg.goto('http://127.0.0.1:4327/', { waitUntil: 'networkidle' });
+const alvo = process.env.SMM_PAGINA || '/';
+await pg.goto('http://127.0.0.1:4327' + alvo, { waitUntil: 'networkidle' });
 await pg.evaluate(() => {
   document.querySelectorAll('.reveal').forEach((e) => e.classList.add('visivel'));
   document.querySelectorAll('img[loading="lazy"]').forEach((i) => { i.loading = 'eager'; });
@@ -45,6 +46,16 @@ await pg.waitForLoadState('networkidle');
 await pg.waitForTimeout(600);
 
 // Os cortes acontecem no topo destas seções, para nenhuma dobra ficar partida.
+if (alvo !== '/') {
+  // páginas secundárias saem em um quadro só
+  const alt = await pg.evaluate(() => document.documentElement.scrollHeight);
+  const nome = 'final-' + alvo.replace(/\W/g, '') ;
+  await pg.screenshot({ path: path.join(SAIDA, nome + '.png'), fullPage: true });
+  console.log(`  ${nome}.png  1440x${alt}`);
+  await nav.close(); servidor.close();
+  process.exit(0);
+}
+
 const cortes = await pg.evaluate(() => {
   const secoes = [...document.querySelectorAll('main > section, main > footer, body > footer')];
   const topo = (el) => Math.round(el.getBoundingClientRect().top + window.scrollY);

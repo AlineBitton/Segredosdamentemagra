@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" data-lote="{{lote-id}}" data-promessa="padrao"{{encerrado-attr}}>
+<html lang="pt-BR" data-lote="{{lote-id}}" data-promessa="padrao"{{encerrado-attr}}{{sem-foto-attr}}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -236,15 +236,18 @@
           <strong>Como eu sei disso? Porque eu vivi na pele.</strong>
         </p>
         <p class="mt-4">
-          Não é teoria que eu li. É o caminho que eu fiz — e depois refiz com
-          centenas de mulheres, até virar método.
+          Eu fiz bariátrica. E voltei aos 100 quilos pela segunda vez — com a
+          cirurgia já feita, fazendo tudo o que tinham me mandado fazer.
         </p>
-
-        <!-- [[PRECISO: a história da Aline em 4 partes — onde ela estava (com
-             uma cena concreta), o que tentou antes, o que virou a chave, e
-             onde está hoje. O fechamento NÃO pode ser desfecho: tem que ser
-             capacidade. "Hoje eu saio da linha igual todo mundo. A diferença
-             é que eu sei voltar." Ver doc 01, dobra 06.]] -->
+        <p class="mt-4">
+          Não é teoria que eu li. É o caminho que eu fiz depois disso, quando
+          entendi que o estômago tinha diminuído e o padrão não. E que eu
+          refiz com mais de 600 mulheres, até virar método.
+        </p>
+        <p class="mt-5">
+          <strong>Hoje eu saio da linha igual todo mundo. A diferença é que
+          eu sei voltar.</strong>
+        </p>
 
         <div class="cta">
           <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
@@ -539,20 +542,41 @@
         <img src="/img/placeholder-retrato.svg" width="800" height="1000"
              alt="Aline Bitton" loading="lazy" decoding="async">
       </figure>
-      <div>
-        <p class="etiqueta">Quem vai te conduzir</p>
-        <h2 class="h2 mt-3">Aline Bitton</h2>
+      <div class="guia__texto">
+        <div class="guia__cabeca">
+          <p class="etiqueta">Quem vai te conduzir</p>
+          <h2 class="h2 mt-3">Aline Bitton</h2>
+        </div>
+        <div class="guia__corpo">
 
-        <!-- [[PRECISO: um parágrafo de história, não de currículo. O que
-             credencia a Aline especificamente em corpo + mente, e por que
-             ela é a pessoa que olha o conjunto quando ninguém olhou.]] -->
-        <p class="lead mt-5">Biografia pendente.</p>
+        <!-- História, não currículo: o que credencia a Aline é ter sido
+             a mulher desta página. A bariátrica que não bastou é o dado
+             mais importante daqui — é a prova de que ela conhece o ponto
+             exato onde o recurso externo para de funcionar.
+             [[CONFERIR: os números vieram de material público da própria
+             Aline. Ela precisa confirmar antes de publicar.]] -->
+        <p class="lead mt-5">
+          A Aline fez bariátrica. E voltou aos 100 quilos pela segunda vez.
+        </p>
+        <p class="mt-4">
+          Foi ali, com a cirurgia já feita e a balança subindo de novo, que
+          ficou claro para ela o que nenhum recurso tinha resolvido: o
+          estômago tinha diminuído, o padrão não. Ela foi atrás da parte que
+          ninguém tinha olhado — neurociência, PNL sistêmica, hipnose e
+          nutrição comportamental — e reconstruiu o processo pela raiz.
+        </p>
+        <p class="mt-4">
+          <strong>Eliminou 62 quilos e mantém.</strong> Depois refez o mesmo
+          caminho com mais de 600 mulheres, até virar método. É esse método
+          que cabe em três dias de imersão.
+        </p>
 
-        <!-- credenciais em números, não em adjetivos -->
+        <!-- credenciais em números, não em adjetivos. O terceiro número é o
+             que mais importa para esta persona: a cirurgia não bastou. -->
         <dl class="numeros">
-          <div><dt>—</dt><dd>anos de atuação</dd></div>
-          <div><dt>—</dt><dd>mulheres atendidas</dd></div>
-          <div><dt>—</dt><dd>formações</dd></div>
+          <div><dt>62 kg</dt><dd>eliminados e mantidos</dd></div>
+          <div><dt>600+</dt><dd>mulheres orientadas</dd></div>
+          <div><dt>1</dt><dd>bariátrica que não bastou</dd></div>
         </dl>
 
         <!-- O percurso dela em dois quadros do MESMO enquadramento (busto,
@@ -573,12 +597,13 @@
             <span class="etiqueta">hoje</span>
           </div>
           <figcaption>
-            <!-- [[PRECISO: uma frase da Aline, em primeira pessoa. Não sobre
-                 quanto ela perdeu — sobre o que ela sabe fazer hoje que não
-                 sabia antes. É isso que essa mulher está comprando.]] -->
-            Legenda pendente.
+            <!-- Em primeira pessoa, e sobre capacidade — não sobre quilo.
+                 O que essa mulher nunca viu é alguém que soube ficar. -->
+            “Hoje eu saio da linha igual todo mundo. A diferença é que eu
+            sei voltar.”
           </figcaption>
         </figure>
+        </div>
       </div>
     </div>
   </section>
@@ -647,7 +672,7 @@
 
       <div class="planos">
         <!-- ── Comum ── -->
-        <article class="plano reveal">
+        <article class="plano sup-linho reveal">
           <h3 class="plano__nome">Ingresso Comum</h3>
           <p class="plano__preco">
             <span data-slot="preco-comum">{{preco-comum}}</span>

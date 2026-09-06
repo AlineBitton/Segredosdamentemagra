@@ -99,6 +99,43 @@
 }
 .pendente__d { font-size: var(--fs-peq); color: var(--sobre-escuro-2); max-width: 32ch; }
 
+/* ─── sem retrato ───────────────────────────────────────────
+   A página tem que estar inteira antes das fotos chegarem. Sem elas,
+   a capa vira composição de tipo — centralizada, que é o que o guia
+   permite na capa e no fechamento — e as dobras de retrato viram
+   coluna única. Nenhuma moldura vazia fica na tela: quem visita não
+   precisa saber que falta foto. Quando os arquivos entrarem em
+   public/img/, o build tira este atributo e o layout volta sozinho.
+   ------------------------------------------------------------ */
+[data-sem-foto] .hero__retrato,
+[data-sem-foto] .emocional__foto,
+[data-sem-foto] .guia__foto,
+[data-sem-foto] .percurso__quadro { display: none; }
+
+@media (min-width: 980px) {
+  [data-sem-foto] .hero__grade { grid-template-columns: minmax(0, 1fr); min-height: 82vh; }
+}
+[data-sem-foto] .hero__texto {
+  align-items: center; text-align: center;
+  padding-inline: clamp(1.25rem, .5rem + 4vw, 4rem);
+  max-width: 60rem; margin-inline: auto;
+}
+@media (min-width: 980px) { [data-sem-foto] .hero__texto { padding-left: clamp(1.25rem, .5rem + 4vw, 4rem); } }
+[data-sem-foto] .hero__promessa { margin-inline: auto; }
+[data-sem-foto] .hero__acao { align-items: center; }
+[data-sem-foto] .hero__lote { text-align: center; }
+
+@media (min-width: 900px) { [data-sem-foto] .emocional__grade { grid-template-columns: minmax(0, 1fr); } }
+@media (min-width: 940px) { [data-sem-foto] .guia__grade { grid-template-columns: minmax(0, 1fr); } }
+
+/* Sem os dois quadros, a frase da legenda vira citação e se sustenta só. */
+[data-sem-foto] .percurso { display: block; max-width: var(--medida); }
+[data-sem-foto] .percurso figcaption {
+  padding-left: var(--s-5); border-left: 2px solid var(--fio);
+  font-family: var(--display); font-style: italic;
+  font-size: var(--fs-lead); color: var(--txt);
+}
+
 /* ─── faixa de neutralidade ─────────────────────────────────
    Linho com um fio de ameixa: a transição do escuro para o claro.
    ------------------------------------------------------------ */
@@ -423,6 +460,50 @@
 [data-encerrado] .oferta__rodape { display: none !important; }
 .hero .encerrado { margin-top: var(--s-6); }
 .encerrado__titulo { font-family: var(--display); font-weight: var(--p-regular); font-size: var(--fs-h3); line-height: 1.3; color: var(--enfase); max-width: 32ch; }
+
+/* ─── página de agradecimento ───────────────────────────────
+   Ela acabou de pagar. A ordem aqui é: confirmar, mandar entrar no
+   grupo, e só então oferecer o upgrade — antes disso o upgrade
+   competia com a única ação que não pode falhar.
+   ------------------------------------------------------------ */
+.obrigado__topo { padding-block: clamp(4rem, 2.5rem + 6vw, 8rem); }
+.obrigado__topo .h2 { color: var(--papel); max-width: 18ch; }
+.obrigado__topo .lead { color: var(--sobre-escuro-2); }
+.obrigado__topo .centro .h2, .obrigado__topo .centro p { margin-inline: auto; }
+
+/* Sem retrato, a dobra da mentora vira duas colunas de texto — título
+   à esquerda, história à direita —, no mesmo trilho das outras dobras.
+   Dois blocos de verdade, e não display:contents com coluna atribuída:
+   ali qualquer parágrafo a mais desalinhava a grade. */
+@media (min-width: 940px) {
+  [data-sem-foto] .guia__texto {
+    display: grid;
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+    column-gap: clamp(3rem, 6vw, 7rem);
+    align-items: start;
+  }
+}
+.guia__corpo > * + * { margin-top: var(--s-4); }
+
+/* A numeração é do tempo, não decoração: esta dobra é uma sequência. */
+.linha-tempo { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s-6); }
+.linha-tempo li {
+  display: grid; gap: var(--s-2);
+  padding-left: var(--s-6); border-left: 2px solid var(--fio);
+}
+@media (min-width: 720px) {
+  .linha-tempo li { grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); column-gap: var(--s-7); align-items: baseline; }
+}
+.linha-tempo__quando {
+  font-family: var(--etiqueta); font-size: var(--fs-peq);
+  font-weight: var(--p-medio); letter-spacing: .1em; color: var(--rotulo);
+}
+
+.upgrade { padding: clamp(2rem, 1.2rem + 3vw, 3.5rem); background: var(--bg); color: var(--txt); }
+.upgrade .h2 { color: var(--titulo); max-width: 20ch; }
+.upgrade .lead { color: var(--txt); }
+.upgrade .btn { width: 100%; }
+@media (min-width: 560px) { .upgrade .btn { width: auto; } }
 
 /* ─── páginas legais ────────────────────────────────────────── */
 .legal h1 { font-family: var(--display); font-weight: var(--p-regular); line-height: 1.3; }
