@@ -51,7 +51,7 @@ body {
   overflow-x: hidden;
   padding-bottom: var(--barra-h);
 }
-@media (min-width: 860px) { body { padding-bottom: 0; } }
+@media (min-width: 860px) { body { padding-bottom: 3.75rem; } }
 
 img, picture, svg, video { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }

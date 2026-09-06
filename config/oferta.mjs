@@ -15,6 +15,10 @@ export const EVENTO = {
   fuso: 'horário de Brasília',
   horario: null,        // [[PRECISO]] o horário de início — ex.: '20h'
   plataforma: 'O link de acesso é enviado por WhatsApp',
+  // Início do primeiro dia, em UTC absoluto (25/09/2026, 19h de Brasília).
+  // Serve só para a contagem regressiva da página de agradecimento; se o
+  // horário mudar, muda aqui e a página inteira acompanha.
+  inicioISO: '2026-09-25T22:00:00.000Z',
 };
 
 /**

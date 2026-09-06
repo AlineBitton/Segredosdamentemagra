@@ -7,6 +7,21 @@
    Alinhamento à esquerda em tudo, menos capa e fechamento.
    ============================================================ */
 
+/* ─── títulos de display ────────────────────────────────────
+   Um lugar só declara a família e o peso. Cada regra abaixo ajusta
+   apenas tamanho, cor e entrelinha — repetir font-family em vinte e
+   quatro seletores custava quase um quilobyte e escondia o sistema.
+   ------------------------------------------------------------ */
+.logotipo, .logotipo__nome, .hero__promessa, .frase-gigante, .citacoes li,
+.card strong, .proporcao__item dt, .proporcao__fecho em, .triade h3,
+.triade .eco, .agregado dt, .depois-do-depois, .numeros dt, .caminho__num,
+.caminho h3, .plano__nome, .plano__preco, .plano__pitch em,
+.faq summary::after, .barra__preco, .encerrado__titulo, .contagem [data-cd],
+.legal h1, [data-sem-foto] .percurso figcaption {
+  font-family: var(--display);
+  font-weight: var(--p-regular);
+}
+
 /* ─── ABERTURA · âncora de cacau ─────────────────────────────
    O único campo escuro do começo da página. O logotipo do evento
    é o próprio título — não existe marca separada competindo.
@@ -38,7 +53,7 @@
 
 /* o logotipo: “Segredos da” em Jost, aberto e miúdo, sobre
    “Mente Magra” em Fraunces — a hierarquia é de tamanho, não de peso */
-.logotipo { margin-top: var(--s-6); font-family: var(--display); font-weight: var(--p-regular); }
+.logotipo { margin-top: var(--s-6); }
 .logotipo__pre {
   display: block;
   font-family: var(--etiqueta);
@@ -51,7 +66,6 @@
 .logotipo__nome {
   display: block;
   margin-top: clamp(.5rem, .2rem + 1vw, 1.1rem);
-  font-family: var(--display);
   font-variation-settings: 'SOFT' 0, 'WONK' 1, 'opsz' 144;
   font-size: var(--fs-titulo);
   font-weight: var(--p-regular);
@@ -62,7 +76,6 @@
 .hero__promessa {
   margin-top: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
   max-width: 30ch;
-  font-family: var(--display);
   font-size: clamp(1.1875rem, 1.05rem + .8vw, 1.625rem);
   font-style: italic;
   line-height: 1.5;
@@ -75,6 +88,16 @@
 }
 .hero__lote { font-size: var(--fs-peq); color: var(--sobre-escuro-2); }
 .hero__lote strong { color: var(--papel); font-weight: var(--p-regular); }
+
+/* Quem conduz, dito antes de qualquer argumento. Numa página de evento
+   a autoridade acima da dobra é o que separa “vou ler” de “vou embora”. */
+.hero__assina {
+  margin-top: var(--s-2);
+  font-size: var(--fs-peq);
+  color: var(--sobre-escuro-2);
+  max-width: 42ch;
+}
+.hero__assina strong { color: var(--papel); font-weight: var(--p-regular); }
 
 .hero__retrato { position: relative; background: var(--cacau-2); min-height: 58vh; }
 @media (min-width: 980px) { .hero__retrato { min-height: 0; } }
@@ -132,7 +155,7 @@
 [data-sem-foto] .percurso { display: block; max-width: var(--medida); }
 [data-sem-foto] .percurso figcaption {
   padding-left: var(--s-5); border-left: 2px solid var(--fio);
-  font-family: var(--display); font-style: italic;
+  font-style: italic;
   font-size: var(--fs-lead); color: var(--txt);
 }
 
@@ -182,14 +205,13 @@
 /* ─── reconhecimento ────────────────────────────────────────── */
 .citacoes { margin: var(--s-7) 0 0; padding: 0; list-style: none; display: grid; gap: var(--s-6); }
 .citacoes li {
-  font-family: var(--display); font-style: italic;
+  font-style: italic;
   font-size: clamp(1.125rem, 1rem + .55vw, 1.4375rem);
   line-height: 1.55; color: var(--txt); max-width: var(--medida-curta);
   padding-left: var(--s-5); border-left: 2px solid var(--fio);
 }
 .frase-gigante {
   margin: var(--s-9) 0;
-  font-family: var(--display);
   font-variation-settings: 'SOFT' 0, 'WONK' 1, 'opsz' 144;
   font-size: clamp(2.25rem, 1.4rem + 4vw, 4.5rem);
   font-weight: var(--p-regular);
@@ -232,7 +254,7 @@
 }
 .card p { color: var(--txt-2); }
 .card strong {
-  font-family: var(--display); font-style: normal; font-weight: var(--p-regular);
+  font-style: normal;
   font-size: 1.3em; line-height: 1.3; letter-spacing: -.01em;
   color: var(--enfase);
 }
@@ -258,7 +280,6 @@
 }
 @media (min-width: 620px) { .proporcao { grid-template-columns: 1fr 1fr; } }
 .proporcao__item dt {
-  font-family: var(--display);
   font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 144;
   font-size: clamp(3.5rem, 2rem + 7vw, 6.5rem);
   font-weight: var(--p-regular); line-height: 1.3; letter-spacing: -.03em;
@@ -271,18 +292,18 @@
   border-left: 2px solid var(--fio);
   font-size: var(--fs-lead); color: var(--txt);
 }
-.proporcao__fecho em { font-family: var(--display); font-style: italic; color: var(--enfase); }
+.proporcao__fecho em { font-style: italic; color: var(--enfase); }
 
 .triade { display: grid; gap: 1px; margin-top: var(--s-8); padding: 0; list-style: none; background: var(--linha); border-block: 1px solid var(--linha); }
 @media (min-width: 800px) { .triade { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .triade li { padding: var(--s-7) var(--s-6); background: var(--bg); }
 .triade h3 {
-  font-family: var(--display); font-weight: var(--p-regular);
+  font-weight: var(--p-regular);
   font-size: 1.625rem; line-height: 1.3; letter-spacing: -.01em;
   color: var(--enfase);
 }
 .triade p { margin-top: var(--s-4); }
-.triade .eco { margin-top: var(--s-5); font-family: var(--display); font-style: italic; font-size: var(--fs-peq); color: var(--txt-2); }
+.triade .eco { margin-top: var(--s-5); font-style: italic; font-size: var(--fs-peq); color: var(--txt-2); }
 
 /* ─── provas ────────────────────────────────────────────────── */
 .agregado {
@@ -291,7 +312,6 @@
   border-block: 1px solid var(--linha);
 }
 .agregado dt {
-  font-family: var(--display);
   font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
   font-weight: var(--p-regular); line-height: 1.3; letter-spacing: -.022em;
   color: var(--titulo);
@@ -305,7 +325,7 @@
 .depois-do-depois {
   margin: var(--s-8) 0 0;
   padding-left: var(--s-5); border-left: 2px solid var(--fio);
-  font-family: var(--display); font-style: italic;
+  font-style: italic;
   font-size: var(--fs-lead); color: var(--txt-2);
 }
 .depois-do-depois strong { font-style: normal; color: var(--enfase); font-weight: var(--p-regular); }
@@ -318,7 +338,7 @@
 .guia__foto img { width: 100%; height: 100%; object-fit: cover; }
 .numeros { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--s-5); margin-top: var(--s-7); padding-top: var(--s-6); border-top: 1px solid var(--linha); list-style: none; }
 .numeros dt {
-  font-family: var(--display); font-weight: var(--p-regular);
+  font-weight: var(--p-regular);
   font-size: clamp(1.625rem, 1.1rem + 1.8vw, 2.5rem); line-height: 1.3;
   color: var(--titulo);
 }
@@ -342,13 +362,13 @@
 .caminho--imersao { background: var(--cacau); color: var(--sobre-escuro); }
 .caminho__num {
   display: block; margin-bottom: var(--s-4);
-  font-family: var(--display); font-size: 1.5rem; line-height: 1.3;
+  font-size: 1.5rem; line-height: 1.3;
   font-variant-numeric: tabular-nums;
   color: var(--enfase);
 }
 .caminho--imersao .caminho__num { color: var(--barro-claro); }
 .caminho h3 {
-  font-family: var(--display); font-weight: var(--p-regular);
+  font-weight: var(--p-regular);
   font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); line-height: 1.3; letter-spacing: -.015em;
   color: var(--titulo);
 }
@@ -379,13 +399,12 @@
   font-weight: var(--p-medio); letter-spacing: .16em; line-height: 1.5;
 }
 .plano__nome {
-  font-family: var(--display); font-weight: var(--p-regular);
+  font-weight: var(--p-regular);
   font-size: 1.5rem; line-height: 1.3; letter-spacing: -.01em;
   color: var(--enfase);
 }
 .plano__preco {
   display: flex; align-items: baseline; gap: var(--s-4); margin-top: var(--s-5);
-  font-family: var(--display);
   font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 144;
   font-size: clamp(2.75rem, 2rem + 3vw, 4rem);
   font-weight: var(--p-regular); line-height: 1.3; letter-spacing: -.028em;
@@ -397,7 +416,7 @@
   border-left: 2px solid var(--fio);
 }
 .plano__pitch > * + * { margin-top: var(--s-4); }
-.plano__pitch em { font-family: var(--display); font-size: 1.15em; color: var(--enfase); }
+.plano__pitch em { font-size: 1.15em; color: var(--enfase); }
 .plano__inclui { margin: var(--s-6) 0 0; padding: 0; list-style: none; display: grid; gap: var(--s-4); }
 .plano__inclui li { position: relative; padding-left: var(--s-6); font-size: var(--fs-peq); color: var(--txt-2); }
 .plano__inclui li::before { content:''; position:absolute; left:0; top:.8em; width:12px; height:1px; background: var(--fio); }
@@ -407,6 +426,16 @@
 .plano--vip .plano__nao { border-top-color: var(--linha); }
 .plano .cta { margin-top: auto; padding-top: var(--s-7); }
 .plano .btn { width: 100%; }
+/* Selo de garantia colado nos dois botões: a reversão de risco tem que
+   estar onde a decisão acontece, não oito dobras adiante. */
+.selo-garantia {
+  margin-top: var(--s-7);
+  padding: var(--s-6) var(--s-7);
+  background: var(--bg-2);
+  border-left: 2px solid var(--fio);
+}
+.selo-garantia p { max-width: 62ch; margin: 0; }
+
 .oferta__rodape { margin-top: var(--s-7); font-size: var(--fs-peq); color: var(--txt-2); }
 
 /* ─── garantia ──────────────────────────────────────────────── */
@@ -418,7 +447,7 @@
 .faq details { background: var(--bg); }
 .faq summary { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-5); padding: var(--s-6); font-size: var(--fs-lead); line-height: 1.5; cursor: pointer; list-style: none; }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: '+'; flex: none; font-family: var(--display); font-size: 1.6rem; line-height: 1; color: var(--fio); transition: transform .2s var(--ease); }
+.faq summary::after { content: '+'; flex: none; font-size: 1.6rem; line-height: 1; color: var(--fio); transition: transform .2s var(--ease); }
 .faq details[open] summary::after { transform: rotate(45deg); }
 .faq__corpo { padding: 0 var(--s-6) var(--s-6); }
 .faq__corpo > * + * { margin-top: var(--s-4); }
@@ -442,14 +471,24 @@
   height: var(--barra-h); padding-inline: var(--s-5);
   background: var(--cacau); border-top: 1px solid #4A423A;
   color: var(--sobre-escuro);
-  transform: translateY(101%); transition: transform .3s var(--ease);
+  transform: translateY(101%); transition: transform .3s var(--ease), visibility .3s;
+  /* visibility, e não só transform: sem ela o botão continuava na ordem do
+     Tab enquanto a barra estava fora da tela, e o teclado focava um controle
+     que ninguém via. */
+  visibility: hidden;
 }
-.barra[data-visivel] { transform: none; }
+.barra[data-visivel] { transform: none; visibility: visible; }
+/* Sem barra na página, nada de espaço reservado embaixo. */
+body:not(:has(.barra)) { padding-bottom: 0; }
 .barra__info { flex: 1; min-width: 0; line-height: 1.35; }
 .barra__lote { font-size: var(--fs-mini); color: var(--sobre-escuro-2); }
-.barra__preco { font-family: var(--display); font-size: 1.5rem; line-height: 1.3; color: var(--papel); }
+.barra__preco { font-size: 1.5rem; line-height: 1.3; color: var(--papel); }
 .barra .btn { --alt: 2.9rem; padding-inline: var(--s-6); font-size: .9375rem; flex: none; }
-@media (min-width: 860px) { .barra { display: none; } }
+@media (min-width: 860px) {
+  .barra { height: 3.75rem; padding-inline: clamp(1.5rem, 4vw, 4rem); gap: var(--s-6); }
+  .barra__info { display: flex; align-items: baseline; gap: var(--s-4); }
+  .barra__lote { font-size: var(--fs-peq); }
+}
 @media (prefers-reduced-motion: reduce) { .barra { transition: none; } }
 
 /* ─── encerrado ─────────────────────────────────────────────── */
@@ -459,7 +498,7 @@
 [data-encerrado] .planos, [data-encerrado] .hero__lote,
 [data-encerrado] .oferta__rodape { display: none !important; }
 .hero .encerrado { margin-top: var(--s-6); }
-.encerrado__titulo { font-family: var(--display); font-weight: var(--p-regular); font-size: var(--fs-h3); line-height: 1.3; color: var(--enfase); max-width: 32ch; }
+.encerrado__titulo { font-size: var(--fs-h3); line-height: 1.3; color: var(--enfase); max-width: 32ch; }
 
 /* ─── página de agradecimento ───────────────────────────────
    Ela acabou de pagar. A ordem aqui é: confirmar, mandar entrar no
@@ -469,6 +508,17 @@
 .obrigado__topo { padding-block: clamp(4rem, 2.5rem + 6vw, 8rem); }
 .obrigado__topo .h2 { color: var(--papel); max-width: 18ch; }
 .obrigado__topo .lead { color: var(--sobre-escuro-2); }
+.contagem { margin: var(--s-8) auto 0; display: grid; gap: var(--s-2); justify-items: center; }
+.contagem [data-cd] {
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(2rem, 1.3rem + 2.6vw, 3.25rem);
+  line-height: 1.3; letter-spacing: -.02em; color: var(--barro-claro);
+  min-width: 0;
+}
+.contagem__rotulo {
+  font-family: var(--etiqueta); font-size: var(--fs-peq);
+  font-weight: var(--p-medio); letter-spacing: .14em; color: var(--sobre-escuro-2);
+}
 .obrigado__topo .centro .h2, .obrigado__topo .centro p { margin-inline: auto; }
 
 /* Sem retrato, a dobra da mentora vira duas colunas de texto — título
@@ -506,7 +556,7 @@
 @media (min-width: 560px) { .upgrade .btn { width: auto; } }
 
 /* ─── páginas legais ────────────────────────────────────────── */
-.legal h1 { font-family: var(--display); font-weight: var(--p-regular); line-height: 1.3; }
+.legal h1 { line-height: 1.3; }
 .legal h2 { margin-top: var(--s-7); }
 .legal p, .legal ul { margin-top: var(--s-4); }
 .legal a { text-decoration: underline; text-underline-offset: 3px; }

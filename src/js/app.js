@@ -28,9 +28,12 @@
     const passo = () => {
       const resta = fim - Date.now();
       if (resta <= 0) {
-        // o lote virou: a borda é quem sabe o novo preço, então recarrega
-        escrever('atualizando…');
-        setTimeout(() => location.reload(), 1200);
+        // Na página de venda o lote virou e quem sabe o novo preço é a borda,
+        // então recarrega. Onde o alvo diz o que escrever no zero — a
+        // contagem até o evento —, escreve e para.
+        const noZero = alvo.getAttribute('data-fim-texto');
+        escrever(noZero || 'atualizando…');
+        if (!noZero) setTimeout(() => location.reload(), 1200);
         return;
       }
       const s = Math.floor(resta / 1000);

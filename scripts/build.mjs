@@ -135,6 +135,7 @@ async function main() {
     'checkout-vip': CHECKOUT.vip,
     'zap-duvida': linkWhatsApp('Oi! Quero tirar uma dúvida sobre a Imersão Segredos da Mente Magra.'),
     'zap-proxima': linkWhatsApp('Oi! Quero saber da próxima turma da Imersão Segredos da Mente Magra.'),
+    'evento-inicio': EVENTO.inicioISO,
     'zap-entrar': linkWhatsApp('Oi! Acabei de garantir minha vaga na Imersão Segredos da Mente Magra e quero entrar no grupo.'),
     'zap-nao-chegou': linkWhatsApp('Oi! Garantei minha vaga na Imersão e o e-mail de confirmação não chegou.'),
     'ancora-vip': VIP.ancoraAvulsaCentavos && lote.centavos != null
@@ -157,10 +158,12 @@ async function main() {
   for (const arquivo of paginas) {
     let doc = await readFile(p('src', arquivo), 'utf8');
     const ehIndex = arquivo === 'index.html';
+    // a página de agradecimento também conta o tempo — até o evento
+    const levaJs = ehIndex || arquivo === 'obrigado.html';
 
     doc = doc
       .replace('<!--CSS-->', `<style>${css}</style>${ehIndex ? pixelCabecalho() : ''}`)
-      .replace('<!--JS-->', ehIndex && js ? `<script>${js}</script>` : '');
+      .replace('<!--JS-->', levaJs && js ? `<script>${js}</script>` : '');
 
     doc = doc.replace(/\{\{([\w-]+)\}\}/g, (m, chave) => {
       if (!(chave in valores)) throw new Error(`placeholder desconhecido em ${arquivo}: {{${chave}}}`);
