@@ -34,7 +34,7 @@ export const EVENTO = {
  *    00:00. Ver doc 00, §5.
  */
 export const LOTES = [
-  { id: 'especial', nome: 'Lote Especial', centavos: 2700, fim: '2026-09-10T03:59:59.999Z' },
+  { id: 'especial', nome: 'Lote Especial', centavos: 2700, fim: '2026-09-10T02:59:59.999Z' },
   { id: 'lote2',    nome: '2º Lote',       centavos: 4700, fim: '2026-09-16T02:59:59.999Z' },
   { id: 'lote3',    nome: '3º Lote',       centavos: 6700, fim: '2026-09-23T02:59:59.999Z' },
   { id: 'lote4',    nome: 'Último Lote',   centavos: 9700, fim: '2026-09-26T02:59:59.999Z' },
