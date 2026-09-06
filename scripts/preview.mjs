@@ -15,7 +15,9 @@ const MIME = { '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.webp': 'image/
   '.avif': 'image/avif', '.jpg': 'image/jpeg', '.png': 'image/png' };
 
 const PAGINA = process.env.SMM_PAGINA || 'index.html';
-let html = await readFile(path.join(DIST, PAGINA), 'utf8');
+// o site mora em dist/smm/; a raiz do dist é só o redirecionamento
+const BASE = process.env.SMM_BASE ?? '/smm';
+let html = await readFile(path.join(DIST + BASE, PAGINA), 'utf8');
 
 // O visualizador pode não suportar AVIF; para a revisão, fica só o WebP.
 html = html.replace(/<source[^>]*type="image\/avif"[^>]*>/g, '');
@@ -31,7 +33,7 @@ async function dataUri(rel) {
   return uri;
 }
 
-const alvos = [...new Set([...html.matchAll(/["'(](\/(?:fonts|img)\/[^"')\s]+)["')]/g)].map((m) => m[1]))];
+const alvos = [...new Set([...html.matchAll(/["'(]((?:\/smm)?\/(?:fonts|img)\/[^"')\s,]+)["')\s]/g)].map((m) => m[1]))];
 let trocados = 0;
 for (const rel of alvos) {
   const uri = await dataUri(rel);
