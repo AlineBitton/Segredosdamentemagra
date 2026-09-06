@@ -15,7 +15,6 @@ const MIME = { '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.webp': 'image/
   '.avif': 'image/avif', '.jpg': 'image/jpeg', '.png': 'image/png' };
 
 const PAGINA = process.env.SMM_PAGINA || 'index.html';
-// o site mora em dist/smm/; a raiz do dist é só o redirecionamento
 const BASE = process.env.SMM_BASE ?? '';
 let html = await readFile(path.join(DIST + BASE, PAGINA), 'utf8');
 
@@ -33,6 +32,9 @@ html = html.replace(/<link rel="preload" as="image"[^>]*>/g, '');
 const cache = new Map();
 async function dataUri(rel) {
   if (cache.has(rel)) return cache.get(rel);
+  // o build emite caminho relativo na raiz (img/foto.webp) e absoluto com
+  // prefixo quando ha subcaminho (/smm/img/foto.webp): os dois viram o mesmo
+  // arquivo dentro de dist/
   const f = path.join(DIST, rel.replace(/^\//, ''));
   if (!existsSync(f)) return null;
   const b = await readFile(f);
@@ -41,7 +43,9 @@ async function dataUri(rel) {
   return uri;
 }
 
-const alvos = [...new Set([...html.matchAll(/["'(]((?:\/smm)?\/(?:fonts|img)\/[^"')\s,]+)["')\s]/g)].map((m) => m[1]))];
+const alvos = [...new Set(
+  [...html.matchAll(/["'(]((?:\/smm)?\/?(?:fonts|img)\/[^"')\s,]+)["')\s]/g)].map((m) => m[1]),
+)];
 let trocados = 0;
 for (const rel of alvos) {
   const uri = await dataUri(rel);

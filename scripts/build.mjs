@@ -60,13 +60,34 @@ const SITE = 'https://smm.afinandocorpoemente.com.br';
 const BASE = process.env.SMM_BASE ?? '';
 const SAIDA = 'dist' + BASE;
 
-/** Prefixa todo caminho absoluto do documento com a base. */
-function comBase(doc) {
-  if (!BASE) return doc;
+/**
+ * Reescreve os caminhos internos do documento.
+ *
+ * Na raiz (o caso normal) eles saem RELATIVOS: `img/foto.webp`, não
+ * `/img/foto.webp`. O site é plano — index, obrigado, termos e privacidade
+ * moram todos no primeiro nível, e a Cloudflare redireciona `/obrigado/`
+ * para `/obrigado` com 308 — então relativo e absoluto resolvem no mesmo
+ * lugar quando servido. A diferença aparece fora do servidor: com caminho
+ * relativo a pasta descompactada abre no navegador com um duplo clique e
+ * mostra tudo. Com caminho absoluto, `/img/...` vira a raiz do disco e a
+ * página abre sem uma única imagem nem fonte.
+ *
+ * Com SMM_BASE, os mesmos caminhos ganham o prefixo do subcaminho.
+ *
+ * O srcset é o motivo de isto não ser um replace simples: ele tem vários
+ * candidatos separados por vírgula, e cada um precisa ser reescrito.
+ */
+const PREFIXO = BASE ? `${BASE}/` : '';
+
+function reescrever(valor) {
+  return valor.replace(/(^|,\s*)\/(?!\/)/g, `$1${PREFIXO}`);
+}
+
+function resolverCaminhos(doc) {
   return doc
-    .replace(/(\s(?:href|src)=")\/(?!\/)/g, `$1${BASE}/`)
-    .replace(/(\ssrcset=")\/(?!\/)/g, `$1${BASE}/`)
-    .replace(/(url\()\/(?!\/)/g, `$1${BASE}/`);
+    .replace(/(\s(?:href|src)=")(\/(?!\/)[^"]*)"/g, (_, attr, v) => attr + reescrever(v) + '"')
+    .replace(/(\s(?:srcset|imagesrcset)=")([^"]*)"/g, (_, attr, v) => attr + reescrever(v) + '"')
+    .replace(/url\((\/(?!\/)[^)]*)\)/g, (_, v) => `url(${reescrever(v)})`);
 }
 
 const kb = (n) => `${(n / 1024).toFixed(1)} KB`;
@@ -247,6 +268,7 @@ async function main() {
   // paginas legais nao tem contador, barra fixa nem rastreio.
   const paginas = (await readdir(p('src'))).filter((f) => f.endsWith('.html'));
   let html = '';
+  const docsFinais = [];
 
   for (const arquivo of paginas) {
     let doc = await readFile(p('src', arquivo), 'utf8');
@@ -265,8 +287,9 @@ async function main() {
       return valores[chave];
     });
 
-    doc = comBase(minificarHtml(doc));
+    doc = resolverCaminhos(minificarHtml(doc));
     await writeFile(p(SAIDA, arquivo), doc);
+    docsFinais.push(doc);
     if (ehIndex) html = doc;
   }
 
@@ -300,21 +323,26 @@ async function main() {
      hash SHA-256 de cada um — assim só o nosso código roda, e qualquer
      script injetado é bloqueado pelo navegador. */
   const sha = (txt) => `'sha256-${createHash('sha256').update(txt, 'utf8').digest('base64')}'`;
-  const hashesScript = [sha(js)];
-  if (META.pixelId) {
-    for (const s of [pixelCabecalho(), pixelCabecalho(pixelCompra())]) {
-      const m = s.match(/<script>([\s\S]*?)<\/script>/);
-      if (m) hashesScript.push(`'sha256-${createHash('sha256').update(m[1]).digest('base64')}'`);
-    }
-  }
-  if (false) {
-    const snippet = pixelCabecalho().match(/<script>([\s\S]*?)<\/script>/);
-    if (snippet) hashesScript.push(sha(snippet[1]));
-  }
+
+  /* Os hashes saem do que foi escrito no disco, nunca das variaveis que
+     deram origem ao bloco. Entre uma coisa e outra o documento ainda passa
+     pelo minificador e pela reescrita de caminhos, e um unico caractere de
+     diferenca faz o navegador recusar a folha inteira — a pagina abre em
+     Times New Roman, sem fonte e sem cor. Foi o que aconteceu quando os
+     caminhos passaram a ser relativos: o url() dentro do <style> mudou
+     depois de o hash ter sido calculado. */
+  const embutidos = (tag) => [...new Set(docsFinais.flatMap((d) =>
+    [...d.matchAll(new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)</${tag}>`, 'g'))]
+      .map((m) => m[1])
+      .filter((c) => c.trim()),
+  ))];
+
+  const hashesScript = embutidos('script').map(sha);
+  const hashesEstilo = embutidos('style').map(sha);
   const csp = [
     "default-src 'self'",
     `script-src 'self' ${hashesScript.join(' ')}${META.pixelId ? ' https://connect.facebook.net' : ''}`,
-    `style-src 'self' ${sha(css)}`,
+    `style-src 'self' ${hashesEstilo.join(' ')}`,
     `img-src 'self'${META.pixelId ? ' https://www.facebook.com' : ''}`,
     "font-src 'self'",
     `connect-src 'self'${META.pixelId ? ' https://www.facebook.com' : ''}`,
