@@ -11,8 +11,13 @@
                 — nunca texto de leitura
      ameixa     destaque: título de força, ênfase, botão
 
-   Barro e ameixa somados não passam de um quarto da peça, e nenhuma
-   cor nova entra. Não há verde nesta página.
+   Barro e ameixa somados não passam de um quarto da peça.
+
+   A sexta cor é o verde do WhatsApp, e ela não pertence à cartela:
+   é justamente por não pertencer que funciona. Mora só no botão —
+   nenhum ícone, fio, borda ou texto verde na página inteira. Verde
+   é ação, e o efeito Von Restorff só existe enquanto for a única
+   coisa verde na tela.
    ============================================================ */
 
 :root {
@@ -31,6 +36,22 @@
   /* sobre cacau, barro cai para 2,43:1. Esta é a mesma cor clareada
      40% em direção ao papel — 4,74:1 sobre cacau. */
   --barro-claro: #C09683;
+
+  /* ---- ação ---------------------------------------------
+     #25D366 é o verde da marca do WhatsApp, e é onde a compra
+     termina: o ticket, o grupo e o link do Meet chegam por lá.
+
+     O rótulo lê em cacau: sobre este verde o branco dá 1,98:1 e o
+     botão viraria uma mancha; cacau dá 6,33:1.
+
+     O verde escuro faz dois trabalhos. É o contorno de 2px — sobre
+     papel cru o verde separa por matiz e quase não separa por
+     luminância (1,70:1), e quem não distingue matiz precisa de uma
+     fronteira: o contorno dá 5,03:1. E é o estado apontado, quando o
+     botão se preenche com ele e o rótulo inverte para papel cru.
+     ------------------------------------------------------- */
+  --zap:        #25D366;
+  --zap-escuro: #147438;
 
   /* ---- texto -------------------------------------------
      Cacau é o texto. Não existe segundo tom de leitura: a hierarquia
@@ -94,6 +115,14 @@
   --rotulo: var(--ameixa);
   --anel: var(--barro);
 
+  /* O botão não muda com o campo. Antes ele invertia — ameixa no
+     claro, papel no escuro — e o olho tinha de reaprender o que era
+     clicável a cada dobra. Um objeto só, repetido, é o que constrói
+     a resposta automática (efeito de mera exposição). */
+  --btn-bg: var(--zap);        --btn-fg: var(--cacau);
+  --btn-bg2: var(--zap-escuro); --btn-fg-hover: var(--papel);
+  --btn-fio: var(--zap-escuro);
+
   color-scheme: light;
 }
 
@@ -120,7 +149,6 @@
   --fio:    var(--barro);
   --enfase: var(--ameixa);     /* 8,31:1 */
   --rotulo: var(--ameixa);
-  --btn-bg: var(--ameixa); --btn-fg: var(--papel); --btn-bg2: var(--cacau);
   --anel: var(--barro);
 }
 .sup-linho {
@@ -130,7 +158,6 @@
   --fio:    var(--barro);
   --enfase: var(--ameixa);     /* 7,26:1 */
   --rotulo: var(--ameixa);
-  --btn-bg: var(--ameixa); --btn-fg: var(--papel); --btn-bg2: var(--cacau);
   --anel: var(--barro);
 }
 /* A abertura, o suporte, o rodapé e a barra fixa são campos de cacau. */
@@ -141,7 +168,6 @@
   --fio:    var(--barro-claro);
   --enfase: var(--papel);
   --rotulo: var(--barro-claro);
-  --btn-bg: var(--papel); --btn-fg: var(--cacau); --btn-bg2: var(--linho);
   --anel: var(--barro-claro);
 }
 /* O cartão VIP é campo de ameixa: é o destaque da página, e destaque
@@ -155,6 +181,5 @@
   /* barro clareado sobre ameixa dá 3,66:1: serve de fio e de título
      grande, e reprova como etiqueta. A etiqueta aqui lê em papel. */
   --rotulo: var(--papel);
-  --btn-bg: var(--papel); --btn-fg: var(--ameixa); --btn-bg2: var(--linho);
   --anel: var(--barro-claro);
 }

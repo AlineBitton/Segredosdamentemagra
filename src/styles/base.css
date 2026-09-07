@@ -121,11 +121,15 @@ strong, b { font-weight: var(--p-regular); color: var(--enfase); }
 .centro{text-align:center} .centrado{margin-inline:auto} .sem-topo{padding-top:0}
 
 /* ---- botão ------------------------------------------------
-   Ameixa é a cor do botão, por definição do guia. Mas o botão só
-   funciona se for o objeto de maior contraste do campo: ameixa sobre
-   cacau dá 1,3:1 e o botão sumiria na abertura. Por isso o par
-   fundo/rótulo vem do campo (--btn-bg / --btn-fg): ameixa sobre papel
-   e linho, papel cru sobre cacau e sobre o cartão de ameixa.
+   Verde do WhatsApp com rótulo em cacau, igual em toda a página —
+   sobre papel, sobre linho, sobre cacau e sobre o cartão de ameixa.
+   É a única cor saturada da peça, então o olho a encontra antes de
+   ler; e é a cor do canal onde a compra de fato termina.
+
+   O rótulo carrega o contraste (6,33:1). Sobre os campos claros o
+   verde tem pouca diferença de luminância — a separação ali é de
+   matiz, não de brilho —, e é por isso que o rótulo não pode ser
+   branco: seria 1,98:1 e o botão viraria uma mancha.
    ----------------------------------------------------------- */
 .btn {
   --alt: 3.75rem;
@@ -137,11 +141,12 @@ strong, b { font-weight: var(--p-regular); color: var(--enfase); }
   font-family: var(--etiqueta);
   font-size: 1.0625rem; font-weight: var(--p-medio); letter-spacing: .03em;
   text-decoration: none; text-align: center;
-  border: 0; border-radius: var(--r-pill);
+  border: 2px solid var(--btn-fio); border-radius: var(--r-pill);
   cursor: pointer;
   transition: background-color .18s var(--ease), transform .18s var(--ease);
 }
 .btn:hover { background: var(--btn-bg2); color: var(--btn-fg-hover, var(--btn-fg)); }
+.btn:hover { border-color: var(--btn-bg2); }
 .btn:active { transform: translateY(1px); }
 .btn--bloco { display: flex; width: 100%; }
 @media (min-width: 560px) { .btn--bloco { display: inline-flex; width: auto; } }

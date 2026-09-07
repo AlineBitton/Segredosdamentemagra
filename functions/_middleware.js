@@ -25,6 +25,7 @@ import {
   escolherPromessa,
   loteAtivo,
   paramPermitido,
+  prazoData,
   prazoTexto,
   proximoAviso,
   proximoLote,
@@ -55,6 +56,7 @@ export const onRequest = async (context) => {
     'proximo-aviso': proximoAviso(agora),
     'preco-vip': brl(VIP.centavos),
     'promessa-sub': promessa.sub,
+    'prazo-data': prazoData(agora),
     'prazo-extenso': prazoTexto(agora),
   };
   if (VIP.ancoraAvulsaCentavos && lote.centavos != null) {

@@ -178,7 +178,6 @@
 }
 .dobra__a > * + * { margin-top: var(--s-5); }
 .guia__cabeca > * + * { margin-top: var(--s-3); }
-.btn--zap { background: var(--btn-bg); }
 .dobra__b { display: grid; gap: var(--s-7); align-content: start; }
 
 .trilho { display: grid; gap: var(--s-6); align-items: start; }
@@ -189,6 +188,13 @@
   }
 }
 .trilho__cabeca > * + * { margin-top: var(--s-5); }
+/* O corredor da esquerda tem a altura do corpo à direita, e nas dobras
+   longas isso deixava dois mil pixels de campo vazio ao lado da lista.
+   O título acompanha a leitura: a coluna passa a ter função em vez de
+   ser sobra. Onde o corpo é curto, sticky não faz nada. */
+@media (min-width: 1000px) {
+  .trilho__cabeca { position: sticky; top: var(--s-8); }
+}
 /* o corpo já começa alinhado ao título: nenhum bloco traz margem de topo.
    O espaçamento interno é de quem está dentro — grade, lista ou pauta de
    parágrafos —, nunca uma regra genérica aqui: ela dobrava o vão do FAQ. */
@@ -338,9 +344,16 @@
 
 /* ─── quem é sua guia ───────────────────────────────────────── */
 .guia__grade { display: grid; gap: var(--s-8); }
-@media (min-width: 940px) { .guia__grade { grid-template-columns: .8fr 1.2fr; align-items: center; } }
+/* O retrato acompanha a história. Centralizado, ele ficava com setecentos
+   pixels de campo vazio acima e abaixo, ao lado de uma coluna de texto três
+   vezes mais alta: quem lê a história dela deixava de ver o rosto dela na
+   metade da leitura, que é justamente onde a transferência de autoridade
+   acontece. */
+@media (min-width: 940px) { .guia__grade { grid-template-columns: .8fr 1.2fr; align-items: start; } }
 .guia__foto { position: relative; overflow: hidden; background: var(--bg-2); aspect-ratio: 4/5; }
 .guia__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+/* depois da regra base, senão o position:relative de cima ganha por ordem */
+@media (min-width: 940px) { .guia__foto { position: sticky; top: var(--s-8); } }
 .numeros { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--s-5); margin-top: var(--s-7); padding-top: var(--s-6); border-top: 1px solid var(--linha); list-style: none; }
 .numeros dt {
   font-weight: var(--p-regular);
@@ -383,12 +396,16 @@
   color: var(--enfase);
 }
 .plano__preco {
-  display: flex; align-items: baseline; gap: var(--s-4); margin-top: var(--s-5);
+  /* o preço nunca quebra ao meio: no celular a legenda desce inteira para a
+     linha de baixo em vez de espremer o número em "R$" e "27" */
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-2) var(--s-4);
+  margin-top: var(--s-5);
   font-variation-settings: 'SOFT' 0, 'WONK' 0, 'opsz' 144;
   font-size: clamp(2.75rem, 2rem + 3vw, 4rem);
   font-weight: var(--p-regular); line-height: 1.3; letter-spacing: -.028em;
   color: var(--titulo);
 }
+.plano__preco > span { white-space: nowrap; }
 .plano__preco small { font-family: var(--texto); font-size: var(--fs-peq); font-weight: var(--p-regular); letter-spacing: 0; line-height: 1.6; color: var(--txt-2); }
 .plano__pitch {
   margin-top: var(--s-6); padding-left: var(--s-5);

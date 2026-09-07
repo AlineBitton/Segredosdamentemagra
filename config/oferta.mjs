@@ -308,6 +308,21 @@ export function contadorTexto(agora = Date.now()) {
  * girando é útil para quem vê; para quem usa leitor de tela, "5d 09h 19m 52s"
  * é críptico. Esta frase entra escondida ao lado dele.
  */
+/**
+ * Só a data em que o lote vigente termina — "9 de setembro".
+ *
+ * Existe porque a página dizia "até 9 de setembro" escrito à mão, em dois
+ * lugares, ao lado de um preço que muda sozinho. No dia 12 a frase viraria
+ * "R$ 47 até 9 de setembro".
+ */
+export function prazoData(agora = Date.now()) {
+  const l = loteAtivo(agora);
+  if (!l.fim) return '';
+  return new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo', day: 'numeric', month: 'long',
+  }).format(new Date(Date.parse(l.fim)));
+}
+
 export function prazoTexto(agora = Date.now()) {
   const l = loteAtivo(agora);
   if (!l.fim) return 'As inscrições estão encerradas.';

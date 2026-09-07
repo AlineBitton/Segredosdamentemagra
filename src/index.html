@@ -61,7 +61,8 @@
           </p>
           <p class="hero__lote">
             <span data-slot="lote-nome">{{lote-nome}}</span>:
-            <strong data-slot="preco-comum">{{preco-comum}}</strong> até 9 de setembro.
+            <strong data-slot="preco-comum">{{preco-comum}}</strong> até
+            <span data-slot="prazo-data">{{prazo-data}}</span>.
             Comece pela aula de abertura na sexta. Se não for pra você, devolvemos 100%.
             <span class="so-leitor" data-slot="prazo-extenso">{{prazo-extenso}}</span>
           </p>
@@ -141,14 +142,15 @@
   </section>
 
   <!-- ══ 03 · PROVA ═════════════════════════════════════════
-       [[CONFERIR: a Aline pediu depoimentos que falem de
-       CAPACIDADE — "eu soube o que fazer", "não virou uma semana
-       perdida" — e não de número. As imagens atuais trazem selo de
-       quilos, que contraria a instrução nova. Trocar por prints de
-       WhatsApp e DM, mínimo 6, ideal 12.]]                     -->
+       O título nomeia o que a galeria é, e nada além disso. A versão
+       anterior dizia "muito além de fotos de antes e depois" em cima
+       de doze fotos de antes e depois: a página discutia com a
+       própria imagem. Quem faz o argumento aqui é a frase embaixo da
+       galeria — as fotos provam volume de trabalho, e a pergunta do
+       "depois do depois" é que abre a tese.                    -->
   <section class="sec sup-linho">
     <div class="wrap reveal">
-      <h2 class="h2">Histórias de transformação que vão muito além de fotos de antes e depois.</h2>
+      <h2 class="h2">Mulheres que fizeram esse caminho com a Aline.</h2>
 
       <ul class="provas">
         {{provas}}
@@ -318,7 +320,8 @@
           <h3 class="plano__nome">Ingresso Comum</h3>
           <p class="plano__preco">
             <span data-slot="preco-comum">{{preco-comum}}</span>
-            <small><span data-slot="lote-nome">{{lote-nome}}</span>, até 9 de setembro</small>
+            <small><span data-slot="lote-nome">{{lote-nome}}</span>, até
+              <span data-slot="prazo-data">{{prazo-data}}</span></small>
           </p>
 
           <ul class="plano__inclui">

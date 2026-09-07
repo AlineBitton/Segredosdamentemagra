@@ -25,7 +25,7 @@ import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
   CHECKOUT, EVENTO, FICHA, LOTES, META, PROMESSAS, VIP,
-  brl, checkoutComum, contadorTexto, linkWhatsApp, loteAtivo, prazoTexto, proximoAviso,
+  brl, checkoutComum, contadorTexto, linkWhatsApp, loteAtivo, prazoData, prazoTexto, proximoAviso,
   proximoLote,
 } from '../config/oferta.mjs';
 
@@ -185,6 +185,7 @@ async function main() {
     'preco-vip': brl(VIP.centavos),
     'deadline': lote.fim || '',
     'contador': contadorTexto(agora),
+    'prazo-data': prazoData(agora),
     'prazo-extenso': prazoTexto(agora),
     'lote-id': lote.id,
     'encerrado-attr': lote.id === 'encerrado' ? ' data-encerrado' : '',

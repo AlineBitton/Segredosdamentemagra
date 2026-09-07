@@ -23,20 +23,26 @@ const PAPEL  = cor('papel'),  LINHO   = cor('linho');
 const CACAU  = cor('cacau'),  CACAU2  = cor('cacau-2');
 const AMEIXA = cor('ameixa'), BARRO   = cor('barro'), BARRO_CLARO = cor('barro-claro');
 const ESCURO = cor('sobre-escuro'), ESCURO2 = cor('sobre-escuro-2');
+const ZAP = cor('zap'), ZAP_ESCURO = cor('zap-escuro');
 
 // Os mínimos seguem a WCAG: 4,5:1 para texto de leitura, 3:1 para texto
 // grande (>= 24px sem negrito) e para objeto — fronteira de botão, fio,
 // ícone, anel de foco. É por isso que barro serve de título grande e
 // reprova como parágrafo: o guia da marca e a norma dizem a mesma coisa.
 const pares = [
-  // ── botão: ameixa nos campos claros, papel cru nos escuros ──
-  [PAPEL,  AMEIXA, 'texto',  'rótulo do botão sobre ameixa'],
-  [AMEIXA, PAPEL,  'objeto', 'botão de ameixa sobre papel cru'],
-  [AMEIXA, LINHO,  'objeto', 'botão de ameixa sobre linho'],
-  [PAPEL,  CACAU,  'texto',  'rótulo em papel no hover (fundo cacau)'],
-  [CACAU,  PAPEL,  'texto',  'rótulo do botão claro sobre cacau'],
-  [PAPEL,  CACAU,  'objeto', 'botão claro sobre campo de cacau'],
-  [PAPEL,  AMEIXA, 'objeto', 'botão claro sobre o cartão de ameixa'],
+  // ── botão: o verde do WhatsApp, o mesmo em todos os campos ──
+  [CACAU, ZAP,       'texto',  'rótulo do botão sobre o verde'],
+  [PAPEL, ZAP_ESCURO, 'texto',  'rótulo do botão apontado'],
+  [ZAP,   CACAU,     'objeto', 'botão sobre campo de cacau'],
+  [ZAP,   AMEIXA,    'objeto', 'botão sobre o cartão de ameixa'],
+  // Sobre papel e linho o verde separa por matiz, não por luminância
+  // (1,70:1 e 1,49:1), e por isso esses dois pares não entram como
+  // objeto: a 1.4.11 pede 3:1 da fronteira só quando é ela que
+  // identifica o controle. Aqui quem identifica é o rótulo, que leva
+  // 6,33:1 em toda a página. O contorno de 2px de verde escuro existe
+  // para quem não distingue matiz — é ele que carrega a fronteira.
+  [ZAP_ESCURO, PAPEL, 'objeto', 'contorno do botão sobre papel cru'],
+  [ZAP_ESCURO, LINHO, 'objeto', 'contorno do botão sobre linho'],
 
   // ── anel de foco: 3:1 contra o campo em que aparece ──
   [BARRO,       PAPEL,  'objeto', 'anel de foco sobre papel cru'],
