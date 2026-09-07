@@ -42,6 +42,11 @@ const pares = [
   // 6,33:1 em toda a página. O contorno de 2px de verde escuro existe
   // para quem não distingue matiz — é ele que carrega a fronteira.
   [ZAP_ESCURO, PAPEL, 'objeto', 'contorno do botão sobre papel cru'],
+  // botão vazado: o fio carrega o verde, o rótulo carrega o contraste
+  [CACAU, PAPEL,  'texto',  'rótulo do botão vazado sobre papel cru'],
+  [CACAU, LINHO,  'texto',  'rótulo do botão vazado sobre linho'],
+  [PAPEL, CACAU,  'texto',  'rótulo do botão vazado sobre cacau'],
+  [ZAP,   CACAU,  'objeto', 'contorno do botão vazado sobre cacau'],
   [ZAP_ESCURO, LINHO, 'objeto', 'contorno do botão sobre linho'],
 
   // ── anel de foco: 3:1 contra o campo em que aparece ──

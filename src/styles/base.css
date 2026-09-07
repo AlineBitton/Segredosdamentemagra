@@ -148,6 +148,17 @@ strong, b { font-weight: var(--p-regular); color: var(--enfase); }
 .btn:hover { background: var(--btn-bg2); color: var(--btn-fg-hover, var(--btn-fg)); }
 .btn:hover { border-color: var(--btn-bg2); }
 .btn:active { transform: translateY(1px); }
+/* O segundo caminho da mesma dobra. Vazado, o VIP ao lado fica sendo o
+   único objeto preenchido — a escolha recomendada ganha peso sem precisar de
+   uma segunda cor. Apontado, ele se preenche de verde como o outro. */
+.btn--vazado {
+  background: transparent; color: var(--txt);
+  border-color: var(--btn-fio-vazado);
+}
+.btn--vazado:hover {
+  background: var(--btn-bg); color: var(--btn-fg); border-color: var(--btn-bg);
+}
+
 .btn--bloco { display: flex; width: 100%; }
 @media (min-width: 560px) { .btn--bloco { display: inline-flex; width: auto; } }
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:active { transform: none; } }

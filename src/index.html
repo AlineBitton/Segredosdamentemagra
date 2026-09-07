@@ -52,8 +52,16 @@
         <p class="hero__promessa" data-slot="promessa-sub">{{promessa-sub}}</p>
 
         <div class="hero__acao">
-          <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+          <a class="btn btn--bloco btn--vazado" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
             Quero minha vaga
+          </a>
+          <p class="pitch-vip">
+            Ou leve o VIP por <strong data-slot="preco-vip">{{preco-vip}}</strong>:
+            os mesmos 2 dias e mais um encontro ao vivo, só seu, com a Aline —
+            você traz a cena da sua semana e ela lê o que está por trás.
+          </p>
+          <a class="btn btn--bloco" href="{{checkout-vip}}" data-checkout="vip" rel="noopener">
+            Quero o ingresso VIP
           </a>
           <p class="hero__assina">
             Com <strong>Aline Bitton</strong>, terapeuta e fitoterapeuta, há dez
@@ -121,9 +129,12 @@
 
         <p class="mt-6">É ela que a gente vai trabalhar nos dias 26 e 27.</p>
 
-        <div class="cta">
-          <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+        <div class="cta cta--par">
+          <a class="btn btn--bloco btn--vazado" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
             Quero minha vaga
+          </a>
+          <a class="btn btn--bloco" href="{{checkout-vip}}" data-checkout="vip" rel="noopener">
+            Quero o ingresso VIP
           </a>
         </div>
       </div>
@@ -161,9 +172,12 @@
         ninguém responde — é o que aconteceu <strong>depois do depois</strong>.
       </p>
 
-      <div class="cta">
-        <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+      <div class="cta cta--par">
+        <a class="btn btn--bloco btn--vazado" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
           Quero minha vaga
+        </a>
+        <a class="btn btn--bloco" href="{{checkout-vip}}" data-checkout="vip" rel="noopener">
+          Quero o ingresso VIP
         </a>
       </div>
     </div>
@@ -220,9 +234,12 @@
         </p>
       </div>
 
-      <div class="cta">
-        <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+      <div class="cta cta--par">
+        <a class="btn btn--bloco btn--vazado" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
           Quero minha vaga
+        </a>
+        <a class="btn btn--bloco" href="{{checkout-vip}}" data-checkout="vip" rel="noopener">
+          Quero o ingresso VIP
         </a>
       </div>
     </div>
@@ -663,9 +680,12 @@
         <span data-slot="prazo-extenso">{{prazo-extenso}}</span>
         <span data-slot="proximo-aviso">{{proximo-aviso}}</span>
       </p>
-      <div class="cta">
-        <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
+      <div class="cta cta--par">
+        <a class="btn btn--bloco btn--vazado" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
           Quero minha vaga
+        </a>
+        <a class="btn btn--bloco" href="{{checkout-vip}}" data-checkout="vip" rel="noopener">
+          Quero o ingresso VIP
         </a>
         <p class="miudo mt-4 centrado">
           Participe da aula de abertura. Se não for pra você, devolvemos 100%.

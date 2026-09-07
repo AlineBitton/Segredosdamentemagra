@@ -122,6 +122,11 @@
   --btn-bg: var(--zap);        --btn-fg: var(--cacau);
   --btn-bg2: var(--zap-escuro); --btn-fg-hover: var(--papel);
   --btn-fio: var(--zap-escuro);
+  /* O botão vazado é o segundo caminho, e o fio dele precisa de 3:1 contra o
+     campo: verde escuro no claro (5,03:1 sobre papel), verde do WhatsApp no
+     escuro (6,33:1 sobre cacau). O rótulo lê na tinta do campo, não em verde,
+     porque verde escuro sobre linho dá 4,40:1 e reprovaria como texto. */
+  --btn-fio-vazado: var(--zap-escuro);
 
   color-scheme: light;
 }
@@ -162,6 +167,7 @@
 }
 /* A abertura, o suporte, o rodapé e a barra fixa são campos de cacau. */
 .sup-escura, .hero, .rodape, .barra {
+  --btn-fio-vazado: var(--zap);
   --bg: var(--cacau); --bg-2: var(--cacau-2); --linha: #4A423A;
   --txt: var(--sobre-escuro); --txt-2: var(--sobre-escuro-2);
   --titulo: var(--barro-claro);
