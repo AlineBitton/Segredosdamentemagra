@@ -323,6 +323,32 @@ domingo, devolva a frase que ela escreveu e pergunte se aconteceu.
 
 ---
 
+## Como montar sem clicar 13 vezes
+
+`scripts/formulario.gs` monta o formulário inteiro — as 13 perguntas, as 5
+seções, os textos de ajuda, a tela de confirmação, a configuração e a planilha
+de respostas — de uma vez.
+
+1. `script.google.com` → **Novo projeto**
+2. Apague o que estiver lá e cole o arquivo inteiro
+3. Escolha `montarFicha` e **Executar**; autorize
+4. O log imprime o link de responder, o de editar e o da planilha
+
+A aparência é a única coisa que a API não define. No editor, **Personalizar
+tema** (o pincel, canto superior direito):
+
+| campo | valor |
+|---|---|
+| Cabeçalho | enviar `docs/cabecalho-ficha.png` |
+| Cor do tema | `#5E3A46` — ameixa |
+| Cor do fundo | `#F2EDE5` — papel cru, em *Personalizado* |
+| Estilo da fonte | Formal |
+
+O cabeçalho é o campo de cacau da marca com o retrato da Aline, no formato
+1600×400 que o Forms pede. Sem texto: o Forms escreve o título logo abaixo.
+
+---
+
 ## Onde a ficha aparece
 
 - **Página de agradecimento**, dobra 03 — botão *Preencher a ficha agora*.
