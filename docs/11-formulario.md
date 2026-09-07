@@ -325,9 +325,17 @@ domingo, devolva a frase que ela escreveu e pergunte se aconteceu.
 
 ## Como montar sem clicar 13 vezes
 
-`scripts/formulario.gs` monta o formulário inteiro — as 13 perguntas, as 5
-seções, os textos de ajuda, a tela de confirmação, a configuração e a planilha
-de respostas — de uma vez.
+`scripts/formulario.gs` reescreve a ficha **dentro do formulário que já
+existe**: acha pelo link publicado, apaga as perguntas antigas e monta as 13
+novas, com as 5 seções, os textos de ajuda, a tela de confirmação e a
+configuração.
+
+**O link não muda** — é o mesmo que já está na página de agradecimento, então
+não é preciso mexer em `config/oferta.mjs` nem publicar de novo.
+
+Respostas já enviadas não são apagadas, mas ficam nas colunas das perguntas
+antigas. Se alguém já respondeu a versão de três perguntas, arquive a planilha
+antes de rodar.
 
 1. `script.google.com` → **Novo projeto**
 2. Apague o que estiver lá e cole o arquivo inteiro

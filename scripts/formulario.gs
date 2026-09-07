@@ -1,23 +1,99 @@
 /**
- * Monta a Ficha de participante inteira no Google Forms.
+ * Reescreve a Ficha de participante DENTRO do formulário que já existe.
  *
- * COMO USAR — leva uns dois minutos:
+ * O link não muda. É o mesmo que está na página de agradecimento:
+ * docs.google.com/forms/d/e/1FAIpQLScIUPp-A0MKjY_g-cqidQ71fL3u4Nj8OkSdUbuVSaxONOnVRQ/viewform
+ *
+ * COMO USAR — dois minutos:
  *
  *   1. Abra  script.google.com  →  Novo projeto
  *   2. Apague o que estiver lá e cole este arquivo inteiro
- *   3. Menu de execução: escolha  montarFicha  →  Executar
- *   4. Autorize (é a sua própria conta criando um formulário seu)
- *   5. O log mostra dois links: o de responder e o de editar.
- *      O de responder é o que vai na página de agradecimento.
+ *   3. Escolha  montarFicha  no seletor de função  →  Executar
+ *   4. Autorize (é a sua conta editando um formulário seu)
+ *   5. Leia o log: ele diz o que achou, o que apagou e o que montou
  *
- * Ele cria um formulário NOVO, com as 13 perguntas, as 5 seções, os textos
- * de ajuda, a tela de confirmação e a planilha de respostas já ligada.
+ * O QUE ELE FAZ: acha o formulário pelo link publicado, apaga as perguntas
+ * atuais e monta as 13 novas, com as 5 seções, os textos de ajuda, a tela de
+ * confirmação e a configuração.
+ *
+ * O QUE ELE NÃO FAZ: não apaga respostas já enviadas. Elas continuam na
+ * planilha, mas nas colunas das perguntas antigas — se alguém já respondeu a
+ * versão de 3 perguntas, considere arquivar essa planilha antes.
  *
  * O conteúdo é o de docs/11-formulario.md. Mudou lá, mude aqui.
  */
 
+const LINK_PUBLICADO =
+  'https://docs.google.com/forms/d/e/1FAIpQLScIUPp-A0MKjY_g-cqidQ71fL3u4Nj8OkSdUbuVSaxONOnVRQ/viewform';
+
 function montarFicha() {
-  const form = FormApp.create('Ficha de participante — Imersão Segredos da Mente Magra');
+  const form = acharFormularioPeloLink_(LINK_PUBLICADO);
+
+  Logger.log('Formulário encontrado: "%s"', form.getTitle());
+  Logger.log('Perguntas atuais (%s):', form.getItems().length);
+  form.getItems().forEach(function (item) {
+    Logger.log('   – %s', item.getTitle());
+  });
+  Logger.log('');
+
+  limpar_(form);
+  montarPerguntas_(form);
+  configurar_(form);
+
+  Logger.log('———————————————————————————————————————————');
+  Logger.log('Pronto. %s perguntas no ar, no mesmo link.', form.getItems().length - 4);
+  Logger.log('');
+  Logger.log('Responder (é o que já está na página, não precisa trocar nada):');
+  Logger.log(form.getPublishedUrl());
+  Logger.log('Editar:');
+  Logger.log(form.getEditUrl());
+  Logger.log('———————————————————————————————————————————');
+  Logger.log('Falta só a aparência, que a API não define — 4 cliques no editor,');
+  Logger.log('em "Personalizar tema" (o pincel, canto superior direito):');
+  Logger.log('  Cabeçalho ....... enviar cabecalho-ficha.png');
+  Logger.log('  Cor do tema ..... #5E3A46   (ameixa)');
+  Logger.log('  Cor do fundo .... #F2EDE5   (papel cru) — em "Personalizado"');
+  Logger.log('  Estilo da fonte . Formal');
+}
+
+/**
+ * O ID que aparece no link de responder (/d/e/1FAIpQLSc…) não é o ID do
+ * arquivo, então `FormApp.openById` não serve. Varre os formulários da conta e
+ * compara pelo link publicado, que é o que a gente tem.
+ */
+function acharFormularioPeloLink_(link) {
+  const alvo = link.split('?')[0].replace(/\/(viewform|edit).*$/, '');
+  const arquivos = DriveApp.getFilesByType(MimeType.GOOGLE_FORMS);
+  while (arquivos.hasNext()) {
+    const arquivo = arquivos.next();
+    let form;
+    try {
+      form = FormApp.openById(arquivo.getId());
+    } catch (e) {
+      continue; // sem permissão de edição, segue
+    }
+    if (form.getPublishedUrl().split('?')[0].replace(/\/viewform.*$/, '') === alvo) {
+      return form;
+    }
+  }
+  throw new Error(
+    'Não achei nenhum formulário seu com esse link publicado. Confira se você ' +
+    'está logada na conta que criou o formulário, ou abra o formulário, copie ' +
+    'o endereço da barra do navegador e troque LINK_PUBLICADO por ele.'
+  );
+}
+
+/** Apaga de trás para a frente: apagar do início reindexa e pula itens. */
+function limpar_(form) {
+  const itens = form.getItems();
+  for (let i = itens.length - 1; i >= 0; i--) {
+    form.deleteItem(itens[i]);
+  }
+  Logger.log('Apagadas %s perguntas antigas.', itens.length);
+}
+
+function montarPerguntas_(form) {
+  form.setTitle('Ficha de participante — Imersão Segredos da Mente Magra');
 
   form.setDescription(
     'Sua vaga está garantida. Antes da gente se encontrar, quero saber de você.\n\n' +
@@ -185,9 +261,9 @@ function montarFicha() {
       'quer que seja falado no grupo. Fica só comigo.'
     )
     .setRequired(false);
+}
 
-  /* ── Configuração ───────────────────────────────────────────────── */
-
+function configurar_(form) {
   form.setConfirmationMessage(
     'Recebido. Obrigada por escrever.\n\n' +
     'Eu leio todas antes da sexta. Se a sua cena aparecer na aula de abertura, vai ser ' +
@@ -197,31 +273,18 @@ function montarFicha() {
     'Sexta, 25 de setembro, 19h. O link chega no grupo do WhatsApp.'
   );
 
-  form.setProgressBar(true);        // são 5 seções; sem barra parece infinito
-  form.setCollectEmail(false);      // já é a pergunta 2; ligado, duplica
+  form.setProgressBar(true);               // são 5 seções; sem barra parece infinito
+  form.setCollectEmail(false);             // já é a pergunta 2; ligado, duplica
   form.setLimitOneResponsePerUser(false);  // exigiria conta Google e derrubaria respostas
-  form.setAllowResponseEdits(true); // ela pode lembrar de mais coisa depois
+  form.setAllowResponseEdits(true);        // ela pode lembrar de mais coisa depois
   form.setShuffleQuestions(false);
   form.setShowLinkToRespondAgain(false);
+  form.setAcceptingResponses(true);
 
-  // planilha de respostas, na mesma pasta do formulário
-  const planilha = SpreadsheetApp.create('Respostas — Ficha de participante SMM');
-  form.setDestination(FormApp.DestinationType.SPREADSHEET, planilha.getId());
-
-  Logger.log('———————————————————————————————————————————');
-  Logger.log('LINK PARA RESPONDER (é este que vai na página):');
-  Logger.log(form.getPublishedUrl());
-  Logger.log('');
-  Logger.log('Link para editar o formulário:');
-  Logger.log(form.getEditUrl());
-  Logger.log('');
-  Logger.log('Planilha de respostas:');
-  Logger.log(planilha.getUrl());
-  Logger.log('———————————————————————————————————————————');
-  Logger.log('Falta só a aparência, que a API não define — 4 cliques no editor:');
-  Logger.log('  Personalizar tema (pincel, canto superior direito)');
-  Logger.log('  Cabeçalho ....... enviar a imagem cabecalho-ficha.png');
-  Logger.log('  Cor do tema ..... #5E3A46   (ameixa)');
-  Logger.log('  Cor do fundo .... #F2EDE5   (papel cru) — em "Personalizado"');
-  Logger.log('  Estilo da fonte . Formal');
+  // planilha de respostas, só se ainda não houver uma ligada
+  if (!form.getDestinationId()) {
+    const planilha = SpreadsheetApp.create('Respostas — Ficha de participante SMM');
+    form.setDestination(FormApp.DestinationType.SPREADSHEET, planilha.getId());
+    Logger.log('Planilha de respostas criada: %s', planilha.getUrl());
+  }
 }
