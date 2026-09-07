@@ -68,14 +68,6 @@ for (const rel of alvos) {
   trocados++;
 }
 
-// aviso discreto de que isto é uma prévia, não o site publicado
-// O selo usa a paleta da marca: ameixa com papel cru. O dourado antigo
-// era de outro sistema de cor e aparecia por cima da prévia inteira.
-html = html.replace('</body>', `<div style="position:fixed;left:12px;bottom:12px;z-index:200;
-  background:#5E3A46;color:#F2EDE5;font:500 12px/1 system-ui,sans-serif;
-  padding:8px 12px;border-radius:999px;letter-spacing:.06em">prévia para aprovação</div></body>`);
-
-// quem recebe o arquivo por e-mail não sabe o que é "index"
 const nome = PAGINA.replace(/\.html$/, '').replace(/^index$/, 'venda');
 const saida = path.join(RAIZ, `previa-${nome}.html`);
 await writeFile(saida, html);
