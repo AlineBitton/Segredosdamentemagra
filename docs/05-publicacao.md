@@ -52,14 +52,38 @@ Autorize o GitHub e escolha `AlineBitton/Segredosdamentemagra`.
 Sai um endereço `xxx.pages.dev`. Abra e confira antes de seguir — a página
 inteira já funciona por ele.
 
-**4. Custom domains → Set up a custom domain**
+**4. O domínio já vem no deploy**
 
-Digite `smm.afinandocorpoemente.com.br`.
+Não há passo manual de *Custom domains*. O `wrangler.toml` declara os dois
+nomes com `custom_domain = true`:
 
-A Cloudflare cria o registro de CNAME sozinha, porque a zona já é dela. O
-certificado sai em alguns minutos.
+```toml
+[[routes]]
+pattern = "smm.afinandocorpoemente.com.br"
+custom_domain = true
+
+[[routes]]
+pattern = "www.smm.afinandocorpoemente.com.br"
+custom_domain = true
+```
+
+Cada `wrangler deploy` cria ou reaponta o registro de DNS e emite o
+certificado. Se o nome estiver preso em outro Worker ou num projeto de Pages,
+o deploy falha com a mensagem dizendo qual — em vez de o site sumir do ar em
+silêncio.
+
+O certificado de um custom domain de Worker é do nome exato, e por isso
+`www.smm` funciona. O certificado Universal da zona cobre só um nível
+(`*.afinandocorpoemente.com.br`) e não cobriria um `www.smm`.
 
 Pronto.
+
+> **O erro 1000 da raiz é outro problema.** `www.afinandocorpoemente.com.br`
+> responde *Error 1000 — DNS points to prohibited IP*: o registro daquele nome
+> aponta para um IP que a Cloudflare recusa (normalmente um IP da própria
+> Cloudflare, herdado de uma hospedagem antiga). É um registro de outro site,
+> na mesma zona, e não afeta o `smm` — que é um Worker e nem chega a ter
+> origem. Consertar um não conserta nem quebra o outro.
 
 ---
 

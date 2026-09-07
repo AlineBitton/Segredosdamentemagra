@@ -19,3 +19,21 @@ binding = "ASSETS"
 # no HTML. Sem isto, a Cloudflare devolveria o arquivo estático direto e a
 # página iria ao ar congelada no lote da hora do build.
 run_worker_first = true
+
+# O domínio deixa de ser um passo manual no painel. Com `custom_domain = true`
+# o `wrangler deploy` cria (ou reaponta) o registro de DNS e emite o
+# certificado a cada publicação, e falha alto se o nome estiver preso em outro
+# Worker ou num projeto de Pages — que é o modo silencioso de o site sumir do
+# ar. Um custom domain de Worker tem certificado próprio, do nome exato, então
+# `www.smm` (segundo nível de subdomínio) também fica coberto — o que o
+# certificado Universal da zona, que só cobre um nível, não faria.
+#
+# Os dois nomes ficam declarados porque os dois já estão divulgados. Quem
+# entrar por um ou por outro cai no mesmo Worker.
+[[routes]]
+pattern = "smm.afinandocorpoemente.com.br"
+custom_domain = true
+
+[[routes]]
+pattern = "www.smm.afinandocorpoemente.com.br"
+custom_domain = true
