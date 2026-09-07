@@ -7,6 +7,10 @@ pacote/
 *.log
 .env
 .env.*
+# segredos locais do wrangler (META_CAPI_TOKEN em `npm run dev`).
+# O token de produção mora em `wrangler secret`, nunca em arquivo.
+.dev.vars
+.dev.vars.*
 
 # fontes subsetadas SAO versionadas (build nao depende de Python)
 !public/fonts/*.woff2

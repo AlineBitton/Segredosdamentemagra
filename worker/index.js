@@ -29,6 +29,7 @@ import {
   contadorTexto,
   escolherPromessa,
   loteAtivo,
+  META,
   paramPermitido,
   prazoData,
   prazoTexto,
@@ -39,7 +40,7 @@ import {
 
 const TETO_CACHE_S = 300;
 
-async function servir(request, env) {
+async function servir(request, env, ctx) {
   // os arquivos estáticos vêm do próprio Worker, pela ligação ASSETS, e
   // continuam passando pelo _headers (CSP, cache das fontes e das imagens)
   const resposta = await env.ASSETS.fetch(request);
@@ -49,6 +50,11 @@ async function servir(request, env) {
 
   const url = new URL(request.url);
   const agora = Date.now();
+  // `/obrigado`, `/obrigado.html`, `/obrigado/` e a variante sob SMM_BASE
+  const ehObrigado = /\/obrigado(?:\.html)?\/?$/.test(url.pathname);
+  // O mesmo identificador vai no navegador e no servidor. É ele que faz a
+  // Meta entender os dois relatos como UMA compra, e não duas.
+  const eventoId = ehObrigado ? crypto.randomUUID() : '';
   const lote = loteAtivo(agora);
   const proximo = proximoLote(agora);
   const promessa = escolherPromessa(url.searchParams);
@@ -83,6 +89,8 @@ async function servir(request, env) {
         el.setAttribute('data-lote', lote.id);
         el.setAttribute('data-promessa', promessa.id);
         if (encerrado) el.setAttribute('data-encerrado', '');
+        // o pixel do navegador lê daqui para casar com o evento do servidor
+        if (eventoId) el.setAttribute('data-evento-id', eventoId);
       },
     })
     // a linha do gancho é o único slot que aceita marcação (o <em> da
@@ -131,12 +139,26 @@ async function servir(request, env) {
   const saida = rw.transform(resposta);
   const cabecalhos = new Headers(saida.headers);
 
-  const ttl = Math.min(TETO_CACHE_S, Math.max(30, segundosAteVirada(agora)));
-  cabecalhos.set('cache-control', `public, max-age=0, s-maxage=${ttl}, stale-while-revalidate=30`);
+  if (ehObrigado) {
+    // Nunca cachear a página de agradecimento. Ela carrega um `event_id`
+    // único por visita; servida do cache, várias compradoras receberiam o
+    // mesmo identificador e a Meta juntaria todas as compras numa só.
+    cabecalhos.set('cache-control', 'no-store');
+  } else {
+    const ttl = Math.min(TETO_CACHE_S, Math.max(30, segundosAteVirada(agora)));
+    cabecalhos.set('cache-control', `public, max-age=0, s-maxage=${ttl}, stale-while-revalidate=30`);
+  }
   cabecalhos.set('x-content-type-options', 'nosniff');
   cabecalhos.set('referrer-policy', 'strict-origin-when-cross-origin');
   cabecalhos.set('permissions-policy', 'geolocation=(), microphone=(), camera=(), interest-cohort=()');
   cabecalhos.set('x-lote', lote.id);
+
+  if (ehObrigado && saida.status === 200) {
+    // a resposta sai na hora; a conversa com a Meta continua depois dela
+    const envio = enviarCapi(request, url, env, eventoId);
+    if (ctx?.waitUntil) ctx.waitUntil(envio);
+    else await envio;
+  }
 
   return new Response(saida.body, { status: saida.status, headers: cabecalhos });
 }
@@ -171,4 +193,100 @@ function comQueryDaCampanha(destino, urlDaPagina) {
     alvo.searchParams.set('sck', valores.join('|'));
   }
   return alvo.toString();
+}
+
+/**
+ * Conversion API da Meta — o relato da compra pelo servidor.
+ *
+ * O pixel do navegador é o único relato hoje, e ele falha em silêncio: quem
+ * usa bloqueador, Safari com prevenção de rastreio ou simplesmente fecha a
+ * aba antes de o `fbevents.js` carregar não aparece no Gerenciador. A compra
+ * aconteceu, a campanha não recebe o crédito, e o algoritmo otimiza no escuro.
+ *
+ * Este envio sai daqui, da borda, e não depende de nada no navegador.
+ *
+ * Os dois relatos — navegador e servidor — carregam o MESMO `event_id`. É por
+ * ele que a Meta reconhece que são a mesma compra e conta uma só. Sem isso, o
+ * relatório dobraria e o custo por conversão apareceria pela metade.
+ *
+ * Sem `META_CAPI_TOKEN` a função não faz nada. O token é credencial de
+ * servidor, com permissão de escrita na conta de anúncios: entra por
+ * `wrangler secret put META_CAPI_TOKEN` e nunca no repositório.
+ */
+async function enviarCapi(request, url, env, eventoId) {
+  const token = env.META_CAPI_TOKEN;
+  if (!token || !META.pixelId || !eventoId) return;
+
+  const cookies = lerCookies(request.headers.get('cookie'));
+  const fbclid = url.searchParams.get('fbclid');
+
+  // Quanto mais sinal, melhor o casamento com a pessoa que clicou no anúncio.
+  // Não há e-mail nem telefone aqui: a página de agradecimento não conhece a
+  // compradora — quem conhece é a Hubla. Vai o que a borda tem de fato.
+  const pessoa = {
+    client_ip_address: request.headers.get('cf-connecting-ip') || undefined,
+    client_user_agent: request.headers.get('user-agent') || undefined,
+    fbp: cookies._fbp || undefined,
+    // sem o cookie, o clique ainda dá para reconstruir a partir do fbclid
+    fbc: cookies._fbc || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined),
+  };
+
+  const comum = {
+    event_time: Math.floor(Date.now() / 1000),
+    event_source_url: url.href,
+    action_source: 'website',
+    user_data: pessoa,
+  };
+
+  // Os dois eventos que o navegador dispara, com os mesmos nomes e os mesmos
+  // identificadores — cada um casa com o seu par do lado de cá.
+  const corpo = {
+    data: [
+      {
+        ...comum,
+        event_name: 'Purchase',
+        event_id: eventoId,
+        custom_data: { currency: 'BRL', content_category: 'Imersao Segredos da Mente Magra' },
+      },
+      {
+        ...comum,
+        event_name: META.eventoCompra,
+        event_id: `${eventoId}-c`,
+      },
+    ],
+    access_token: token,
+    // Só quando estiver conferindo em Gerenciador de Eventos → Testar eventos.
+    // Com este código preenchido a compra NÃO entra nos relatórios de verdade,
+    // então ele nunca deve ficar ligado em produção.
+    ...(env.META_CAPI_TEST_CODE ? { test_event_code: env.META_CAPI_TEST_CODE } : {}),
+  };
+
+  const alvo = `https://graph.facebook.com/${META.capiVersao}/${META.pixelId}/events`;
+
+  try {
+    const r = await fetch(alvo, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(corpo),
+    });
+    if (!r.ok) {
+      // aparece em `npx wrangler tail`. Nunca derruba a página: a compradora
+      // já pagou, e um erro de relatório não pode virar erro de tela.
+      console.error('CAPI', r.status, (await r.text()).slice(0, 300));
+    }
+  } catch (e) {
+    console.error('CAPI falhou:', e?.message || e);
+  }
+}
+
+/** Lê o cabeçalho Cookie num objeto. Só o que o pixel da Meta grava interessa. */
+function lerCookies(cabecalho) {
+  const fora = {};
+  if (!cabecalho) return fora;
+  for (const parte of cabecalho.split(';')) {
+    const i = parte.indexOf('=');
+    if (i < 1) continue;
+    fora[parte.slice(0, i).trim()] = parte.slice(i + 1).trim();
+  }
+  return fora;
 }
