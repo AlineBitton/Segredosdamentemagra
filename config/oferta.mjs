@@ -198,6 +198,11 @@ export const META = {
   // Evento de compra usado nas campanhas. A página de venda dispara
   // InitiateCheckout; a de agradecimento dispara este.
   eventoCompra: 'Venda Imersão Código do Emagrecimento',
+  // Versão da Graph API que a Conversion API chama. A Meta aposenta cada
+  // versão em cerca de dois anos; quando isso acontecer a chamada passa a
+  // responder erro e o `wrangler tail` mostra. Subir a versão é trocar esta
+  // linha — o formato do evento não muda entre versões.
+  capiVersao: 'v23.0',
 };
 
 export const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];

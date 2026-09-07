@@ -135,20 +135,81 @@ precisa acompanhar.
 
 ---
 
-## A Conversion API
+## Os eventos da Meta
 
-O token da CAPI **não está no repositório**, e não deve entrar. Quando for
-ligar:
+Há **um** Pixel — `10008229355968163` — nas duas páginas, sem plugin: hash na
+CSP, nada de terceiro além do `fbevents.js`. Um pixel por site é o certo; dois
+IDs na mesma jornada quebrariam a atribuição, porque o Gerenciador não ligaria
+o `Purchase` de um dataset ao `InitiateCheckout` do outro.
+
+O que muda entre as páginas são os eventos:
+
+| página | eventos |
+|---|---|
+| venda | `PageView`, e `InitiateCheckout` no clique do botão — com valor, lote e se é VIP ou comum |
+| agradecimento | `PageView`, `Purchase` e o evento nomeado das campanhas |
+
+### Os dois caminhos da compra
+
+A compra é relatada **duas vezes**, de propósito:
+
+1. **Pelo navegador**, no `fbq('track','Purchase', …)`.
+2. **Pelo servidor**, pela Conversion API, direto da borda da Cloudflare.
+
+O segundo existe porque o primeiro falha calado. Bloqueador de anúncio, Safari
+com prevenção de rastreio, aba fechada antes de o `fbevents.js` carregar — a
+compra aconteceu, a campanha não recebeu o crédito, e o algoritmo passou a
+otimizar no escuro. O relato do servidor não depende de nada no navegador.
+
+**Os dois carregam o mesmo `event_id`.** O Worker sorteia um identificador por
+visita, escreve em `data-evento-id` no `<html>` e manda o mesmo pela Conversion
+API. A Meta vê os dois relatos, reconhece o identificador e conta **uma**
+compra. Sem isso o relatório dobraria e o custo por conversão apareceria pela
+metade — o erro mais caro desse tipo de montagem, porque parece um bom
+resultado.
+
+Por causa disso a página de agradecimento responde `Cache-Control: no-store`.
+Se ela fosse cacheada na borda, várias compradoras receberiam o mesmo
+`event_id` e a Meta juntaria todas as compras numa só. A página de venda
+continua cacheada normalmente.
+
+### Ligar o token
+
+O token da CAPI **não está no repositório e não deve entrar**: é credencial de
+servidor, com permissão de escrita na conta de anúncios.
 
 ```
-wrangler secret put META_CAPI_TOKEN
+npx wrangler secret put META_CAPI_TOKEN
 ```
 
-A função de borda lê em `env.META_CAPI_TOKEN`. O navegador nunca vê.
+A borda lê em `env.META_CAPI_TOKEN`; o navegador nunca vê. Enquanto o segredo
+não existir, o envio pelo servidor simplesmente não acontece e o pixel do
+navegador continua funcionando como antes.
 
-O Pixel (`10008229355968163`) já está nas duas páginas, sem plugin: hash na
-CSP, `PageView` na venda, e `Purchase` mais o evento nomeado das campanhas na de
-agradecimento.
+Para rodar localmente (`npm run dev`), o mesmo valor vai num arquivo
+`.dev.vars` — que está no `.gitignore` e nunca deve ser versionado.
+
+### Conferir se chegou
+
+```
+npx wrangler tail
+```
+
+Abra a página de agradecimento. Se a Meta recusar, a linha `CAPI <status>`
+aparece aí com o motivo. Nada disso quebra a página: a compradora já pagou, e
+erro de relatório não pode virar erro de tela.
+
+Para ver o evento no Gerenciador antes de valer para as campanhas, use
+*Gerenciador de Eventos → Testar eventos*, pegue o código e ligue o segredo
+`META_CAPI_TEST_CODE`. **Apague-o depois** — com ele preenchido, as compras
+não entram nos relatórios de verdade.
+
+### Se o token vazar
+
+Um token de CAPI visto por qualquer pessoa — print, chat, e-mail — está
+comprometido e precisa ser trocado, mesmo que nada de errado tenha acontecido.
+Em *Gerenciador de Eventos → Configurações → Conversions API*, gere um token
+novo, o antigo perde a validade, e repita o `wrangler secret put`.
 
 ---
 

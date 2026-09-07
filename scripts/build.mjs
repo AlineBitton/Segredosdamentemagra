@@ -117,12 +117,21 @@ function pixelCabecalho(extra = '') {
  * evento com o nome que as campanhas da Aline usam. Sem valor: a página não
  * sabe qual ingresso foi comprado, e mandar um número errado é pior que não
  * mandar nenhum — quem tem o valor certo é a Hubla, pela Conversion API.
+ *
+ * O `eventID` é o que impede a contagem dobrada. O Worker escreve um
+ * identificador único em `data-evento-id` no <html> e relata a mesma compra
+ * pela Conversion API com ele; a Meta vê os dois relatos, reconhece o mesmo
+ * identificador e conta UMA compra. Sem o Worker — página estática servida
+ * crua — o atributo não existe, o `eventID` não vai, e o pixel continua
+ * funcionando exatamente como antes.
  */
 function pixelCompra() {
   if (!META.pixelId) return '';
   const nome = META.eventoCompra.replace(/'/g, "\\'");
-  return `fbq('track','Purchase',{currency:'BRL',content_category:'Imersao Segredos da Mente Magra'});` +
-    `fbq('trackCustom','${nome}');`;
+  return `var _eid=document.documentElement.dataset.eventoId;` +
+    `fbq('track','Purchase',{currency:'BRL',content_category:'Imersao Segredos da Mente Magra'}` +
+    `,_eid?{eventID:_eid}:undefined);` +
+    `fbq('trackCustom','${nome}',{},_eid?{eventID:_eid+'-c'}:undefined);`;
 }
 
 async function main() {
