@@ -21,6 +21,8 @@ docs/medicao/
 
 # previa autocontida para revisao, regeneravel com npm run previa
 previa-*.html
+# documento de aprovacao de texto, regeneravel com npm run texto
+texto-*.html
 
 # canvas montado da marca: 2,5 MB, regeneravel com logo/montar.mjs + o seeder
 logo/marca-mente-magra.html

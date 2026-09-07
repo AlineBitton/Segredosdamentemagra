@@ -29,6 +29,20 @@ html = html.replace(/<source\b[^>]*>/g, '');
 html = html.replace(/\ssrcset="[^"]*"/g, '').replace(/\ssizes="[^"]*"/g, '');
 html = html.replace(/<link rel="preload" as="image"[^>]*>/g, '');
 
+// Fora o Pixel. A prévia circula por e-mail e WhatsApp para revisão, e cada
+// abertura contaria como visita na conta de anúncios: PageView inflado,
+// público de remarketing sujo e uma taxa de conversão que despenca sem
+// motivo. O site publicado continua com o Pixel; a prévia, não.
+//
+// Só o bloco que carrega o fbevents.js sai, e no lugar dele entra um fbq que
+// não faz nada: o JavaScript da própria página também chama fbq, e apagar os
+// dois blocos levaria junto o contador e a barra de compra.
+html = html.replace(
+  /<script>(?:(?!<\/script>)[\s\S])*?connect\.facebook\.net(?:(?!<\/script>)[\s\S])*?<\/script>/g,
+  '<script>window.fbq=function(){}</script>',
+);
+html = html.replace(/<noscript>\s*<img[^>]*facebook\.com\/tr[^>]*>\s*<\/noscript>/g, '');
+
 const cache = new Map();
 async function dataUri(rel) {
   if (cache.has(rel)) return cache.get(rel);
@@ -61,7 +75,8 @@ html = html.replace('</body>', `<div style="position:fixed;left:12px;bottom:12px
   background:#5E3A46;color:#F2EDE5;font:500 12px/1 system-ui,sans-serif;
   padding:8px 12px;border-radius:999px;letter-spacing:.06em">prévia para aprovação</div></body>`);
 
-const nome = PAGINA.replace(/\.html$/, '');
+// quem recebe o arquivo por e-mail não sabe o que é "index"
+const nome = PAGINA.replace(/\.html$/, '').replace(/^index$/, 'venda');
 const saida = path.join(RAIZ, `previa-${nome}.html`);
 await writeFile(saida, html);
 const { size } = await stat(saida);

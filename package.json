@@ -23,6 +23,7 @@
     "csp": "node scripts/test-csp.mjs",
     "estados": "node scripts/test-estados.mjs",
     "previa": "node scripts/preview.mjs",
+    "texto": "node scripts/texto.mjs",
     "retratos": "node scripts/retratos.mjs",
     "leitura": "node scripts/leitura.mjs",
     "responsivo": "node scripts/responsivo.mjs"
