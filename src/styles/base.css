@@ -149,12 +149,18 @@ strong, b { font-weight: var(--p-regular); color: var(--enfase); }
 .cta { margin-top: var(--s-7); }
 .cta .miudo { margin-top: var(--s-4); }
 
+/* A caixa de largura fixa existe para o contador nao empurrar o que vem
+   depois a cada segundo. Dentro de uma frase ela faz o contrario: sobra um
+   vao antes do ponto final. La a variacao e de um caractere por minuto, no
+   fim de uma dobra, e nao desloca nada que a pessoa esteja lendo. */
 [data-cd] {
   display: inline-block; min-width: 14ch;
   font-family: var(--etiqueta);
   font-weight: var(--p-medio); font-variant-numeric: tabular-nums;
   color: var(--rotulo);
 }
+
+[data-cd].cd--frase { min-width: 0; }
 
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity .42s var(--ease), transform .42s var(--ease); }
 .reveal.visivel { opacity: 1; transform: none; }

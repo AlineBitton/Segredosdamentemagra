@@ -45,7 +45,7 @@ for (const c of CASOS) {
     if (c.proximo) {
       ok(aviso.includes(c.proximo), `aviso cita o proximo preco (${c.proximo})`, aviso);
     } else {
-      ok(aviso.includes('último lote') && !aviso.includes('passa para'),
+      ok(aviso.includes('fecham') && !aviso.includes('passa para'),
          'ultimo lote nao promete um proximo', aviso);
     }
     ok(!/passa para\s*\./.test(html), 'nenhuma frase sobrando sem preco');

@@ -25,7 +25,8 @@ import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
   CHECKOUT, EVENTO, FICHA, LOTES, META, PROMESSAS, VIP,
-  brl, checkoutComum, contadorTexto, linkWhatsApp, loteAtivo, prazoTexto, proximoLote,
+  brl, checkoutComum, contadorTexto, linkWhatsApp, loteAtivo, prazoTexto, proximoAviso,
+  proximoLote,
 } from '../config/oferta.mjs';
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -174,24 +175,13 @@ async function main() {
   const proximo = proximoLote(agora);
   const padrao = PROMESSAS.padrao;
 
-  // Quando cada lote abre, em texto — o dia seguinte ao fim do anterior.
-  const abrePorLote = {};
-  LOTES.forEach((l, i) => {
-    if (i === 0) return;
-    const d = new Date(Date.parse(LOTES[i - 1].fim) + 1);
-    abrePorLote[l.id] = new Intl.DateTimeFormat('pt-BR', {
-      timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit',
-    }).format(d);
-  });
   const PROVAS = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 
   const valores = {
     'lote-nome': lote.nome,
     'preco-comum': lote.centavos == null ? '—' : brl(lote.centavos),
     'preco-proximo': proximo ? brl(proximo.centavos) : '',
-    'proximo-aviso': proximo
-      ? `Depois, o Comum passa para ${brl(proximo.centavos)}.`
-      : 'Este é o último lote — as inscrições encerram no dia 25 de setembro.',
+    'proximo-aviso': proximoAviso(agora),
     'preco-vip': brl(VIP.centavos),
     'deadline': lote.fim || '',
     'contador': contadorTexto(agora),
@@ -222,7 +212,7 @@ async function main() {
     'ficha-minutos': String(FICHA.minutos),
     'zap-ticket': linkWhatsApp('Oi! Acabei de garantir minha vaga na Imersão Segredos da Mente Magra e quero receber o meu ticket para o evento.'),
     'zap-nao-chegou': linkWhatsApp('Oi! Garantei minha vaga na Imersão e preciso de ajuda com a minha inscrição.'),
-    // blocos gerados: a agenda, a escada de lotes e a galeria de provas
+    // blocos gerados: a agenda e a galeria de provas
     'agenda': EVENTO.encontros.map((e, i) => `
       <li class="agenda__item">
         <div class="agenda__quando">
@@ -235,13 +225,6 @@ async function main() {
           <p>${e.texto}</p>
         </div>
       </li>`).join(''),
-    'escada': LOTES.map((l) => {
-      const abre = l.id === LOTES[0].id ? 'até 9 de setembro'
-        : `a partir de ${abrePorLote[l.id]}`;
-      const atual = l.id === lote.id;
-      return `<li${atual ? ' data-atual' : ''}><span class="escada__preco">${brl(l.centavos)}</span>` +
-             `<span class="escada__quando">${l.nome}, ${abre}</span></li>`;
-    }).join(''),
     'provas': PROVAS.map((n) => `
       <li class="prova">
         <picture>

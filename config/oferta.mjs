@@ -242,6 +242,30 @@ export function proximoLote(agora = Date.now()) {
   return i === -1 || i === LOTES.length - 1 ? null : LOTES[i + 1];
 }
 
+/**
+ * A frase sobre o preço logo adiante.
+ *
+ * É o único lugar da página que fala de preço futuro. A escada com os quatro
+ * lotes saiu: para quem paga mais de mil reais por mês de medicação, uma
+ * tabela de R$27 a R$97 não cria urgência — ela puxa a atenção de volta para
+ * o ingresso barato, ancora o teto em R$97 ao lado de um VIP de R$197 e soa
+ * como mecânica de lançamento, que esta persona reconhece e recusa. Um prazo
+ * real e um preço seguinte bastam, e são verdade verificável.
+ *
+ * Mora aqui, e não no build e na borda, porque as duas precisam dizer
+ * exatamente a mesma coisa.
+ */
+export function proximoAviso(agora = Date.now()) {
+  const l = loteAtivo(agora);
+  if (!l.fim) return 'Fale com a nossa equipe para saber da próxima turma.';
+  const p = proximoLote(agora);
+  return p
+    ? `Depois, o Comum passa para ${brl(p.centavos)}.`
+    // a frase anterior ja nomeou o lote e a data; aqui so falta dizer o que
+    // acontece depois, senao repete "ultimo lote" duas vezes na mesma linha
+    : 'Depois dele, as inscrições fecham.';
+}
+
 /** Segundos até a próxima virada de lote. Infinity depois do último. */
 export function segundosAteVirada(agora = Date.now()) {
   const l = loteAtivo(agora);

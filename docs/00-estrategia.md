@@ -137,6 +137,24 @@ Regra: **em cada data aparecem exatamente dois preços** — Comum (do lote vige
 e VIP (R$197, fixo). Nunca mostrar os quatro lotes ao mesmo tempo como tabela.
 Mostrar: preço vigente + contador para o próximo aumento (aversão à perda honesta).
 
+> **A escada foi construída e removida (07/09).** A dobra 08 chegou a exibir os
+> quatro lotes com data — R$27 · R$47 · R$67 · R$97 —, contra esta regra e contra
+> a regra equivalente do doc 01 ("nunca preço riscado de lote futuro"). Três
+> motivos para não voltar:
+>
+> 1. **Puxa a atenção para o ingresso errado.** A página inteira existe para
+>    tornar o VIP a escolha óbvia. Quatro linhas de preço do Comum discutem o
+>    produto que ela não deveria estar comparando.
+> 2. **Ancora o teto em R$97.** Ao lado de um VIP de R$197, a escada reenquadra
+>    o VIP como "o dobro do ingresso mais caro" em vez de "menos de um mês da
+>    caneta". Ancoragem funcionando contra a página.
+> 3. **É medo como alavanca** (doc 01, regra 4). A mensagem da escada é "se você
+>    não comprar hoje, paga mais". É a mesma alavanca de "quando você parar,
+>    volta tudo", apontada para o bolso.
+>
+> O que ficou: prazo real do lote vigente + o preço seguinte, uma vez cada. Isso
+> é a aversão à perda honesta que a regra pede — um passo, não um calendário.
+
 ### Implementação — decisão
 
 O cálculo do lote acontece **na borda (Cloudflare Pages Function + HTMLRewriter)**,

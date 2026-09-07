@@ -14,7 +14,7 @@
    ------------------------------------------------------------ */
 .logotipo, .logotipo__nome, .hero__promessa, .hero__linha2, .frase-gigante,
 .citacoes li, .triade h3, .depois-do-depois, .numeros dt, .assinatura,
-.agenda__dia, .agenda__titulo, .agenda__fecho, .bonus strong, .escada__preco,
+.agenda__dia, .agenda__titulo, .agenda__fecho, .bonus strong,
 .plano__nome, .plano__preco, .plano__pitch em, .faq summary::after,
 .barra__preco, .encerrado__titulo, .contagem [data-cd], .legal h1,
 [data-sem-foto] .percurso figcaption {
@@ -225,18 +225,6 @@
 .bonus__quando { display: block; margin-top: var(--s-1); font-family: var(--etiqueta); font-size: var(--fs-mini); font-weight: var(--p-medio); letter-spacing: .12em; color: var(--rotulo); }
 .bonus p { margin-top: var(--s-3); }
 
-/* ─── escada de lotes ───────────────────────────────────────
-   Aparece inteira, com data. Não é escassez fabricada: as datas
-   são reais, verificáveis, e a virada acontece sozinha na borda.
-   ------------------------------------------------------------ */
-.escada { margin-top: var(--s-8); }
-.escada__lista { margin: var(--s-4) 0 0; padding: 0; list-style: none; display: grid; gap: 1px; background: var(--linha); border: 1px solid var(--linha); }
-@media (min-width: 760px) { .escada__lista { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.escada__lista li { display: grid; gap: var(--s-1); padding: var(--s-5); background: var(--bg); }
-.escada__lista li[data-atual] { background: var(--bg-2); }
-.escada__preco { font-family: var(--display); font-size: 1.5rem; line-height: 1.3; color: var(--titulo); }
-.escada__lista li[data-atual] .escada__preco { color: var(--enfase); }
-.escada__quando { font-size: var(--fs-mini); color: var(--txt-2); }
 
 .hero__linha2 {
   margin-top: var(--s-4); max-width: 24ch;

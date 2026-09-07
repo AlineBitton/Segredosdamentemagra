@@ -285,9 +285,11 @@
   </section>
 
   <!-- ══ 08 · OFERTA ════════════════════════════════════════
-       A escada de lotes aparece inteira aqui, com data. Não é
-       escassez fabricada: as datas são reais e verificáveis, e a
-       virada acontece sozinha na borda.                       -->
+       Um preço na tela, e um só: o vigente. A escada com os quatro
+       lotes saiu daqui — quem paga mais de mil por mês de medicação
+       não decide por R$27, e a tabela ancorava o teto em R$97 ao
+       lado do VIP de R$197. O prazo do lote e o preço seguinte
+       ficam, uma vez cada, porque são verdade verificável.     -->
   <section class="sec oferta sup-clara" id="oferta">
     <div class="wrap">
       <div class="oferta__topo reveal">
@@ -366,14 +368,6 @@
         </article>
       </div>
 
-      <!-- A escada inteira, com data. Ela vê que o preço sobe sozinho. -->
-      <div class="escada reveal">
-        <p class="etiqueta">Os próximos lotes</p>
-        <ol class="escada__lista">
-          {{escada}}
-        </ol>
-      </div>
-
       <div class="selo-garantia">
         <p>
           <strong>Você entra sem risco.</strong> Participe da aula de abertura
@@ -384,7 +378,7 @@
 
       <p class="oferta__rodape">
         Compra 100% segura via Hub.la. Link de acesso enviado por WhatsApp.
-        O <span data-slot="lote-nome">{{lote-nome}}</span> termina em <b data-cd>{{contador}}</b>.
+        O <span data-slot="lote-nome">{{lote-nome}}</span> termina em <b data-cd class="cd--frase">{{contador}}</b>.
         <span data-slot="proximo-aviso">{{proximo-aviso}}</span>
       </p>
     </div>
@@ -660,10 +654,11 @@
     <div class="wrap-estreito reveal">
       <p class="etiqueta">26 e 27 de setembro</p>
       <h2 class="h2 mt-3">Com aula de abertura na sexta, dia 25.</h2>
+      <!-- A data era escrita à mão aqui e ficava errada a partir de 10/09,
+           na segunda posição mais lida da página. Agora vem do motor. -->
       <p class="lead mt-5 centrado">
-        O <span data-slot="lote-nome">{{lote-nome}}</span> de
-        <strong data-slot="preco-comum">{{preco-comum}}</strong> vai até 9 de
-        setembro. <span data-slot="proximo-aviso">{{proximo-aviso}}</span>
+        <span data-slot="prazo-extenso">{{prazo-extenso}}</span>
+        <span data-slot="proximo-aviso">{{proximo-aviso}}</span>
       </p>
       <div class="cta">
         <a class="btn btn--bloco" href="{{checkout-comum}}" data-checkout="comum" rel="noopener">
