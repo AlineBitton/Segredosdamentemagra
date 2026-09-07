@@ -65,9 +65,9 @@ const SAIDA = 'dist' + BASE;
  * Reescreve os caminhos internos do documento.
  *
  * Na raiz (o caso normal) eles saem RELATIVOS: `img/foto.webp`, não
- * `/img/foto.webp`. O site é plano — index, obrigado, termos e privacidade
- * moram todos no primeiro nível, e a Cloudflare redireciona `/obrigado/`
- * para `/obrigado` com 308 — então relativo e absoluto resolvem no mesmo
+ * `/img/foto.webp`. O site é plano — as quatro páginas moram todas no
+ * primeiro nível, e a Cloudflare redireciona `/pagina/` para `/pagina` com
+ * 308 — então relativo e absoluto resolvem no mesmo
  * lugar quando servido. A diferença aparece fora do servidor: com caminho
  * relativo a pasta descompactada abre no navegador com um duplo clique e
  * mostra tudo. Com caminho absoluto, `/img/...` vira a raiz do disco e a
@@ -258,12 +258,12 @@ async function main() {
     let doc = await readFile(p('src', arquivo), 'utf8');
     const ehIndex = arquivo === 'index.html';
     // a página de agradecimento também conta o tempo — até o evento
-    const levaJs = ehIndex || arquivo === 'obrigado.html';
+    const levaJs = ehIndex || arquivo === 'nos-vemos-no-evento.html';
 
     doc = doc
       .replace('<!--CSS-->', `<style>${css}</style>` +
         (ehIndex ? pixelCabecalho()
-          : arquivo === 'obrigado.html' ? pixelCabecalho(pixelCompra()) : ''))
+          : arquivo === 'nos-vemos-no-evento.html' ? pixelCabecalho(pixelCompra()) : ''))
       .replace('<!--JS-->', levaJs && js ? `<script>${js}</script>` : '');
 
     doc = doc.replace(/\{\{([\w-]+)\}\}/g, (m, chave) => {

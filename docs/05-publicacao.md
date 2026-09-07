@@ -150,10 +150,10 @@ Lighthouse em mobile e desktop, com os relatórios em `docs/medicao/`.
 
 ## Depois de publicar
 
-- Abra `smm.afinandocorpoemente.com.br` e `smm.afinandocorpoemente.com.br/obrigado`
+- Abra `smm.afinandocorpoemente.com.br` e `smm.afinandocorpoemente.com.br/nos-vemos-no-evento`
 - No Gerenciador de Eventos do Meta, confirme o `PageView` chegando
 - Faça uma compra de teste e confirme o `Purchase` na página de agradecimento
 - Na Hub.la, configure o redirecionamento pós-compra dos cinco checkouts para
-  `https://smm.afinandocorpoemente.com.br/obrigado`
+  `https://smm.afinandocorpoemente.com.br/nos-vemos-no-evento`
 - Nos anúncios, use `?p=data` para servir a variante B do hero — a que fala com
   quem já tem data para parar a caneta. Sem o parâmetro, entra a versão A.

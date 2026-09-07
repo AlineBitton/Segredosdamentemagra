@@ -52,7 +52,7 @@ fs.rmSync(path.join(dist, '_worker.js'));
 const dentro = execFileSync('unzip', ['-Z1', zip], { encoding: 'utf8' })
   .split('\n')
   .filter(Boolean);
-const obrigatorios = ['index.html', 'obrigado.html', '_worker.js', '_headers'];
+const obrigatorios = ['index.html', 'nos-vemos-no-evento.html', '_worker.js', '_headers'];
 const faltando = obrigatorios.filter((f) => !dentro.includes(f));
 if (faltando.length) {
   throw new Error('pacote incompleto, faltou: ' + faltando.join(', '));

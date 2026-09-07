@@ -17,7 +17,7 @@ const TIPOS = {
 
 const servidor = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-  if (rel === '/obrigado') rel = '/obrigado.html';
+  if (rel === '/nos-vemos-no-evento') rel = '/nos-vemos-no-evento.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const arq = path.join(DIST, rel);
   if (!arq.startsWith(DIST) || !existsSync(arq)) { res.writeHead(404).end(); return; }

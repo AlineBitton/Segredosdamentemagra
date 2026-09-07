@@ -19,7 +19,7 @@ const p = (...s) => path.join(RAIZ, ...s);
 
 const PAGINAS = [
   { arquivo: 'index.html',    titulo: 'Página de vendas',       saida: 'texto-venda.html' },
-  { arquivo: 'obrigado.html', titulo: 'Página de agradecimento', saida: 'texto-obrigado.html' },
+  { arquivo: 'nos-vemos-no-evento.html', titulo: 'Página de agradecimento', saida: 'texto-obrigado.html' },
 ];
 
 /** Os nomes das dobras moram nos comentários do fonte, na ordem de leitura. */

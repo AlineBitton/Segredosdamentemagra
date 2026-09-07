@@ -18,7 +18,7 @@ const TIPOS = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 
   '.jpg': 'image/jpeg', '.txt': 'text/plain', '.xml': 'application/xml' };
 const srv = createServer(async (req, res) => {
   let rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-  if (rel === '/obrigado') rel = '/obrigado.html';
+  if (rel === '/nos-vemos-no-evento') rel = '/nos-vemos-no-evento.html';
   if (rel.endsWith('/')) rel += 'index.html';
   const f = path.join(DIST, rel);
   if (!f.startsWith(DIST) || !existsSync(f)) { res.writeHead(404).end(); return; }

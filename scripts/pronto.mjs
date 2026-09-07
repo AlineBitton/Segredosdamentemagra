@@ -50,7 +50,7 @@ for (const f of arquivos) {
 
 /* ── arquivos que precisam existir ────────────────────────────── */
 // dentro de dist/smm/
-for (const f of ['index.html', 'obrigado.html', 'termos.html', 'privacidade.html',
+for (const f of ['index.html', 'nos-vemos-no-evento.html', 'termos.html', 'privacidade.html',
                  'img/og.jpg', 'img/favicon.svg',
                  'fonts/fraunces-var.woff2', 'fonts/inter-var.woff2']) {
   if (!existsSync(path.join(DIST, f))) erro(`falta ${f} no dist/`, 'rode npm run build');

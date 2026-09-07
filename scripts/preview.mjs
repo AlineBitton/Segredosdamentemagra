@@ -68,7 +68,11 @@ for (const rel of alvos) {
   trocados++;
 }
 
-const nome = PAGINA.replace(/\.html$/, '').replace(/^index$/, 'venda');
+// quem recebe o arquivo por e-mail não sabe o que é "index", e o endereço
+// público da página de agradecimento é propositalmente pouco óbvio
+const nome = PAGINA.replace(/\.html$/, '')
+  .replace(/^index$/, 'venda')
+  .replace(/^nos-vemos-no-evento$/, 'obrigado');
 const saida = path.join(RAIZ, `previa-${nome}.html`);
 await writeFile(saida, html);
 const { size } = await stat(saida);
