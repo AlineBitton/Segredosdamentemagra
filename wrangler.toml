@@ -4,8 +4,9 @@
 # `wrangler deploy` não sabe o que fazer com um projeto de Pages.
 #
 # `name` precisa bater com o nome do Worker no painel, senão o deploy cria um
-# segundo Worker em vez de atualizar este.
-name = "segredosdamentemagra"
+# segundo Worker em vez de atualizar este. O projeto conectado ao GitHub é o
+# `smm` — o mesmo nome do subdomínio onde o site mora.
+name = "smm"
 main = "worker/index.js"
 compatibility_date = "2026-09-01"
 
