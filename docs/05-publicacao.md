@@ -29,7 +29,7 @@ Se preferir subir sem Git, existe o caminho do zip — mais abaixo, em
 
 ## Passo a passo
 
-**1. Cloudflare → Workers & Pages → Create → Pages → Connect to Git**
+**1. Cloudflare → Workers & Pages → Create → Worker → Connect to Git**
 
 Autorize o GitHub e escolha `AlineBitton/Segredosdamentemagra`.
 
@@ -37,10 +37,15 @@ Autorize o GitHub e escolha `AlineBitton/Segredosdamentemagra`.
 
 | campo | valor |
 |---|---|
-| Framework preset | None |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
+| Deploy command | `npx wrangler deploy` |
+| Root directory | `/` |
 | Branch | `claude/segredos-mente-magra-landing-f2dwfw` |
+
+> O `wrangler.toml` do repositório é que diz o resto: `main` aponta para
+> `worker/index.js` e `[assets]` sobe o `dist/` inteiro junto. O `name` tem de
+> bater com o nome do Worker no painel — se não bater, o deploy cria um Worker
+> novo em vez de atualizar o que está no ar.
 
 **3. Save and Deploy**
 
@@ -76,20 +81,18 @@ passo acima para ligar o domínio: o restante é idêntico.
 
 ### O que o `npm run pacote` faz a mais que o `npm run build`
 
-No deploy conectado ao Git, a Cloudflare lê a pasta `functions/` e compila
-sozinha a função de borda. **No upload direto ela não faz isso** — subiria só
-o HTML estático.
+No upload direto a Cloudflare não roda `wrangler deploy` — subiria só o HTML
+estático, sem o Worker.
 
-Isso não seria um detalhe. É a função de borda que decide o lote pelo relógio
-da Cloudflare. Sem ela, o site fica congelado no lote vigente na hora do build:
+Isso não seria um detalhe. É o Worker que decide o lote pelo relógio da
+Cloudflare. Sem ele, o site fica congelado no lote vigente na hora do build:
 no dia 10 a página ainda diria R$ 27 e a hub.la cobraria R$ 47. Fricção,
 suporte e estorno.
 
-Então o `npm run pacote` compila `functions/_middleware.js` num `_worker.js`
-único na raiz do site — o *modo avançado* do Pages. Ele intercepta tudo e
-devolve os arquivos estáticos por `env.ASSETS.fetch()`, que continua aplicando
-o `_headers`: CSP, cache das fontes, cache das imagens. Verificado servindo o
-zip descompactado com `wrangler pages dev`.
+Então o `npm run pacote` empacota `worker/index.js` como `_worker.js` na raiz
+do site — o *modo avançado* do Pages. É o mesmo código do deploy conectado ao
+Git, buscando os estáticos pela mesma ligação ASSETS, que continua aplicando o
+`_headers`: CSP, cache das fontes, cache das imagens.
 
 ---
 

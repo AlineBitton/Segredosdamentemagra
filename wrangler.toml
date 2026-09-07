@@ -1,3 +1,20 @@
-name = "segredos-da-mente-magra"
+# O projeto na Cloudflare é um Worker (o painel roda `npx wrangler deploy`),
+# e não um projeto de Pages. Antes este arquivo trazia `pages_build_output_dir`,
+# que é configuração de Pages: o build passava e o deploy falhava, porque
+# `wrangler deploy` não sabe o que fazer com um projeto de Pages.
+#
+# `name` precisa bater com o nome do Worker no painel, senão o deploy cria um
+# segundo Worker em vez de atualizar este.
+name = "segredosdamentemagra"
+main = "worker/index.js"
 compatibility_date = "2026-09-01"
-pages_build_output_dir = "dist"
+
+# Os arquivos estáticos do build viram parte do Worker. A ligação ASSETS é
+# como o código busca cada um deles, e ela continua aplicando o _headers.
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+# O Worker atende primeiro: é ele que resolve o lote e a variante de promessa
+# no HTML. Sem isto, a Cloudflare devolveria o arquivo estático direto e a
+# página iria ao ar congelada no lote da hora do build.
+run_worker_first = true

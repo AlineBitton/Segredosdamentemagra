@@ -72,7 +72,7 @@ execFileSync('node', ['scripts/build.mjs'], { cwd: RAIZ, stdio: 'pipe' });
  */
 console.log('\n── slots: build e borda falam do mesmo conjunto ─────────');
 const htmlFinal = readFileSync(path.join(RAIZ, 'dist', 'index.html'), 'utf8');
-const borda = readFileSync(path.join(RAIZ, 'functions', '_middleware.js'), 'utf8');
+const borda = readFileSync(path.join(RAIZ, 'worker', 'index.js'), 'utf8');
 
 const naPagina = new Set([...htmlFinal.matchAll(/data-slot="([^"]+)"/g)].map((m) => m[1]));
 const naBorda = new Set([

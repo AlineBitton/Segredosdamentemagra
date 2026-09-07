@@ -10,7 +10,7 @@
     "fontes": "python3 scripts/fontes.py",
     "build": "node scripts/build.mjs",
     "pacote": "node scripts/pacote.mjs",
-    "dev": "npx wrangler pages dev dist --port 8788",
+    "dev": "npx wrangler dev --port 8788",
     "medir": "node scripts/medir.mjs",
     "verificar": "npm run test && npm run contraste && npm run estados && npm run build && npm run csp && npm run a11y && npm run leitura && npm run responsivo && npm run pronto",
     "og": "node scripts/og.mjs",

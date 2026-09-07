@@ -1,18 +1,23 @@
 /**
- * Cloudflare Pages Function — roda na borda, antes de a página chegar no
- * navegador. Faz três coisas, todas via HTMLRewriter (streaming, custo ~0ms):
+ * O Worker inteiro do site. Roda na borda, antes de a página chegar no
+ * navegador, e faz três coisas por HTMLRewriter (streaming, custo ~0ms):
  *
  *   1. LOTE — decide o preço vigente pelo relógio da Cloudflare, não pelo do
  *      celular da compradora. Um relógio errado no cliente mostraria R$27 e a
  *      hub.la cobraria R$47: fricção, suporte e chargeback.
- *   2. TROCA DE PROMESSA — troca H1 e subtítulo conforme ?p= (ou utm_content),
- *      antes da primeira pintura. Zero flash, zero CLS, zero JavaScript.
+ *   2. TROCA DE PROMESSA — troca o gancho e o subtítulo conforme ?p= (ou
+ *      utm_content), antes da primeira pintura. Zero flash, zero CLS, zero JS.
  *   3. UTM — propaga os parâmetros da campanha para os links da hub.la e monta
  *      o `sck`. Feito aqui, funciona até com JavaScript desligado.
  *
  * O HTML estático já vem com valores de fallback preenchidos no build, então
  * se esta função falhar a página continua correta — só congelada no lote que
  * era o vigente quando o build rodou.
+ *
+ * Este mesmo arquivo serve aos dois caminhos de publicação: é o `main` do
+ * Worker no deploy conectado ao GitHub, e vira o `_worker.js` do modo avançado
+ * do Pages quando o zip é montado por `npm run pacote`. Nos dois, os estáticos
+ * saem de `env.ASSETS`.
  */
 
 import {
@@ -34,9 +39,10 @@ import {
 
 const TETO_CACHE_S = 300;
 
-export const onRequest = async (context) => {
-  const { request, next } = context;
-  const resposta = await next();
+async function servir(request, env) {
+  // os arquivos estáticos vêm do próprio Worker, pela ligação ASSETS, e
+  // continuam passando pelo _headers (CSP, cache das fontes e das imagens)
+  const resposta = await env.ASSETS.fetch(request);
 
   const tipo = resposta.headers.get('content-type') || '';
   if (!tipo.includes('text/html')) return resposta;
@@ -133,7 +139,9 @@ export const onRequest = async (context) => {
   cabecalhos.set('x-lote', lote.id);
 
   return new Response(saida.body, { status: saida.status, headers: cabecalhos });
-};
+}
+
+export default { fetch: servir };
 
 /**
  * Copia os parâmetros da campanha para o link da hub.la e monta o `sck`

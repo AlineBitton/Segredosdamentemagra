@@ -47,7 +47,7 @@ fonte — os arquivos ficam versionados em `public/fonts/` e exigem Python
 ```
 config/oferta.mjs        Fonte única da verdade: lotes, preços, links, promessas.
                          Alterado aqui, muda na borda, no build e no contador.
-functions/_middleware.js Função de borda: lote, troca de promessa e UTM.
+worker/index.js        O Worker: lote, troca de promessa e UTM na borda.
 src/                     HTML, CSS e JS da página.
 public/                  Fontes subsetadas e imagens.
 scripts/                 Build, testes, auditoria de contraste, medição.
