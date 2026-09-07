@@ -86,7 +86,7 @@ export const VIP = {
 export const FICHA = {
   url: 'https://docs.google.com/forms/d/e/1FAIpQLScIUPp-A0MKjY_g-cqidQ71fL3u4Nj8OkSdUbuVSaxONOnVRQ/viewform',
   perguntas: 13,
-  minutos: 4,
+  minutos: 5,
 };
 
 export const SUPORTE = {
