@@ -20,20 +20,16 @@ binding = "ASSETS"
 # página iria ao ar congelada no lote da hora do build.
 run_worker_first = true
 
-# O domínio deixa de ser um passo manual no painel. Com `custom_domain = true`
-# o `wrangler deploy` cria (ou reaponta) o registro de DNS e emite o
-# certificado a cada publicação, e falha alto se o nome estiver preso em outro
-# Worker ou num projeto de Pages — que é o modo silencioso de o site sumir do
-# ar. Um custom domain de Worker tem certificado próprio, do nome exato, então
-# `www.smm` (segundo nível de subdomínio) também fica coberto — o que o
-# certificado Universal da zona, que só cobre um nível, não faria.
+# NÃO declare os custom domains aqui enquanto a página estiver vendendo.
 #
-# Os dois nomes ficam declarados porque os dois já estão divulgados. Quem
-# entrar por um ou por outro cai no mesmo Worker.
-[[routes]]
-pattern = "smm.afinandocorpoemente.com.br"
-custom_domain = true
-
-[[routes]]
-pattern = "www.smm.afinandocorpoemente.com.br"
-custom_domain = true
+# `[[routes]]` com `custom_domain = true` faria o `wrangler deploy` criar e
+# reapontar o DNS sozinho a cada publicação — bom, e a intenção era essa. Só
+# que se o nome já estiver preso em outro Worker ou num projeto de Pages, o
+# deploy INTEIRO falha. Numa página que está vendendo agora, isso troca um
+# risco pequeno de DNS por um risco grande de não conseguir publicar correção
+# nenhuma.
+#
+# Os dois nomes (`smm` e `www.smm`) já estão ligados pelo painel e funcionando.
+# Depois do evento, ligar isto aqui vale a pena: publicação passa a ser
+# autossuficiente e o conflito de nome vira erro visível em vez de site fora
+# do ar em silêncio.
