@@ -72,9 +72,33 @@ async function servir(request, env, ctx) {
   // não passa por ASSETS e não pode ser cacheado. O segredo está no próprio
   // endereço — sem ele, 404, e quem não conhece a rota não descobre que ela
   // existe.
-  const segredo = env.HUBLA_WEBHOOK_SECRET;
-  if (segredo && new URL(request.url).pathname === `/hubla/${segredo}`) {
+  //
+  // O `trim()` não é firula: o valor é colado à mão no painel, e um espaço ou
+  // uma quebra de linha invisível no fim faria a rota nunca bater — com 404,
+  // que é indistinguível de "esqueci de criar o segredo".
+  const segredo = env.HUBLA_WEBHOOK_SECRET?.trim();
+  const caminho = new URL(request.url).pathname;
+
+  if (segredo && caminho === `/hubla/${segredo}`) {
     return receberWebhook(request, env, ctx);
+  }
+
+  // Diagnóstico. Um 404 aqui tem três causas que se parecem: o segredo não
+  // existe, existe com outro nome, ou existe noutro Worker — e nenhuma delas
+  // dá para distinguir de fora. Esta rota responde a única pergunta que
+  // separa as três, sem revelar o valor.
+  if (caminho === '/hubla' || caminho === '/hubla/') {
+    return new Response(
+      segredo
+        ? 'segredo configurado: SIM\n' +
+          `tamanho: ${segredo.length} caracteres\n` +
+          `começa com: ${segredo.slice(0, 4)}…\n` +
+          'este Worker é o que responde por este domínio.\n'
+        : 'segredo configurado: NÃO\n' +
+          'ou o nome da variável não é exatamente HUBLA_WEBHOOK_SECRET,\n' +
+          'ou ela foi criada em outro Worker que não este.\n',
+      { status: 200, headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store' } },
+    );
   }
 
   // os arquivos estáticos vêm do próprio Worker, pela ligação ASSETS, e
