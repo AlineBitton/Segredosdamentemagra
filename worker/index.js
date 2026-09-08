@@ -22,6 +22,7 @@
 
 import {
   CHECKOUT,
+  EVENTO,
   UTM_KEYS,
   VIP,
   brl,
@@ -41,6 +42,24 @@ import { receberWebhook } from './hubla.js';
 import { mandarEvento, montarPessoa } from './meta.js';
 
 const TETO_CACHE_S = 300;
+
+/**
+ * Cookie de atribuição — o que liga a venda ao anúncio.
+ *
+ * A compradora chega com as UTMs na URL, vai para a Hubla e volta para a
+ * página pós-compra por um endereço FIXO: as UTMs não voltam. Sem isto, o
+ * `Purchase` sabe que houve venda e não de onde veio.
+ *
+ * O cookie é primeira-parte e sobrevive à ida e à volta, porque a saída e o
+ * retorno são navegação de topo (`SameSite=Lax`). Assim a atribuição não
+ * depende de a Hubla devolver nada — e continua valendo se a compradora
+ * pagar no dia seguinte.
+ *
+ * `HttpOnly`: nenhum script lê. O que o navegador precisa saber já está no
+ * `sessionStorage` que o app.js mantém.
+ */
+const COOKIE_ATRIB = 'smm_atrib';
+const DIAS_ATRIB = 30;
 
 // `/nos-vemos-no-evento`, com ou sem `.html`, com ou sem barra final, e também
 // sob o prefixo de SMM_BASE
@@ -83,6 +102,23 @@ async function servir(request, env, ctx) {
   const proximo = proximoLote(agora);
   const promessa = escolherPromessa(url.searchParams);
   const encerrado = lote.id === 'encerrado';
+
+  // Alvo do contador. A página de venda conta até a virada do lote; a
+  // pós-compra conta até a aula de abertura — lá o lote já não quer dizer
+  // nada, a compra foi feita.
+  //
+  // O HTML da pós-compra já vem do build com a data certa em `data-deadline`,
+  // e esta função a sobrescrevia com a do lote em TODA página. O rótulo dizia
+  // "até a aula de abertura" embaixo de uma contagem que ia até o fim do
+  // lote: mesma classe de erro do endereço, a borda sem saber em que página
+  // estava.
+  const alvoContador = ehPosCompra ? EVENTO.inicioISO : (lote.fim || '');
+
+  // A URL manda quando traz campanha; senão vale o que ficou guardado da
+  // visita que trouxe. É o modelo de último clique, o mesmo da Meta.
+  const atribDaUrl = atribuicaoDaUrl(url);
+  const atribuicao =
+    atribDaUrl || decodeURIComponent(lerCookies(request.headers.get('cookie'))[COOKIE_ATRIB] || '');
 
   const textos = {
     'lote-nome': lote.nome,
@@ -135,14 +171,14 @@ async function servir(request, env, ctx) {
     // prazo do contador — o cliente só conta, nunca decide preço
     .on('[data-deadline]', {
       element(el) {
-        el.setAttribute('data-deadline', lote.fim || '');
+        el.setAttribute('data-deadline', alvoContador);
       },
     })
     // valor inicial do contador: a página já nasce com o tempo certo, sem
     // travessão piscando antes do JavaScript e funcionando sem ele
     .on('[data-cd]', {
       element(el) {
-        el.setInnerContent(contadorTexto(agora));
+        el.setInnerContent(contadorTexto(agora, alvoContador));
       },
     })
     // links de checkout, já com UTM e sck
@@ -177,9 +213,22 @@ async function servir(request, env, ctx) {
   cabecalhos.set('permissions-policy', 'geolocation=(), microphone=(), camera=(), interest-cohort=()');
   cabecalhos.set('x-lote', lote.id);
 
+  if (atribDaUrl) {
+    cabecalhos.append(
+      'set-cookie',
+      `${COOKIE_ATRIB}=${encodeURIComponent(atribDaUrl)}; Path=/; Max-Age=${DIAS_ATRIB * 86400}` +
+        '; Secure; HttpOnly; SameSite=Lax',
+    );
+    // Resposta com cookie é de UMA pessoa: não pode ficar num cache
+    // compartilhado, senão a próxima visitante herda a campanha da anterior.
+    // Custa uma requisição sem cache por visita — a segunda página já volta a
+    // ser cacheada, porque não traz parâmetro de campanha.
+    cabecalhos.set('cache-control', 'private, no-store');
+  }
+
   if (marcaNaPagina && saida.status === 200) {
     // a resposta sai na hora; a conversa com a Meta continua depois dela
-    const envio = enviarCapi(request, url, env, eventoId);
+    const envio = enviarCapi(request, url, env, eventoId, atribuicao);
     if (ctx?.waitUntil) ctx.waitUntil(envio);
     else await envio;
   }
@@ -234,7 +283,7 @@ function comQueryDaCampanha(destino, urlDaPagina) {
  * da Hubla, em `hubla.js` — quando ele assume, esta função deixa de ser
  * chamada.
  */
-async function enviarCapi(request, url, env, eventoId) {
+async function enviarCapi(request, url, env, eventoId, atribuicao) {
   if (!env.META_CAPI_TOKEN || !eventoId) return;
 
   const cookies = lerCookies(request.headers.get('cookie'));
@@ -256,8 +305,36 @@ async function enviarCapi(request, url, env, eventoId) {
       // sem o cookie, o clique ainda dá para reconstruir a partir do fbclid
       fbc: cookies._fbc || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : ''),
     }),
-    custom_data: { currency: 'BRL', content_category: 'Imersao Segredos da Mente Magra' },
+    custom_data: {
+      currency: 'BRL',
+      content_category: 'Imersao Segredos da Mente Magra',
+      ...dadosDaCampanha(atribuicao),
+    },
   });
+}
+
+/** Os parâmetros de campanha da URL, filtrados pela mesma lista do checkout. */
+function atribuicaoDaUrl(url) {
+  const guardar = new URLSearchParams();
+  for (const [chave, valor] of url.searchParams) {
+    if (paramPermitido(chave) && valor) guardar.set(chave, valor);
+  }
+  return guardar.toString();
+}
+
+/**
+ * O `sck` — os cinco UTMs unidos por "|" — para viajar junto do evento.
+ *
+ * Vai em `content_name` porque é o campo de texto livre que o Gerenciador
+ * mostra por evento. É o mesmo campo que o webhook da Hubla preenche, então
+ * os dois caminhos falam a mesma língua.
+ */
+function dadosDaCampanha(atribuicao) {
+  if (!atribuicao) return {};
+  const p = new URLSearchParams(atribuicao);
+  const valores = UTM_KEYS.map((k) => p.get(k) || '');
+  if (!valores.some(Boolean)) return {};
+  return { content_name: valores.join('|').slice(0, 200) };
 }
 
 /** Lê o cabeçalho Cookie num objeto. Só o que o pixel da Meta grava interessa. */

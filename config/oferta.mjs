@@ -321,10 +321,13 @@ export function brl(centavos) {
  * página já nasça com o tempo certo — sem travessão piscando antes do
  * JavaScript, e funcionando mesmo com JavaScript desligado.
  */
-export function contadorTexto(agora = Date.now()) {
-  const l = loteAtivo(agora);
-  if (!l.fim) return 'encerrado';
-  const s = Math.max(0, Math.floor((Date.parse(l.fim) + 1 - agora) / 1000));
+export function contadorTexto(agora = Date.now(), alvoISO) {
+  // Sem alvo explícito, conta até a virada do lote — o caso da página de
+  // venda. A página pós-compra passa a data da aula de abertura: lá o lote
+  // não quer dizer nada, já foi pago.
+  const fim = alvoISO === undefined ? loteAtivo(agora).fim : alvoISO;
+  if (!fim) return 'encerrado';
+  const s = Math.max(0, Math.floor((Date.parse(fim) + 1 - agora) / 1000));
   const dd = (n) => String(n).padStart(2, '0');
   const d = Math.floor(s / 86400);
   const h = Math.floor((s % 86400) / 3600);
