@@ -238,17 +238,34 @@ Fora o segredo errado, tudo responde 200 — inclusive o que não deu para
 entender. A Hubla desliga um webhook que responde erro várias vezes, e um
 webhook desligado para de contar tudo.
 
-**A ordem de ligar importa**, senão fica um intervalo marcando duas vezes ou
-nenhuma:
+**Quem marca a compra é um só, nunca os dois.** Assim que
+`HUBLA_WEBHOOK_SECRET` existe, o webhook assume e o `Purchase` da página some
+sozinho — não há segunda variável para lembrar de ligar.
 
-1. `HUBLA_WEBHOOK_SECRET` no Worker → a rota passa a existir
+Isso não é preferência. Os dois ligados marcariam a MESMA venda duas vezes,
+com identificadores diferentes, e o relatório dobraria: exatamente o defeito
+que este trabalho começou consertando. Deixar isso depender de alguém lembrar
+de um segundo passo era deixá-lo voltar de graça.
+
+`PURCHASE_NA_PAGINA=sim` força o jeito antigo de volta, para o caso de o
+webhook precisar ser desligado às pressas sem ficar sem marcação nenhuma.
+
+A ordem de ligar:
+
+1. `HUBLA_WEBHOOK_SECRET` no Worker → a rota passa a existir, e a página para
+   de marcar
 2. o webhook configurado na Hubla, apontando para `/hubla/<segredo>`
-3. uma compra de teste, e `npx wrangler tail` aberto para ver o aviso chegar
-4. só então `PURCHASE_PELO_WEBHOOK=sim` → o `Purchase` da página some
+3. uma compra de teste, com os logs abertos
 
-Entre o passo 2 e o 4 a mesma venda é marcada duas vezes. É de propósito: é o
-único jeito de confirmar que o webhook funciona antes de desligar o que
-funcionava.
+### Conferir o token da Meta sem esperar uma venda
+
+```
+/hubla/<segredo>?testar=meta
+```
+
+Pergunta à Meta se o token vale e se ele enxerga este pixel. **Nenhum evento é
+criado.** Existe porque, sem isso, um token errado só apareceria na primeira
+compra de verdade — como uma venda perdida, no pior momento possível.
 
 **O formato do aviso.** Cada plataforma nomeia os campos de um jeito, e a Hubla
 já mudou entre versões da API. Por isso o código procura cada campo pelo nome,
@@ -264,6 +281,9 @@ Duas coisas para olhar no log da primeira venda:
 - `HUBLA valor bruto X → enviado Y` — se o valor chegar cem vezes maior ou
   menor no Gerenciador, a Hubla manda em reais, não em centavos. Ligue a
   variável `HUBLA_VALOR_EM_REAIS` no Worker.
+- `HUBLA venda SEM campanha no aviso` — a venda foi contada, mas a Hubla não
+  devolveu o `sck` que a página mandou no checkout. Não quebra nada; significa
+  que aquela venda chega na Meta sem dizer de qual criativo veio.
 
 ### A atribuição sobrevive à ida e volta da Hubla
 
