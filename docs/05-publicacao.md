@@ -265,6 +265,42 @@ Duas coisas para olhar no log da primeira venda:
   menor no Gerenciador, a Hubla manda em reais, não em centavos. Ligue a
   variável `HUBLA_VALOR_EM_REAIS` no Worker.
 
+### A atribuição sobrevive à ida e volta da Hubla
+
+A compradora chega com as UTMs na URL, vai para a Hubla e volta para a página
+pós-compra por um **endereço fixo**. As UTMs não voltam. Sem tratar isso, o
+`Purchase` sabe que houve venda e não sabe de onde veio — que é justamente o
+que responde "qual criativo está vendendo".
+
+Dois caminhos independentes resolvem, e os dois estão ligados:
+
+1. **Na ida**, a borda copia as UTMs para o link do checkout e monta o `sck`.
+   Se a Hubla devolver esse `sck` no aviso de pagamento, o webhook o usa.
+2. **Um cookie de primeira parte** (`smm_atrib`, 30 dias, `SameSite=Lax`)
+   guarda a campanha na chegada. Ele sobrevive à ida e à volta, porque as duas
+   são navegação de topo — e continua valendo se a compra acontecer no dia
+   seguinte. A borda lê esse cookie na página pós-compra e manda a campanha
+   junto do `Purchase`.
+
+O segundo caminho não depende de a Hubla devolver nada. É o que garante a
+atribuição mesmo que a plataforma ignore os parâmetros.
+
+A resposta que grava o cookie responde `private, no-store`: resposta com
+cookie é de uma pessoa só, e num cache compartilhado a próxima visitante
+herdaria a campanha da anterior. Custa uma requisição sem cache por visita — a
+segunda página já volta a ser cacheada, porque não traz parâmetro de campanha.
+
+### O contador e a página em que ele está
+
+A página de venda conta até a virada do lote. A pós-compra conta até a aula de
+abertura — lá o lote já não quer dizer nada, a compra foi feita.
+
+O HTML da pós-compra já vinha do build com a data certa, e a borda a
+sobrescrevia com a do lote em toda página: o rótulo dizia "até a aula de
+abertura" embaixo de uma contagem que ia até o fim do lote. Mesma classe de
+erro do endereço `/obrigado` — a borda sem saber em que página estava. Agora o
+alvo vem de `EVENTO.inicioISO` na pós-compra e de `lote.fim` no resto.
+
 ### Se o token vazar
 
 Um token de CAPI visto por qualquer pessoa — print, chat, e-mail — está
