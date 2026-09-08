@@ -36,27 +36,40 @@
 import { mandarEvento, montarPessoa } from './meta.js';
 
 /**
- * Tipos de aviso que representam dinheiro que entrou.
+ * Sinais de que o dinheiro entrou.
  *
- * A lista é de correspondência solta (`inclui`), porque cada plataforma nomeia
- * de um jeito e a Hubla já mudou o formato entre versões da API.
+ * A correspondência é solta (`inclui`) e vale tanto para o NOME do aviso
+ * quanto para o CAMPO DE STATUS dentro dele. Ser generoso aqui é seguro por
+ * um motivo específico: o `event_id` de todo Purchase é o número da transação,
+ * então dois avisos sobre a mesma venda — o `payment_succeeded` e o
+ * `status_updated` que vem junto — chegam na Meta com o mesmo identificador e
+ * contam UMA compra.
+ *
+ * Sem essa desduplicação, ser generoso dobraria o relatório. Com ela, o risco
+ * inverte de lado: o caro é a venda que NÃO é reconhecida, porque some sem
+ * erro nenhum aparecer.
  */
-const TIPOS_PAGOU = [
-  'payment_succeeded', 'paymentsucceeded', 'invoice.paid',
+const SINAIS_PAGOU = [
+  'payment_succeeded', 'paymentsucceeded', 'invoice.paid', 'order.paid',
   'newsale', 'new_sale', 'sale.approved', 'saleapproved',
-  'purchase.approved', 'payment.approved', 'order.paid',
+  'purchase.approved', 'payment.approved',
+  // o campo de status, em inglês e em português
+  'paid', 'pago', 'approved', 'aprovado', 'succeeded', 'completed',
+  'confirmed', 'confirmado',
 ];
 
 /**
- * Tipos que NUNCA podem virar compra.
+ * O que NUNCA pode virar compra.
  *
- * Conferido antes da lista de cima: um `payment_refunded` contém `payment` e
- * passaria por descuido. Estorno virando venda é o pior erro possível aqui,
- * porque infla o retorno e faz a campanha escalar em cima de nada.
+ * Conferido ANTES da lista de cima, e a ordem é o ponto: `unpaid` contém
+ * `paid`, `payment_refunded` contém `payment`. Invertida, a ordem
+ * transformaria estorno em venda — o pior erro possível aqui, porque infla o
+ * retorno e faz a campanha escalar em cima de nada.
  */
-const TIPOS_PROIBIDOS = [
-  'refund', 'chargeback', 'cancel', 'expired', 'abandon',
-  'pending', 'waiting', 'failed', 'refused', 'declined', 'dispute',
+const SINAIS_PROIBIDOS = [
+  'refund', 'reembols', 'chargeback', 'cancel', 'expired', 'expirad',
+  'abandon', 'pending', 'aguard', 'waiting', 'failed', 'falho', 'refused',
+  'declined', 'dispute', 'unpaid', 'not_paid', 'nao_pago', 'naopago',
 ];
 
 export async function receberWebhook(request, env, ctx) {
@@ -79,20 +92,28 @@ export async function receberWebhook(request, env, ctx) {
   // um aviso de verdade. Depois de calibrado, dá para tirar esta linha.
   console.log('HUBLA aviso:', JSON.stringify(dados).slice(0, 2000));
 
+  // O nome do aviso e o campo de status são lidos separados: a Hubla manda
+  // "invoice.status_updated" com o status real dentro, e ali é onde o
+  // pagamento aparece. Olhar só o nome perderia essa venda.
   const tipo = String(
-    procurar(dados, ['type', 'event', 'eventtype', 'event_type', 'status']) ?? '',
+    procurar(dados, ['type', 'event', 'eventtype', 'event_type']) ?? '',
   ).toLowerCase();
+  const situacao = String(
+    procurar(dados, ['status', 'state', 'situacao', 'paymentstatus', 'payment_status']) ?? '',
+  ).toLowerCase();
+  const sinais = `${tipo} ${situacao}`;
 
-  if (TIPOS_PROIBIDOS.some((t) => tipo.includes(t))) {
-    console.log('HUBLA ignorado (não é venda):', tipo);
+  if (SINAIS_PROIBIDOS.some((t) => sinais.includes(t))) {
+    console.log(`HUBLA ignorado (não é venda): tipo="${tipo}" status="${situacao}"`);
     return ok();
   }
-  if (!TIPOS_PAGOU.some((t) => tipo.includes(t))) {
+  if (!SINAIS_PAGOU.some((t) => sinais.includes(t))) {
     // Não reconhecido não vira compra: inventar venda é pior que perder uma.
-    // O tipo fica no log para entrar na lista acima.
-    console.warn('HUBLA tipo desconhecido, nada enviado:', tipo || '(vazio)');
+    // Fica no log, com os dois campos, para entrar na lista acima.
+    console.warn(`HUBLA sem sinal de pagamento, nada enviado: tipo="${tipo || '(vazio)'}" status="${situacao || '(vazio)'}"`);
     return ok();
   }
+  console.log(`HUBLA reconhecido como venda: tipo="${tipo}" status="${situacao}"`);
 
   const transacao = procurar(dados, [
     'transactionid', 'transaction_id', 'invoiceid', 'invoice_id',
