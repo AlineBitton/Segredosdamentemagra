@@ -29,7 +29,6 @@ import {
   contadorTexto,
   escolherPromessa,
   loteAtivo,
-  META,
   PAGINA_POS_COMPRA,
   paramPermitido,
   prazoData,
@@ -38,6 +37,8 @@ import {
   proximoLote,
   segundosAteVirada,
 } from '../config/oferta.mjs';
+import { receberWebhook } from './hubla.js';
+import { mandarEvento, montarPessoa } from './meta.js';
 
 const TETO_CACHE_S = 300;
 
@@ -48,6 +49,15 @@ const CAMINHO_POS_COMPRA = new RegExp(
 );
 
 async function servir(request, env, ctx) {
+  // O aviso de pagamento da Hubla vem antes de qualquer coisa: não é página,
+  // não passa por ASSETS e não pode ser cacheado. O segredo está no próprio
+  // endereço — sem ele, 404, e quem não conhece a rota não descobre que ela
+  // existe.
+  const segredo = env.HUBLA_WEBHOOK_SECRET;
+  if (segredo && new URL(request.url).pathname === `/hubla/${segredo}`) {
+    return receberWebhook(request, env, ctx);
+  }
+
   // os arquivos estáticos vêm do próprio Worker, pela ligação ASSETS, e
   // continuam passando pelo _headers (CSP, cache das fontes e das imagens)
   const resposta = await env.ASSETS.fetch(request);
@@ -61,9 +71,14 @@ async function servir(request, env, ctx) {
   // build acompanhou, a borda ficou olhando para uma página que não existia
   // mais e a compra deixou de ser relatada, sem erro nenhum aparecer
   const ehPosCompra = CAMINHO_POS_COMPRA.test(url.pathname);
+  // O `Purchase` da página marca quem ABRIU o endereço, não quem pagou, e vai
+  // sem valor. Quando o webhook da Hubla assume — ligando PURCHASE_PELO_WEBHOOK
+  // no Worker —, este some: o atributo não é escrito e o script da página não
+  // dispara nada. Sem isso os dois marcariam a mesma venda.
+  const marcaNaPagina = ehPosCompra && !env.PURCHASE_PELO_WEBHOOK;
   // O mesmo identificador vai no navegador e no servidor. É ele que faz a
   // Meta entender os dois relatos como UMA compra, e não duas.
-  const eventoId = ehPosCompra ? crypto.randomUUID() : '';
+  const eventoId = marcaNaPagina ? crypto.randomUUID() : '';
   const lote = loteAtivo(agora);
   const proximo = proximoLote(agora);
   const promessa = escolherPromessa(url.searchParams);
@@ -162,7 +177,7 @@ async function servir(request, env, ctx) {
   cabecalhos.set('permissions-policy', 'geolocation=(), microphone=(), camera=(), interest-cohort=()');
   cabecalhos.set('x-lote', lote.id);
 
-  if (ehPosCompra && saida.status === 200) {
+  if (marcaNaPagina && saida.status === 200) {
     // a resposta sai na hora; a conversa com a Meta continua depois dela
     const envio = enviarCapi(request, url, env, eventoId);
     if (ctx?.waitUntil) ctx.waitUntil(envio);
@@ -205,83 +220,44 @@ function comQueryDaCampanha(destino, urlDaPagina) {
 }
 
 /**
- * Conversion API da Meta — o relato da compra pelo servidor.
+ * O espelho, pelo servidor, do `Purchase` que a página dispara.
  *
- * O pixel do navegador é o único relato hoje, e ele falha em silêncio: quem
- * usa bloqueador, Safari com prevenção de rastreio ou simplesmente fecha a
- * aba antes de o `fbevents.js` carregar não aparece no Gerenciador. A compra
- * aconteceu, a campanha não recebe o crédito, e o algoritmo otimiza no escuro.
+ * O pixel do navegador falha em silêncio: bloqueador de anúncio, Safari com
+ * prevenção de rastreio, aba fechada antes de o `fbevents.js` carregar. A
+ * compra aconteceu, a campanha não recebe o crédito, e o algoritmo otimiza no
+ * escuro. Este envio sai da borda e não depende de nada no navegador.
  *
- * Este envio sai daqui, da borda, e não depende de nada no navegador.
+ * Os dois carregam o MESMO `event_id`, então a Meta conta uma compra só.
  *
- * Os dois relatos — navegador e servidor — carregam o MESMO `event_id`. É por
- * ele que a Meta reconhece que são a mesma compra e conta uma só. Sem isso, o
- * relatório dobraria e o custo por conversão apareceria pela metade.
- *
- * Sem `META_CAPI_TOKEN` a função não faz nada. O token é credencial de
- * servidor, com permissão de escrita na conta de anúncios: entra por
- * `wrangler secret put META_CAPI_TOKEN` e nunca no repositório.
+ * Isto é a rede de segurança do relato da PÁGINA, com as limitações dela: sem
+ * valor e sem saber se quem abriu chegou a pagar. O relato bom é o do webhook
+ * da Hubla, em `hubla.js` — quando ele assume, esta função deixa de ser
+ * chamada.
  */
 async function enviarCapi(request, url, env, eventoId) {
-  const token = env.META_CAPI_TOKEN;
-  if (!token || !META.pixelId || !eventoId) return;
+  if (!env.META_CAPI_TOKEN || !eventoId) return;
 
   const cookies = lerCookies(request.headers.get('cookie'));
   const fbclid = url.searchParams.get('fbclid');
 
-  // Quanto mais sinal, melhor o casamento com a pessoa que clicou no anúncio.
-  // Não há e-mail nem telefone aqui: a página de agradecimento não conhece a
-  // compradora — quem conhece é a Hubla. Vai o que a borda tem de fato.
-  const pessoa = {
-    client_ip_address: request.headers.get('cf-connecting-ip') || undefined,
-    client_user_agent: request.headers.get('user-agent') || undefined,
-    fbp: cookies._fbp || undefined,
-    // sem o cookie, o clique ainda dá para reconstruir a partir do fbclid
-    fbc: cookies._fbc || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : undefined),
-  };
-
-  const comum = {
+  await mandarEvento(env, {
+    event_name: 'Purchase',
+    event_id: eventoId,
     event_time: Math.floor(Date.now() / 1000),
     event_source_url: url.href,
     action_source: 'website',
-    user_data: pessoa,
-  };
-
-  // Um evento só, o mesmo que o navegador dispara, com o mesmo nome e o mesmo
-  // identificador. Dois eventos para a mesma venda a fariam aparecer em
-  // dobro no Gerenciador.
-  const corpo = {
-    data: [
-      {
-        ...comum,
-        event_name: 'Purchase',
-        event_id: eventoId,
-        custom_data: { currency: 'BRL', content_category: 'Imersao Segredos da Mente Magra' },
-      },
-    ],
-    access_token: token,
-    // Só quando estiver conferindo em Gerenciador de Eventos → Testar eventos.
-    // Com este código preenchido a compra NÃO entra nos relatórios de verdade,
-    // então ele nunca deve ficar ligado em produção.
-    ...(env.META_CAPI_TEST_CODE ? { test_event_code: env.META_CAPI_TEST_CODE } : {}),
-  };
-
-  const alvo = `https://graph.facebook.com/${META.capiVersao}/${META.pixelId}/events`;
-
-  try {
-    const r = await fetch(alvo, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(corpo),
-    });
-    if (!r.ok) {
-      // aparece em `npx wrangler tail`. Nunca derruba a página: a compradora
-      // já pagou, e um erro de relatório não pode virar erro de tela.
-      console.error('CAPI', r.status, (await r.text()).slice(0, 300));
-    }
-  } catch (e) {
-    console.error('CAPI falhou:', e?.message || e);
-  }
+    // Sem e-mail nem telefone: a página de agradecimento não conhece a
+    // compradora. Quem conhece é a Hubla, e é por isso que o webhook casa
+    // muito melhor do que isto aqui.
+    user_data: await montarPessoa({
+      ip: request.headers.get('cf-connecting-ip'),
+      agente: request.headers.get('user-agent'),
+      fbp: cookies._fbp,
+      // sem o cookie, o clique ainda dá para reconstruir a partir do fbclid
+      fbc: cookies._fbc || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : ''),
+    }),
+    custom_data: { currency: 'BRL', content_category: 'Imersao Segredos da Mente Magra' },
+  });
 }
 
 /** Lê o cabeçalho Cookie num objeto. Só o que o pixel da Meta grava interessa. */

@@ -218,6 +218,53 @@ Para ver o evento no Gerenciador antes de valer para as campanhas, use
 `META_CAPI_TEST_CODE`. **Apague-o depois** — com ele preenchido, as compras
 não entram nos relatórios de verdade.
 
+### O webhook da Hubla — o relato bom da compra
+
+O `Purchase` da página tem três limites, todos silenciosos: marca quem só
+**abriu** o endereço (e de novo a cada F5), vai **sem valor**, e vai **sem
+atribuição** — a Hubla redireciona para um endereço fixo, então as UTMs que
+foram para o checkout não voltam.
+
+O webhook resolve os três. A Hubla avisa a borda quando o dinheiro entra, e
+nesse aviso vem o valor, o e-mail de quem comprou e o `sck` que a página mandou
+no link. Vira um `Purchase` com valor, com atribuição, e só para quem pagou.
+
+O endereço é `/hubla/<segredo>`, e o segredo mora no Worker
+(`HUBLA_WEBHOOK_SECRET`). Sem assinatura para conferir, é o endereço que
+autentica: quem não o conhece recebe 404. Importa porque uma rota aberta
+deixaria qualquer um inventar vendas e envenenar a otimização das campanhas.
+
+Fora o segredo errado, tudo responde 200 — inclusive o que não deu para
+entender. A Hubla desliga um webhook que responde erro várias vezes, e um
+webhook desligado para de contar tudo.
+
+**A ordem de ligar importa**, senão fica um intervalo marcando duas vezes ou
+nenhuma:
+
+1. `HUBLA_WEBHOOK_SECRET` no Worker → a rota passa a existir
+2. o webhook configurado na Hubla, apontando para `/hubla/<segredo>`
+3. uma compra de teste, e `npx wrangler tail` aberto para ver o aviso chegar
+4. só então `PURCHASE_PELO_WEBHOOK=sim` → o `Purchase` da página some
+
+Entre o passo 2 e o 4 a mesma venda é marcada duas vezes. É de propósito: é o
+único jeito de confirmar que o webhook funciona antes de desligar o que
+funcionava.
+
+**O formato do aviso.** Cada plataforma nomeia os campos de um jeito, e a Hubla
+já mudou entre versões da API. Por isso o código procura cada campo pelo nome,
+em qualquer profundidade, em vez de seguir um caminho fixo que quebraria em
+silêncio. O aviso inteiro vai para o log na chegada — é com um aviso de verdade
+que se confere o que a Hubla realmente manda.
+
+Duas coisas para olhar no log da primeira venda:
+
+- `HUBLA tipo desconhecido` — o tipo do aviso não está na lista de "isto é
+  venda", em `worker/hubla.js`. Nada foi enviado, de propósito: inventar venda
+  é pior que perder uma. Acrescente o tipo à lista.
+- `HUBLA valor bruto X → enviado Y` — se o valor chegar cem vezes maior ou
+  menor no Gerenciador, a Hubla manda em reais, não em centavos. Ligue a
+  variável `HUBLA_VALOR_EM_REAIS` no Worker.
+
 ### Se o token vazar
 
 Um token de CAPI visto por qualquer pessoa — print, chat, e-mail — está
