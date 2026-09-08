@@ -33,6 +33,7 @@
  * webhook desligado é pior que um evento perdido: para de contar tudo.
  */
 
+import { META } from '../config/oferta.mjs';
 import { mandarEvento, montarPessoa } from './meta.js';
 
 /**
@@ -74,6 +75,15 @@ const SINAIS_PROIBIDOS = [
 
 export async function receberWebhook(request, env, ctx) {
   if (request.method !== 'POST') {
+    // `?testar=meta` confere o token da Meta sem esperar uma venda.
+    //
+    // Até aqui o token só seria exercitado quando a primeira compra de
+    // verdade tentasse sair — e um token errado apareceria como uma venda
+    // perdida, no pior momento possível. Esta chamada pergunta à Meta se o
+    // token vale E se ele enxerga este pixel, sem criar evento nenhum.
+    if (new URL(request.url).searchParams.get('testar') === 'meta') {
+      return testarTokenDaMeta(env);
+    }
     // GET com o segredo certo serve para conferir que o endereço está de pé
     return new Response('ok', { status: 200, headers: { 'cache-control': 'no-store' } });
   }
@@ -145,6 +155,48 @@ export async function receberWebhook(request, env, ctx) {
   return ok();
 }
 
+/**
+ * Pergunta à Meta se o token vale e se ele alcança este pixel.
+ *
+ * Lê um campo bobo do próprio conjunto de dados. Se a Meta responde, o token
+ * é válido e tem acesso; se recusa, ela diz o motivo — e é essa frase que
+ * interessa, não um "falhou" genérico. Nenhum evento é criado.
+ */
+async function testarTokenDaMeta(env) {
+  const texto = (t) => new Response(t, {
+    status: 200,
+    headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store' },
+  });
+
+  if (!env.META_CAPI_TOKEN) {
+    return texto('META_CAPI_TOKEN: NÃO configurado neste Worker.\n');
+  }
+
+  const alvo = `https://graph.facebook.com/${META.capiVersao}/${META.pixelId}` +
+    `?fields=name&access_token=${encodeURIComponent(env.META_CAPI_TOKEN)}`;
+
+  try {
+    const r = await fetch(alvo);
+    const corpo = await r.text();
+    if (r.ok) {
+      return texto(
+        'META_CAPI_TOKEN: VÁLIDO\n' +
+        `pixel ${META.pixelId} acessível\n` +
+        `resposta da Meta: ${corpo.slice(0, 300)}\n\n` +
+        'Nenhum evento foi criado por esta conferência.\n',
+      );
+    }
+    return texto(
+      `META_CAPI_TOKEN: RECUSADO (HTTP ${r.status})\n\n` +
+      `${corpo.slice(0, 600)}\n\n` +
+      'Erro 190 costuma ser token inválido ou expirado.\n' +
+      'Erro 100 costuma ser token sem acesso a este pixel.\n',
+    );
+  } catch (e) {
+    return texto(`Não deu para falar com a Meta: ${e?.message || e}\n`);
+  }
+}
+
 /** Valor, moeda e a origem da campanha, que é o que responde "qual criativo vendeu". */
 function montarCompra(dados, env) {
   const compra = { currency: 'BRL' };
@@ -169,7 +221,14 @@ function montarCompra(dados, env) {
   // O `sck` é o que a página montou com as UTMs e mandou no link do checkout.
   // Voltando aqui, ele é a ponte entre a venda e o criativo que a trouxe.
   const sck = procurar(dados, ['sck', 'src', 'utm', 'tracking', 'utm_content']);
-  if (sck) compra.content_name = String(sck).slice(0, 200);
+  if (sck) {
+    compra.content_name = String(sck).slice(0, 200);
+  } else {
+    // Venda contada, campanha perdida. Não é erro — é a Hubla não devolvendo
+    // o que a página mandou no checkout. Fica alto no log porque é o sintoma
+    // de "não sei qual criativo vendeu", que passaria calado.
+    console.warn('HUBLA venda SEM campanha no aviso — a atribuição desta venda não vai junto');
+  }
 
   return compra;
 }

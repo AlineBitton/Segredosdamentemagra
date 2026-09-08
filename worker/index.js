@@ -114,11 +114,24 @@ async function servir(request, env, ctx) {
   // build acompanhou, a borda ficou olhando para uma página que não existia
   // mais e a compra deixou de ser relatada, sem erro nenhum aparecer
   const ehPosCompra = CAMINHO_POS_COMPRA.test(url.pathname);
-  // O `Purchase` da página marca quem ABRIU o endereço, não quem pagou, e vai
-  // sem valor. Quando o webhook da Hubla assume — ligando PURCHASE_PELO_WEBHOOK
-  // no Worker —, este some: o atributo não é escrito e o script da página não
-  // dispara nada. Sem isso os dois marcariam a mesma venda.
-  const marcaNaPagina = ehPosCompra && !env.PURCHASE_PELO_WEBHOOK;
+  // Quem marca a compra: a página ou o webhook — NUNCA os dois.
+  //
+  // O `Purchase` da página marca quem ABRIU o endereço, tenha pago ou não, e
+  // vai sem valor. É a marcação pobre, que só existe enquanto não há coisa
+  // melhor. O webhook da Hubla é a boa: dispara no pagamento de verdade, com
+  // valor, e-mail e campanha.
+  //
+  // Assim que o segredo do webhook existe, ele assume e esta some. Não é
+  // preferência: os dois ligados marcariam a MESMA venda duas vezes, com
+  // identificadores diferentes, e o relatório dobraria — exatamente o defeito
+  // que este trabalho começou consertando. Deixar isso depender de alguém
+  // lembrar de ligar uma segunda variável era deixar o defeito voltar de
+  // graça.
+  //
+  // `PURCHASE_NA_PAGINA=sim` força o jeito antigo de volta, para o caso de o
+  // webhook precisar ser desligado às pressas sem ficar sem marcação nenhuma.
+  const webhookAssume = Boolean(env.HUBLA_WEBHOOK_SECRET) && !env.PURCHASE_NA_PAGINA;
+  const marcaNaPagina = ehPosCompra && !webhookAssume;
   // O mesmo identificador vai no navegador e no servidor. É ele que faz a
   // Meta entender os dois relatos como UMA compra, e não duas.
   const eventoId = marcaNaPagina ? crypto.randomUUID() : '';
