@@ -93,6 +93,22 @@
      nada e nenhum script de terceiro e carregado.
      ---------------------------------------------------------- */
   (function checkoutTrack() {
+    // O MESMO identificador vai no evento do navegador e no `?e=` do link do
+    // desvio. A borda dispara o InitiateCheckout dela com ele, e a Meta
+    // reconhece os dois relatos como um clique so. O do navegador some para
+    // quem usa bloqueador; o da borda nao depende de nada aqui.
+    const eid = 'ic-' + (self.crypto && self.crypto.randomUUID
+      ? self.crypto.randomUUID()
+      : Date.now() + '-' + Math.random().toString(16).slice(2));
+
+    for (const a of $$('a[data-checkout]')) {
+      let u;
+      try { u = new URL(a.href, location.href); } catch { continue; }
+      if (u.origin !== location.origin || !/^\/ir\//.test(u.pathname)) continue;
+      u.searchParams.set('e', eid);
+      a.href = u.toString();
+    }
+
     document.addEventListener('click', (ev) => {
       const a = ev.target.closest('a[data-checkout]');
       if (!a || typeof window.fbq !== 'function') return;
@@ -107,7 +123,7 @@
         content_category: 'Imersao Segredos da Mente Magra',
         value: valor,
         currency: 'BRL',
-      });
+      }, { eventID: eid });
     }, { passive: true });
   })();
 
@@ -146,7 +162,12 @@
     for (const a of $$('a[href]')) {
       let u;
       try { u = new URL(a.href, location.href); } catch { continue; }
-      if (!HOSTS.includes(u.hostname.replace(/^www\./, ''))) continue;
+      // links diretos da hub.la (pagina servida crua, sem a borda) e o desvio
+      // /ir/, que e o caso normal. Carimbar o desvio cobre quem tem cookie
+      // bloqueado: a borda le a campanha do link em vez do cookie.
+      const paraHubla = HOSTS.includes(u.hostname.replace(/^www\./, ''));
+      const paraDesvio = u.origin === location.origin && /^\/ir\/(comum|vip)\/?$/.test(u.pathname);
+      if (!paraHubla && !paraDesvio) continue;
       params.forEach((v, k) => { if (!u.searchParams.has(k)) u.searchParams.set(k, v); });
       if (sck && !u.searchParams.has('sck')) u.searchParams.set('sck', sck);
       a.href = u.toString();

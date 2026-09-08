@@ -98,6 +98,31 @@ for (const nome of [...naPagina].sort()) {
  * virada do lote, a pos-compra ate a aula de abertura. Ja saiu errado uma vez,
  * com o rotulo dizendo "ate a aula de abertura" sobre a contagem do lote.
  */
+/*
+ * O botao de compra tem de vender mesmo sem a borda.
+ *
+ * A borda troca o href por /ir/<tipo>, que resolve a campanha no clique. Mas
+ * o HTML ESTATICO precisa continuar apontando direto para a hub.la: se o
+ * Worker falhar e a pagina for servida crua, perde-se a atribuicao daquela
+ * venda — nunca a venda.
+ */
+console.log('\n── botao de compra: vende mesmo sem a borda ─────────────');
+{
+  const doc = readFileSync(path.join(RAIZ, 'dist', 'index.html'), 'utf8');
+  const botoes = [...doc.matchAll(/<a[^>]*data-checkout="([^"]+)"[^>]*>/g)];
+  ok(botoes.length > 0, 'a pagina tem botao de compra', 'nenhum [data-checkout] no HTML');
+  for (const [tag, tipo] of botoes) {
+    const href = (tag.match(/href="([^"]*)"/) || [])[1] || '';
+    ok(href.includes('hub.la'), `${tipo}: href estatico aponta para a hub.la`,
+       `veio "${href}" — sem a borda, este botao nao vende`);
+  }
+  const borda = readFileSync(path.join(RAIZ, 'worker', 'index.js'), 'utf8');
+  ok(/\/ir\/\$\{qual\}/.test(borda), 'a borda troca o href pelo desvio /ir/');
+  ok(/COOKIE_ATRIB/.test(borda) && /irParaCheckout/.test(borda),
+     'o desvio le a campanha do cookie',
+     'sem isso a UTM so chega para quem clica na mesma visita em que chegou');
+}
+
 console.log('\n── contador: cada pagina com a sua ancora ───────────────');
 for (const [arquivo, alvoEsperado] of [
   ['index.html', 'lote'],
