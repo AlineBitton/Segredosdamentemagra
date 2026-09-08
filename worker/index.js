@@ -58,6 +58,8 @@ const TETO_CACHE_S = 300;
  * `HttpOnly`: nenhum script lê. O que o navegador precisa saber já está no
  * `sessionStorage` que o app.js mantém.
  */
+const CAMINHO_IR = /\/ir\/(comum|vip)\/?$/;
+
 const COOKIE_ATRIB = 'smm_atrib';
 const DIAS_ATRIB = 30;
 
@@ -99,6 +101,21 @@ async function servir(request, env, ctx) {
           'ou ela foi criada em outro Worker que não este.\n',
       { status: 200, headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store' } },
     );
+  }
+
+  // O clique no botão de compra passa por aqui antes de ir para a Hubla.
+  //
+  // POR QUE existe: antes, a UTM era gravada no HTML no momento em que a
+  // página era montada. Isso só funciona para quem clica na mesma visita em
+  // que chegou pelo anúncio. Quem recarrega, volta pelo histórico, ou entra de
+  // novo mais tarde recebia um link SEM campanha — e a venda chegava na Hubla
+  // órfã, sem dizer de qual criativo veio.
+  //
+  // Resolvido aqui: o endereço final é montado no CLIQUE, lendo a campanha do
+  // cookie. O HTML volta a ser igual para todo mundo (e cacheável), e a parte
+  // que muda por pessoa acontece neste desvio, que nunca é cacheado.
+  if (CAMINHO_IR.test(caminho)) {
+    return irParaCheckout(request, new URL(request.url), env, ctx);
   }
 
   // os arquivos estáticos vêm do próprio Worker, pela ligação ASSETS, e
@@ -174,11 +191,6 @@ async function servir(request, env, ctx) {
       `Aqui ele entra por ${brl(VIP.centavos - lote.centavos)} a mais.`;
   }
 
-  const hrefs = {
-    comum: comQueryDaCampanha(checkoutComum(lote), url),
-    vip: comQueryDaCampanha(CHECKOUT.vip, url),
-  };
-
   const rw = new HTMLRewriter()
     // ganchos de CSS/JS no <html>
     .on('html', {
@@ -219,10 +231,17 @@ async function servir(request, env, ctx) {
       },
     })
     // links de checkout, já com UTM e sck
+    // O botão aponta para o desvio, não para a Hubla. Assim o HTML é igual
+    // para todas as visitantes — cacheável — e quem decide o endereço final,
+    // com a campanha de cada uma, é o desvio, no clique.
+    //
+    // O href do HTML estático continua sendo o link direto da Hubla: se o
+    // Worker falhar e a página for servida crua, o botão ainda vende. Perde a
+    // atribuição, não a venda.
     .on('a[data-checkout]', {
       element(el) {
         const qual = el.getAttribute('data-checkout');
-        if (hrefs[qual]) el.setAttribute('href', hrefs[qual]);
+        if (qual === 'comum' || qual === 'vip') el.setAttribute('href', `/ir/${qual}`);
       },
     })
     // metadados sociais acompanham o preço vigente
@@ -274,6 +293,75 @@ async function servir(request, env, ctx) {
 }
 
 export default { fetch: servir };
+
+/**
+ * O desvio do botão de compra: `/ir/comum` e `/ir/vip`.
+ *
+ * Monta o endereço da Hubla no instante do clique, com a campanha lida do
+ * cookie — e não a que por acaso estava na barra de endereços quando a página
+ * foi montada. É essa diferença que faz a UTM chegar no checkout de quem
+ * recarregou, voltou pelo histórico ou entrou de novo no dia seguinte.
+ *
+ * NADA aqui pode impedir a compra. Se qualquer coisa falhar, a pessoa vai
+ * para o checkout limpo: perde-se a atribuição daquela venda, nunca a venda.
+ */
+async function irParaCheckout(request, url, env, ctx) {
+  const tipo = url.pathname.match(CAMINHO_IR)[1];
+  const lote = loteAtivo(Date.now());
+  const destinoBase = tipo === 'vip' ? CHECKOUT.vip : checkoutComum(lote);
+
+  const irPara = (destino) => new Response(null, {
+    status: 302,
+    headers: {
+      location: destino,
+      // resposta de uma pessoa só, montada com a campanha dela
+      'cache-control': 'no-store',
+      referrer_policy: 'strict-origin-when-cross-origin',
+    },
+  });
+
+  try {
+    // O que veio no clique manda; senão, o que ficou guardado da visita que
+    // trouxe. O primeiro caso cobre quem tem cookie bloqueado, porque o
+    // app.js carimba os parâmetros no link antes do clique.
+    const atribuicao =
+      atribuicaoDaUrl(url) ||
+      decodeURIComponent(lerCookies(request.headers.get('cookie'))[COOKIE_ATRIB] || '');
+
+    const destino = comQueryDaCampanha(destinoBase, new URL(`https://x/?${atribuicao}`));
+
+    // O InitiateCheckout também sai daqui, pelo servidor: o do navegador some
+    // para quem usa bloqueador, e este não depende de nada no cliente. O
+    // `?e=` é o identificador que o app.js usou no evento dele — com o mesmo,
+    // a Meta conta um clique, não dois.
+    const envio = mandarEvento(env, {
+      event_name: 'InitiateCheckout',
+      event_id: url.searchParams.get('e') || `ir-${crypto.randomUUID()}`,
+      event_time: Math.floor(Date.now() / 1000),
+      event_source_url: url.href,
+      action_source: 'website',
+      user_data: await montarPessoa({
+        ip: request.headers.get('cf-connecting-ip'),
+        agente: request.headers.get('user-agent'),
+        fbp: lerCookies(request.headers.get('cookie'))._fbp,
+        fbc: lerCookies(request.headers.get('cookie'))._fbc,
+      }),
+      custom_data: {
+        currency: 'BRL',
+        value: tipo === 'vip' ? VIP.centavos / 100 : (lote.centavos || 0) / 100,
+        content_name: tipo === 'vip' ? 'VIP Diagnostico Completo' : `Comum ${lote.id}`,
+        content_category: 'Imersao Segredos da Mente Magra',
+        ...dadosDaCampanha(atribuicao),
+      },
+    });
+    if (ctx?.waitUntil) ctx.waitUntil(envio);
+
+    return irPara(destino);
+  } catch (e) {
+    console.error('IR falhou, mandando para o checkout limpo:', e?.message || e);
+    return irPara(destinoBase);
+  }
+}
 
 /**
  * Copia os parâmetros da campanha para o link da hub.la e monta o `sck`

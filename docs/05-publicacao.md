@@ -285,6 +285,35 @@ Duas coisas para olhar no log da primeira venda:
   devolveu o `sck` que a página mandou no checkout. Não quebra nada; significa
   que aquela venda chega na Meta sem dizer de qual criativo veio.
 
+### O botão de compra passa pela borda: `/ir/comum` e `/ir/vip`
+
+**O problema que isso resolve.** A UTM era gravada no link no momento em que a
+página era montada. Isso só funciona para quem clica na mesma visita em que
+chegou pelo anúncio. Quem recarrega, volta pelo histórico, ou entra de novo
+mais tarde recebia um link **sem campanha** — e a venda chegava na Hubla órfã,
+sem dizer de qual criativo veio. Era exatamente o sintoma que a gestora de
+tráfego relatou: "a UTM para na página e some no checkout".
+
+Agora o endereço final é montado **no clique**, pela borda, lendo a campanha do
+cookie. O HTML volta a ser igual para todas as visitantes — cacheável — e a
+parte que muda por pessoa acontece no desvio, que nunca é cacheado.
+
+Três camadas, nesta ordem:
+
+1. os parâmetros que o `app.js` carimba no link (cobre cookie bloqueado)
+2. o cookie `smm_atrib` (cobre recarga, histórico, visita no dia seguinte)
+3. nada — vai para o checkout limpo
+
+**Nada no desvio pode impedir a compra.** Qualquer falha manda a pessoa para o
+checkout sem campanha: perde-se a atribuição daquela venda, nunca a venda. E o
+`href` do HTML estático continua sendo o link direto da Hubla, então mesmo com
+o Worker fora do ar o botão vende. Há teste para isso em `test-estados`.
+
+O `InitiateCheckout` também sai do desvio, pelo servidor, com o mesmo
+`event_id` que o `app.js` usou no evento do navegador — a Meta conta um
+clique, não dois. É o passo do funil que mais se perde com bloqueador de
+anúncio.
+
 ### A atribuição sobrevive à ida e volta da Hubla
 
 A compradora chega com as UTMs na URL, vai para a Hubla e volta para a página
