@@ -27,7 +27,15 @@
 <!--CSS-->
 </head>
 
-<body>
+<!-- O contador precisa de uma âncora: o app.js procura UM elemento com
+     `data-deadline` para saber ATÉ QUANDO contar, e atualiza todo `data-cd`
+     a partir dela. Sem a âncora ele desiste na primeira linha, e os números
+     ficam parados no valor que a borda escreveu no carregamento.
+
+     Mora no <body> de propósito: é o único elemento que existe em todos os
+     estados da página, inclusive no encerrado. Numa seção, some junto com a
+     seção. A borda troca este valor pelo fim do lote vigente. -->
+<body data-deadline="{{deadline}}">
 <a class="so-leitor" href="#oferta">Ir direto para os ingressos</a>
 
 <main>

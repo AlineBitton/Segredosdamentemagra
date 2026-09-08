@@ -9,6 +9,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { EVENTO, PAGINA_POS_COMPRA } from '../config/oferta.mjs';
 
 const RAIZ = path.resolve(import.meta.dirname, '..');
 let falhas = 0;
@@ -85,5 +86,37 @@ for (const nome of [...naPagina].sort()) {
   ok(naBorda.has(nome), `a borda repreenche "${nome}"`,
      'o slot existe na pagina e ninguem o atualiza na visita');
 }
+/*
+ * O contador precisa de uma ancora, e da ancora CERTA para cada pagina.
+ *
+ * O app.js procura UM elemento com data-deadline para saber ate quando
+ * contar. Sem ele desiste calado, e os numeros ficam parados no valor do
+ * carregamento — foi o que aconteceu com a pagina de venda quando o contador
+ * do hero saiu e a ancora foi junto.
+ *
+ * E a ancora tem de apontar para o alvo daquela pagina: a venda conta ate a
+ * virada do lote, a pos-compra ate a aula de abertura. Ja saiu errado uma vez,
+ * com o rotulo dizendo "ate a aula de abertura" sobre a contagem do lote.
+ */
+console.log('\n── contador: cada pagina com a sua ancora ───────────────');
+for (const [arquivo, alvoEsperado] of [
+  ['index.html', 'lote'],
+  [`${PAGINA_POS_COMPRA}.html`, EVENTO.inicioISO],
+]) {
+  const doc = readFileSync(path.join(RAIZ, 'dist', arquivo), 'utf8');
+  if (!/data-cd/.test(doc)) continue;
+  const ancoras = [...doc.matchAll(/data-deadline="([^"]*)"/g)].map((m) => m[1]);
+  ok(ancoras.length === 1, `${arquivo}: uma ancora de contador`,
+     `encontradas ${ancoras.length} — o app.js usa a primeira e ignora o resto`);
+  if (ancoras.length !== 1) continue;
+  if (alvoEsperado === 'lote') {
+    ok(ancoras[0] !== EVENTO.inicioISO && Number.isFinite(Date.parse(ancoras[0])),
+       `${arquivo}: conta ate a virada do lote`, `veio "${ancoras[0]}"`);
+  } else {
+    ok(ancoras[0] === alvoEsperado, `${arquivo}: conta ate a aula de abertura`,
+       `esperado ${alvoEsperado}, veio "${ancoras[0]}"`);
+  }
+}
+
 console.log(`\n  ${falhas === 0 ? '✔ os 5 estados do ciclo estao coerentes' : `✘ ${falhas} falha(s)`}\n`);
 process.exit(falhas ? 1 : 0);
