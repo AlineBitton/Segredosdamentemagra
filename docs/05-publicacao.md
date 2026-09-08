@@ -52,31 +52,26 @@ Autorize o GitHub e escolha `AlineBitton/Segredosdamentemagra`.
 Sai um endereço `xxx.pages.dev`. Abra e confira antes de seguir — a página
 inteira já funciona por ele.
 
-**4. O domínio já vem no deploy**
+**4. Custom domains → Set up a custom domain**
 
-Não há passo manual de *Custom domains*. O `wrangler.toml` declara os dois
-nomes com `custom_domain = true`:
+Digite `smm.afinandocorpoemente.com.br`, e depois repita para
+`www.smm.afinandocorpoemente.com.br`. A Cloudflare cria o registro sozinha,
+porque a zona já é dela, e o certificado sai em alguns minutos. Um custom
+domain de Worker tem certificado do nome exato — é por isso que `www.smm`
+funciona, coisa que o certificado Universal da zona, que cobre só um nível,
+não daria conta.
 
-```toml
-[[routes]]
-pattern = "smm.afinandocorpoemente.com.br"
-custom_domain = true
+Os dois já estão ligados. Este passo fica registrado para o caso de precisar
+refazer.
 
-[[routes]]
-pattern = "www.smm.afinandocorpoemente.com.br"
-custom_domain = true
-```
-
-Cada `wrangler deploy` cria ou reaponta o registro de DNS e emite o
-certificado. Se o nome estiver preso em outro Worker ou num projeto de Pages,
-o deploy falha com a mensagem dizendo qual — em vez de o site sumir do ar em
-silêncio.
-
-O certificado de um custom domain de Worker é do nome exato, e por isso
-`www.smm` funciona. O certificado Universal da zona cobre só um nível
-(`*.afinandocorpoemente.com.br`) e não cobriria um `www.smm`.
-
-Pronto.
+> **Por que isso não está no `wrangler.toml`.** Declarar os domínios lá com
+> `custom_domain = true` faria cada `wrangler deploy` recriar e reapontar o DNS
+> sozinho — o que é melhor, porque um conflito de nome viraria erro visível em
+> vez de site fora do ar em silêncio. O problema é o outro lado: se o nome
+> estiver preso em outro Worker ou num projeto de Pages, o deploy **inteiro**
+> falha. Enquanto a página estiver vendendo, isso troca um risco pequeno de DNS
+> por um risco grande de não conseguir publicar correção nenhuma. Depois do
+> evento, vale ligar.
 
 > **O erro 1000 da raiz é outro problema.** `www.afinandocorpoemente.com.br`
 > responde *Error 1000 — DNS points to prohibited IP*: o registro daquele nome
