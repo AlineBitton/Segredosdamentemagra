@@ -195,15 +195,40 @@ export const PROMESSAS = {
  */
 export const META = {
   pixelId: '10008229355968163',
-  // Evento de compra usado nas campanhas. A página de venda dispara
-  // InitiateCheckout; a de agradecimento dispara este.
-  eventoCompra: 'Venda Imersão Código do Emagrecimento',
   // Versão da Graph API que a Conversion API chama. A Meta aposenta cada
   // versão em cerca de dois anos; quando isso acontecer a chamada passa a
   // responder erro e o `wrangler tail` mostra. Subir a versão é trocar esta
   // linha — o formato do evento não muda entre versões.
   capiVersao: 'v23.0',
 };
+
+/**
+ * A venda é marcada por UM evento só: o `Purchase` padrão.
+ *
+ * Existia também um evento personalizado, `Venda Imersão Código do
+ * Emagrecimento`, disparado na mesma página e no mesmo instante. Dois eventos
+ * para o mesmo fato deixam o Gerenciador mostrando a venda duas vezes,
+ * dependendo de qual coluna se olha, e não há nada que o personalizado conte
+ * que o `Purchase` não conte.
+ *
+ * Se um dia for preciso separar produtos, o caminho é `content_name` dentro do
+ * próprio `Purchase` — nunca um segundo evento no mesmo disparo.
+ */
+
+/**
+ * Endereço da página pós-compra, sem a extensão.
+ *
+ * Mora aqui porque três lugares precisam concordar sobre ele: o build, que
+ * injeta o `Purchase` por nome de arquivo; a borda, que monta o `event_id` e
+ * proíbe o cache; e a Hubla, que redireciona para cá depois do pagamento.
+ * Quando esse nome mudou e só o build acompanhou, a borda ficou olhando para
+ * um endereço que não existia mais — e o relato de compra pelo servidor
+ * simplesmente não acontecia, sem erro nenhum aparecer.
+ *
+ * É de propósito que não seja `/obrigado`: aquele é o primeiro palpite de
+ * qualquer um, e a página mostra ticket, grupo e convite do VIP.
+ */
+export const PAGINA_POS_COMPRA = 'nos-vemos-no-evento';
 
 export const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 

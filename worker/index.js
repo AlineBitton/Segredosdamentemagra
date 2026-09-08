@@ -30,6 +30,7 @@ import {
   escolherPromessa,
   loteAtivo,
   META,
+  PAGINA_POS_COMPRA,
   paramPermitido,
   prazoData,
   prazoTexto,
@@ -39,6 +40,12 @@ import {
 } from '../config/oferta.mjs';
 
 const TETO_CACHE_S = 300;
+
+// `/nos-vemos-no-evento`, com ou sem `.html`, com ou sem barra final, e também
+// sob o prefixo de SMM_BASE
+const CAMINHO_POS_COMPRA = new RegExp(
+  `/${PAGINA_POS_COMPRA.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\.html)?/?$`,
+);
 
 async function servir(request, env, ctx) {
   // os arquivos estáticos vêm do próprio Worker, pela ligação ASSETS, e
@@ -50,11 +57,13 @@ async function servir(request, env, ctx) {
 
   const url = new URL(request.url);
   const agora = Date.now();
-  // `/obrigado`, `/obrigado.html`, `/obrigado/` e a variante sob SMM_BASE
-  const ehObrigado = /\/obrigado(?:\.html)?\/?$/.test(url.pathname);
+  // o endereço vem do config, junto com o build — quando ele mudou e só o
+  // build acompanhou, a borda ficou olhando para uma página que não existia
+  // mais e a compra deixou de ser relatada, sem erro nenhum aparecer
+  const ehPosCompra = CAMINHO_POS_COMPRA.test(url.pathname);
   // O mesmo identificador vai no navegador e no servidor. É ele que faz a
   // Meta entender os dois relatos como UMA compra, e não duas.
-  const eventoId = ehObrigado ? crypto.randomUUID() : '';
+  const eventoId = ehPosCompra ? crypto.randomUUID() : '';
   const lote = loteAtivo(agora);
   const proximo = proximoLote(agora);
   const promessa = escolherPromessa(url.searchParams);
@@ -139,7 +148,7 @@ async function servir(request, env, ctx) {
   const saida = rw.transform(resposta);
   const cabecalhos = new Headers(saida.headers);
 
-  if (ehObrigado) {
+  if (ehPosCompra) {
     // Nunca cachear a página de agradecimento. Ela carrega um `event_id`
     // único por visita; servida do cache, várias compradoras receberiam o
     // mesmo identificador e a Meta juntaria todas as compras numa só.
@@ -153,7 +162,7 @@ async function servir(request, env, ctx) {
   cabecalhos.set('permissions-policy', 'geolocation=(), microphone=(), camera=(), interest-cohort=()');
   cabecalhos.set('x-lote', lote.id);
 
-  if (ehObrigado && saida.status === 200) {
+  if (ehPosCompra && saida.status === 200) {
     // a resposta sai na hora; a conversa com a Meta continua depois dela
     const envio = enviarCapi(request, url, env, eventoId);
     if (ctx?.waitUntil) ctx.waitUntil(envio);
@@ -238,8 +247,9 @@ async function enviarCapi(request, url, env, eventoId) {
     user_data: pessoa,
   };
 
-  // Os dois eventos que o navegador dispara, com os mesmos nomes e os mesmos
-  // identificadores — cada um casa com o seu par do lado de cá.
+  // Um evento só, o mesmo que o navegador dispara, com o mesmo nome e o mesmo
+  // identificador. Dois eventos para a mesma venda a fariam aparecer em
+  // dobro no Gerenciador.
   const corpo = {
     data: [
       {
@@ -247,11 +257,6 @@ async function enviarCapi(request, url, env, eventoId) {
         event_name: 'Purchase',
         event_id: eventoId,
         custom_data: { currency: 'BRL', content_category: 'Imersao Segredos da Mente Magra' },
-      },
-      {
-        ...comum,
-        event_name: META.eventoCompra,
-        event_id: `${eventoId}-c`,
       },
     ],
     access_token: token,

@@ -24,10 +24,12 @@ import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
 import * as esbuild from 'esbuild';
 import {
-  CHECKOUT, EVENTO, FICHA, LOTES, META, PROMESSAS, VIP,
+  CHECKOUT, EVENTO, FICHA, LOTES, META, PAGINA_POS_COMPRA, PROMESSAS, VIP,
   brl, checkoutComum, contadorTexto, linkWhatsApp, loteAtivo, prazoData, prazoTexto, proximoAviso,
   proximoLote,
 } from '../config/oferta.mjs';
+
+const ARQUIVO_POS_COMPRA = `${PAGINA_POS_COMPRA}.html`;
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const p = (...s) => path.join(RAIZ, ...s);
@@ -113,10 +115,10 @@ function pixelCabecalho(extra = '') {
 /**
  * Evento de compra na página de agradecimento.
  *
- * Dispara Purchase (o evento padrão que o Gerenciador entende) e, junto, o
- * evento com o nome que as campanhas da Aline usam. Sem valor: a página não
- * sabe qual ingresso foi comprado, e mandar um número errado é pior que não
- * mandar nenhum — quem tem o valor certo é a Hubla, pela Conversion API.
+ * Dispara SÓ o `Purchase`, o evento padrão que o Gerenciador entende. Um
+ * segundo evento no mesmo instante faria a mesma venda aparecer duas vezes.
+ * Sem valor: a página não sabe qual ingresso foi comprado, e mandar um número
+ * errado é pior que não mandar nenhum — quem tem o valor certo é a Hubla.
  *
  * O `eventID` é o que impede a contagem dobrada. O Worker escreve um
  * identificador único em `data-evento-id` no <html> e relata a mesma compra
@@ -127,11 +129,9 @@ function pixelCabecalho(extra = '') {
  */
 function pixelCompra() {
   if (!META.pixelId) return '';
-  const nome = META.eventoCompra.replace(/'/g, "\\'");
   return `var _eid=document.documentElement.dataset.eventoId;` +
     `fbq('track','Purchase',{currency:'BRL',content_category:'Imersao Segredos da Mente Magra'}` +
-    `,_eid?{eventID:_eid}:undefined);` +
-    `fbq('trackCustom','${nome}',{},_eid?{eventID:_eid+'-c'}:undefined);`;
+    `,_eid?{eventID:_eid}:undefined);`;
 }
 
 async function main() {
@@ -267,12 +267,12 @@ async function main() {
     let doc = await readFile(p('src', arquivo), 'utf8');
     const ehIndex = arquivo === 'index.html';
     // a página de agradecimento também conta o tempo — até o evento
-    const levaJs = ehIndex || arquivo === 'nos-vemos-no-evento.html';
+    const levaJs = ehIndex || arquivo === ARQUIVO_POS_COMPRA;
 
     doc = doc
       .replace('<!--CSS-->', `<style>${css}</style>` +
         (ehIndex ? pixelCabecalho()
-          : arquivo === 'nos-vemos-no-evento.html' ? pixelCabecalho(pixelCompra()) : ''))
+          : arquivo === ARQUIVO_POS_COMPRA ? pixelCabecalho(pixelCompra()) : ''))
       .replace('<!--JS-->', levaJs && js ? `<script>${js}</script>` : '');
 
     doc = doc.replace(/\{\{([\w-]+)\}\}/g, (m, chave) => {

@@ -147,7 +147,19 @@ O que muda entre as páginas são os eventos:
 | página | eventos |
 |---|---|
 | venda | `PageView`, e `InitiateCheckout` no clique do botão — com valor, lote e se é VIP ou comum |
-| agradecimento | `PageView`, `Purchase` e o evento nomeado das campanhas |
+| agradecimento | `PageView` e `Purchase` |
+
+**A venda é marcada por um evento só.** Havia também um evento personalizado,
+`Venda Imersão Código do Emagrecimento`, disparado na mesma página e no mesmo
+instante do `Purchase` — dois registros para o mesmo fato, e a venda aparecendo
+em dobro conforme a coluna que se olhasse. Ele saiu. Se um dia for preciso
+separar produtos, o caminho é `content_name` dentro do próprio `Purchase`,
+nunca um segundo evento no mesmo disparo.
+
+> Antes de subir, confira no Gerenciador de Anúncios se alguma campanha ativa
+> usa `Venda Imersão Código do Emagrecimento` como evento de otimização ou de
+> conversão personalizada. Se usar, troque para `Purchase` **antes** — senão a
+> campanha fica otimizando para um evento que parou de existir.
 
 ### Os dois caminhos da compra
 
@@ -167,6 +179,13 @@ API. A Meta vê os dois relatos, reconhece o identificador e conta **uma**
 compra. Sem isso o relatório dobraria e o custo por conversão apareceria pela
 metade — o erro mais caro desse tipo de montagem, porque parece um bom
 resultado.
+
+O endereço da página pós-compra mora em `PAGINA_POS_COMPRA`, no config. Ele
+precisa ser o mesmo em três lugares — o build, que injeta o `Purchase` por nome
+de arquivo; a borda, que monta o `event_id`; e a Hubla, que redireciona para cá
+depois do pagamento. Quando esse nome mudou e só o build acompanhou, a borda
+ficou olhando para uma página que não existia mais e o relato pelo servidor
+simplesmente não acontecia, sem erro nenhum aparecer.
 
 Por causa disso a página de agradecimento responde `Cache-Control: no-store`.
 Se ela fosse cacheada na borda, várias compradoras receberiam o mesmo
