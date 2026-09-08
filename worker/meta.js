@@ -36,24 +36,38 @@ export async function mandarEvento(env, evento) {
     ...(env.META_CAPI_TEST_CODE ? { test_event_code: env.META_CAPI_TEST_CODE } : {}),
   };
 
-  const alvo = `https://graph.facebook.com/${META.capiVersao}/${META.pixelId}/events`;
+  // Dois endereços, nesta ordem: o da versão fixada e o sem versão, que a Meta
+  // resolve para a atual. A segunda tentativa existe porque a Meta aposenta
+  // cada versão em cerca de dois anos, e quando isso acontece a chamada passa
+  // a falhar de um jeito que parece problema de token — no meio de uma
+  // campanha, sem ninguém olhando.
+  //
+  // Repetir é seguro: os dois envios levam o mesmo `event_id`, então se o
+  // primeiro tiver chegado antes de falhar, a Meta reconhece e conta uma
+  // compra só.
+  const enderecos = [
+    `https://graph.facebook.com/${META.capiVersao}/${META.pixelId}/events`,
+    `https://graph.facebook.com/${META.pixelId}/events`,
+  ];
 
-  try {
-    const r = await fetch(alvo, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(corpo),
-    });
-    if (!r.ok) {
-      // aparece em `npx wrangler tail`
-      console.error('CAPI', r.status, (await r.text()).slice(0, 400));
-      return false;
+  let ultimoErro = '';
+  for (const alvo of enderecos) {
+    try {
+      const r = await fetch(alvo, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(corpo),
+      });
+      if (r.ok) return true;
+      ultimoErro = `HTTP ${r.status} ${(await r.text()).slice(0, 400)}`;
+    } catch (e) {
+      ultimoErro = e?.message || String(e);
     }
-    return true;
-  } catch (e) {
-    console.error('CAPI falhou:', e?.message || e);
-    return false;
   }
+
+  // aparece em `npx wrangler tail` e nos Logs do painel
+  console.error('CAPI recusou nos dois endereços:', ultimoErro);
+  return false;
 }
 
 /**

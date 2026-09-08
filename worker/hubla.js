@@ -156,45 +156,96 @@ export async function receberWebhook(request, env, ctx) {
 }
 
 /**
- * Pergunta à Meta se o token vale e se ele alcança este pixel.
+ * Pergunta à Meta o que este token consegue fazer.
  *
- * Lê um campo bobo do próprio conjunto de dados. Se a Meta responde, o token
- * é válido e tem acesso; se recusa, ela diz o motivo — e é essa frase que
- * interessa, não um "falhou" genérico. Nenhum evento é criado.
+ * A primeira versão desta função só LIA o pixel, e ler exige uma permissão
+ * (`ads_read`) que um token de Conversion API não precisa ter. A recusa dizia
+ * "token recusado" quando podia ser só "token não serve para ler" — um
+ * diagnóstico errado a partir de um teste errado.
+ *
+ * Agora ela testa o que a compra realmente faz: MANDAR EVENTO. E testa nas
+ * duas formas de endereço, com e sem versão fixada, porque uma versão
+ * aposentada da Graph API falha de um jeito que parece problema de token.
+ *
+ * O evento de teste se chama `TesteDeToken` — nome próprio, que não se
+ * confunde com Purchase nem entra em relatório de venda.
  */
 async function testarTokenDaMeta(env) {
-  const texto = (t) => new Response(t, {
+  const linhas = [];
+  const texto = () => new Response(linhas.join('\n') + '\n', {
     status: 200,
     headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store' },
   });
 
-  if (!env.META_CAPI_TOKEN) {
-    return texto('META_CAPI_TOKEN: NÃO configurado neste Worker.\n');
+  const token = env.META_CAPI_TOKEN;
+  if (!token) {
+    linhas.push('META_CAPI_TOKEN: NÃO configurado neste Worker.');
+    return texto();
   }
 
-  const alvo = `https://graph.facebook.com/${META.capiVersao}/${META.pixelId}` +
-    `?fields=name&access_token=${encodeURIComponent(env.META_CAPI_TOKEN)}`;
+  linhas.push(`token: ${token.length} caracteres, começa com ${token.slice(0, 6)}…`);
+  linhas.push(`pixel: ${META.pixelId}`);
+  linhas.push(`versão configurada: ${META.capiVersao}`);
+  linhas.push('');
 
-  try {
-    const r = await fetch(alvo);
-    const corpo = await r.text();
-    if (r.ok) {
-      return texto(
-        'META_CAPI_TOKEN: VÁLIDO\n' +
-        `pixel ${META.pixelId} acessível\n` +
-        `resposta da Meta: ${corpo.slice(0, 300)}\n\n` +
-        'Nenhum evento foi criado por esta conferência.\n',
-      );
+  const evento = {
+    event_name: 'TesteDeToken',
+    event_time: Math.floor(Date.now() / 1000),
+    event_id: `teste-token-${Date.now()}`,
+    action_source: 'website',
+    event_source_url: 'https://smm.afinandocorpoemente.com.br/',
+    user_data: await montarPessoa({ email: 'teste@exemplo.com' }),
+  };
+  const corpoEvento = JSON.stringify({ data: [evento], access_token: token });
+
+  const provas = [
+    {
+      nome: 'A) LER o pixel — precisa de ads_read, que a CAPI não exige',
+      url: `https://graph.facebook.com/${META.capiVersao}/${META.pixelId}` +
+        `?fields=name&access_token=${encodeURIComponent(token)}`,
+      init: { method: 'GET' },
+    },
+    {
+      nome: 'B) MANDAR EVENTO na versão fixada — é o que a compra faz',
+      url: `https://graph.facebook.com/${META.capiVersao}/${META.pixelId}/events`,
+      init: { method: 'POST', headers: { 'content-type': 'application/json' }, body: corpoEvento },
+    },
+    {
+      nome: 'C) MANDAR EVENTO sem fixar versão — descarta versão aposentada',
+      url: `https://graph.facebook.com/${META.pixelId}/events`,
+      init: { method: 'POST', headers: { 'content-type': 'application/json' }, body: corpoEvento },
+    },
+  ];
+
+  for (const prova of provas) {
+    linhas.push(prova.nome);
+    try {
+      const r = await fetch(prova.url, prova.init);
+      const corpo = (await r.text()).slice(0, 400);
+      linhas.push(`   HTTP ${r.status} ${r.ok ? '✔ FUNCIONOU' : '✘ recusado'}`);
+      linhas.push(`   ${corpo}`);
+    } catch (e) {
+      linhas.push(`   não deu para falar com a Meta: ${e?.message || e}`);
     }
-    return texto(
-      `META_CAPI_TOKEN: RECUSADO (HTTP ${r.status})\n\n` +
-      `${corpo.slice(0, 600)}\n\n` +
-      'Erro 190 costuma ser token inválido ou expirado.\n' +
-      'Erro 100 costuma ser token sem acesso a este pixel.\n',
-    );
-  } catch (e) {
-    return texto(`Não deu para falar com a Meta: ${e?.message || e}\n`);
+    linhas.push('');
   }
+
+  linhas.push('COMO LER ISTO');
+  linhas.push('  B ou C funcionou  → o token serve. É só isso que a compra precisa.');
+  linhas.push('  B falhou e C funcionou → a versão da Graph API está aposentada;');
+  linhas.push('                           trocar capiVersao no config resolve.');
+  linhas.push('  B e C recusados   → o token não pode mandar evento. Veja o código:');
+  linhas.push('     code 190 → token inválido ou expirado; gere outro.');
+  linhas.push('     code 100 → token sem acesso a este pixel.');
+  linhas.push('     code 200 "API access blocked" → token preso a uma integração');
+  linhas.push('       de parceiro (o do plugin do WordPress é assim). A Meta');
+  linhas.push('       recusa usá-lo fora dela. É preciso gerar um token da');
+  linhas.push('       INTEGRAÇÃO DIRETA, no Gerenciador de Eventos.');
+  linhas.push('');
+  linhas.push('A prova A pode falhar mesmo com tudo certo: ler o pixel é outra');
+  linhas.push('permissão, que a Conversion API não usa. Ignore-a se B ou C passou.');
+
+  return texto();
 }
 
 /** Valor, moeda e a origem da campanha, que é o que responde "qual criativo vendeu". */
