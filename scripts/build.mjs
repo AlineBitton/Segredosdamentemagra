@@ -120,18 +120,21 @@ function pixelCabecalho(extra = '') {
  * Sem valor: a página não sabe qual ingresso foi comprado, e mandar um número
  * errado é pior que não mandar nenhum — quem tem o valor certo é a Hubla.
  *
- * O `eventID` é o que impede a contagem dobrada. O Worker escreve um
- * identificador único em `data-evento-id` no <html> e relata a mesma compra
- * pela Conversion API com ele; a Meta vê os dois relatos, reconhece o mesmo
- * identificador e conta UMA compra. Sem o Worker — página estática servida
- * crua — o atributo não existe, o `eventID` não vai, e o pixel continua
- * funcionando exatamente como antes.
+ * Quem manda é a borda, pelo atributo `data-evento-id` do <html>:
+ *
+ *   - com o atributo, o `Purchase` dispara com aquele `eventID`, e a borda
+ *     relata a mesma compra pela Conversion API com o mesmo valor. A Meta
+ *     reconhece os dois relatos e conta UMA compra.
+ *   - sem o atributo, NADA dispara. É assim que o `Purchase` da página some
+ *     quando o webhook da Hubla assume — senão os dois marcariam a mesma
+ *     venda. Também é o que acontece se a página for servida crua, sem o
+ *     Worker: melhor não marcar do que marcar errado.
  */
 function pixelCompra() {
   if (!META.pixelId) return '';
   return `var _eid=document.documentElement.dataset.eventoId;` +
-    `fbq('track','Purchase',{currency:'BRL',content_category:'Imersao Segredos da Mente Magra'}` +
-    `,_eid?{eventID:_eid}:undefined);`;
+    `if(_eid)fbq('track','Purchase',` +
+    `{currency:'BRL',content_category:'Imersao Segredos da Mente Magra'},{eventID:_eid});`;
 }
 
 async function main() {
